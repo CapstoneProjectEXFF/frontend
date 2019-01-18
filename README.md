@@ -1,9 +1,21 @@
 # Capstone Project EXFF - frontend
 
+## Prerequisites
+Install necessary packages
+```
+npm install -g yo bower gulp
+```
+
 ## Installing
-Run this in command line
+Run this in command line to install dependences
 ```
 npm install && bower install
+```
+
+## Deployment
+To preview and live edit
+```
+gulp serve
 ```
 
 ## Built With
