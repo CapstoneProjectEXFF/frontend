@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Exff</title>
+    <title>frontend</title>
 
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <!-- Place favicon.ico in the root directory -->
@@ -28,14 +28,18 @@
     <![endif]-->
     
     <div class="hero-unit">
-      <h1>Exff</h1>
-      <p>Exchange between friend and family</p>
-      <ul>
-        <li><a href="./login.html">Login</a></li>
-        <li><a href="./register.html">Register</a></li>
-        <li></li>
-        <li></li>
-      </ul>
+      <h1>Login</h1>
+      <div>
+        <label for="phoneNumber">Phone number</label>
+        <input type="text" name="phoneNumber" id="phoneNumber"/>
+      </div>
+      <div>
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password"/>
+      </div>
+      <div>
+        <button id="btnLogin">Login</button>
+      </div>
     </div>
     
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
@@ -54,7 +58,18 @@
     <!-- endbuild -->
     
     <!-- build:js scripts/main.js -->
+    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="scripts/login.js"></script>
     <script src="scripts/main.js"></script>
     <!-- endbuild -->
+    <script>
+      $(document).ready(() => {
+        $('#btnLogin').click(() => {
+          let phoneNumber = $('#phoneNumber').val();
+          let password = $('#password').val();
+          login(phoneNumber,password);
+        });
+      });
+    </script>
   </body>
 </html>

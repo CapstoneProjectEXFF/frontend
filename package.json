@@ -26,7 +26,8 @@
     "gulp-useref": "^3.0.0",
     "main-bower-files": "^2.5.0",
     "node-sass": "^4.11.0",
-    "wiredep": "^2.2.2"
+    "wiredep": "^2.2.2",
+    "ws": "3.3.2"
   },
   "eslintConfig": {
     "env": {
@@ -35,8 +36,11 @@
       "browser": true
     },
     "rules": {
+      "no-undef": 1,
+      "no-unused-vars": 1,
+      "strict": 1,
       "quotes": [
-        2,
+        1,
         "single"
       ]
     }
