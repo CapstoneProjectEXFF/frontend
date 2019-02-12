@@ -1,75 +1,131 @@
-<!doctype html>
+<!DOCTYPE html>
 <html class="no-js" lang="">
-  <head>
-    <meta charset="utf-8">
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>frontend</title>
 
-    <link rel="apple-touch-icon" href="apple-touch-icon.png">
-    <!-- Place favicon.ico in the root directory -->
+<head>
+  <meta charset="utf-8" />
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Exff | Login</title>
 
-    <!-- build:css styles/vendor.css -->
-    <!-- bower:css -->
-    <!-- endbower -->
-    <!-- endbuild -->
+  <link rel="logoicon" href="logoicon.png" />
+  <!-- Place favicon.ico in the root directory -->
 
-    <!-- build:css styles/main.css -->
-    <link rel="stylesheet" href="styles/main.css">
-    <!-- endbuild -->
-    
-    <!-- build:js scripts/vendor/modernizr.js -->
-    <script src="/bower_components/modernizr/modernizr.js"></script>
-    <!-- endbuild -->
-  </head>
-  <body>
-    <!--[if lt IE 10]>
-      <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+  <!-- build:css styles/vendor.css -->
+  <!-- bower:css -->
+  <!-- endbower -->
+  <!-- endbuild -->
+
+  <!-- build:css styles/main.css -->
+  <link rel="stylesheet" href="styles/main.css" />
+  <!-- endbuild -->
+
+  <!-- build:js scripts/vendor/modernizr.js -->
+  <script src="/bower_components/modernizr/modernizr.js"></script>
+  <!-- endbuild -->
+</head>
+
+<body>
+  <!--[if lt IE 10]>
+      <p class="browserupgrade">
+        You are using an <strong>outdated</strong> browser. Please
+        <a href="http://browsehappy.com/">upgrade your browser</a> to improve
+        your experience.
+      </p>
     <![endif]-->
-    
-    <div class="hero-unit">
-      <h1>Login</h1>
-      <div>
-        <label for="phoneNumber">Phone number</label>
-        <input type="text" name="phoneNumber" id="phoneNumber"/>
-      </div>
-      <div>
-        <label for="password">Password</label>
-        <input type="password" name="password" id="password"/>
-      </div>
-      <div>
-        <button id="btnLogin">Login</button>
+  <div class="background login__background"></div>
+  <div class="login__container">
+    <div class="login__form position--absolute center">
+      <div class="background login__form__background"></div>
+      <div class="position--relative">
+        <h1>Đăng nhập</h1>
+        <hr />
+        <div class="field__container hidden" id="errorNotif">
+          <span class="error">Số điện thoại hoặc mật khẩu không chính xác.</span>
+        </div>
+        <div class="field__container">
+          <label for="phoneNumber">Số điện thoại</label>
+          <input type="text" name="phoneNumber" id="phoneNumber" />
+          <p class="error hidden">Số điện thoại phải có từ 9 đến 10 chữ số.</p>
+        </div>
+        <div class="field__container">
+          <label for="password">Mật khẩu</label>
+          <input type="password" name="password" id="password" />
+          <p class="error hidden">Mật khẩu phải có từ 8 đến 50 kí tự.</p>
+        </div>
+        <div class="field__container clearfix">
+          <button class="primary float-right" id="btnLogin">Đăng nhập</button>
+        </div>
+        <hr />
+        <div class="field__container clearfix">
+          <a class="primary float-right" href="./register.html">Tạo tài khoản</a>
+          <span class="float-right">&nbsp;|&nbsp;</span>
+          <a class="primary float-right" href="/">Về trang chủ</a>
+        </div>
       </div>
     </div>
-    
-    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-    <script>
-      (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-      function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-      e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-      e.src='https://www.google-analytics.com/analytics.js';
-      r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-      ga('create','UA-XXXXX-X');ga('send','pageview');
-    </script>
+  </div>
 
-    <!-- build:js scripts/vendor.js -->
-    <!-- bower:js -->
-    <!-- endbower -->
-    <!-- endbuild -->
-    
-    <!-- build:js scripts/main.js -->
-    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="scripts/login.js"></script>
-    <script src="scripts/main.js"></script>
-    <!-- endbuild -->
-    <script>
-      $(document).ready(() => {
-        $('#btnLogin').click(() => {
-          let phoneNumber = $('#phoneNumber').val();
-          let password = $('#password').val();
-          login(phoneNumber,password);
+  <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+  <script>
+    (function (b, o, i, l, e, r) {
+      b.GoogleAnalyticsObject = l;
+      b[l] ||
+        (b[l] = function () {
+          (b[l].q = b[l].q || []).push(arguments);
         });
+      b[l].l = +new Date();
+      e = o.createElement(i);
+      r = o.getElementsByTagName(i)[0];
+      e.src = "https://www.google-analytics.com/analytics.js";
+      r.parentNode.insertBefore(e, r);
+    })(window, document, "script", "ga");
+    ga("create", "UA-XXXXX-X");
+    ga("send", "pageview");
+
+  </script>
+
+  <!-- build:js scripts/vendor/jquery.js -->
+  <!-- bower:js -->
+  <script src="/bower_components/jquery/dist/jquery.min.js"></script>
+  <!-- endbower -->
+  <!-- endbuild -->
+
+
+  <!-- build:js scripts/main.js -->
+  <script src="scripts/main.js"></script>
+  <script src="scripts/validation.js"></script>
+  <script src="scripts/login.js"></script>
+  <!-- endbuild -->
+  <script>
+    $(document).ready(() => {
+      $("#btnLogin").click(() => {
+        if (validate()) {
+          let phoneNumber = $("#phoneNumber").val();
+          let password = $("#password").val();
+          let api = login(phoneNumber, password, loginSuccess, loginFails);
+        }
       });
-    </script>
-  </body>
+      $("#phoneNumber").focusout(() => {
+        checkRegex('#phoneNumber', /^[a-z0-9]{6,12}$/);
+      });
+      $("#password").focusout(() => {
+        checkRegex('#password', /^.{8,50}$/);
+      });
+    });
+
+    function validate() {
+      return checkRegex('#phoneNumber', /^[a-z0-9]{6,12}$/) && checkRegex('#password', /^.{8,50}$/);
+    }
+
+    function loginSuccess(data) {
+      window.location.replace("/");
+    }
+
+    function loginFails(err) {
+      $("#errorNotif").show();
+    }
+
+  </script>
+</body>
+
 </html>
