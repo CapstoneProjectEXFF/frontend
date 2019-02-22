@@ -27,6 +27,21 @@ body {
 .hidden{
   display: none;
 }
+// scroll
+::-webkit-scrollbar{
+  width: 6px;
+  box-sizing: border-box;
+}
+::-webkit-scrollbar-track {
+  background: #fff0; 
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 3px;
+  background: #888;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
 // background
 .background {
   position: absolute;
@@ -85,6 +100,40 @@ input[type="password"] {
     border-color: $error-color;
   }
 }
+textarea {
+  min-height: 108px;
+  width: 100%;
+  padding: 12px 24px;
+  border: 1px solid #000;
+  border-radius: 18px;
+  font-size: 18px;
+  box-sizing: border-box;
+  resize: none;
+  overflow: auto;
+  &:focus {
+    outline: none;
+    border-color: $primary-color;
+  }
+  &.unvalidate{
+    border-color: $error-color;
+  }
+}
+select{
+  height: 36px;
+  width: 100%;
+  padding: 0px 20px;
+  border: 1px solid #000;
+  border-radius: 18px;
+  font-size: 18px;
+  box-sizing: border-box;
+  &:focus {
+    outline: none;
+    border-color: $primary-color;
+  }
+  &>option{
+    font-size: 16px;
+  }
+}
 button {
   cursor: pointer;
   background-color: $default-color;
@@ -139,12 +188,20 @@ a {
     text-align: center;
     min-width: 48px;
   }
+  .icon{
+    width: 48px;
+    height: 48px;
+  }
   .logo, .user_icon{
     font-size: 1.5em;
     color: $primary-color;
   }
   .logo{
     font-weight: bolder;
+  }
+  .menu_bar__icon {
+    font-size: 1em;
+    min-width: 48px;
   }
   .search_bar{
     margin-left: auto;
@@ -177,7 +234,31 @@ a {
 .login__form__background {
   background-color: #ffffffe0;
 }
-
+//form_item
+.item__form__container{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: stretch;
+  max-width: 1024px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 20px 20px;
+  background-color: #fff;  
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  &>div{
+    min-width: 300px;
+    width: 50%;
+    padding: 0px 10px;
+    box-sizing: border-box;
+  }
+}
+.item__form{
+  border-right: 1px solid #888;
+}
 // default
 .hero-unit {
   margin: 50px auto 0 auto;
