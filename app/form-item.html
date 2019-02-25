@@ -77,9 +77,8 @@
         <div class="field__container">
           <label for="category">Loại đồ dùng</label>
           <select name="category" id="category">
-            <option value="0" selected>Bàn ghế</option>
-            <option value="1">Tủ</option>
           </select>
+          <p class="error hidden">Loại đồ dùng không được để trống.</p>
         </div>
         <div class="field__container">
           <label for="name">Tên đồ dùng</label>
@@ -142,9 +141,11 @@
   <script src="scripts/main.js"></script>
   <script src="scripts/validation.js"></script>
   <script src="scripts/item.js"></script>
+  <script src="scripts/category.js"></script>
   <!-- endbuild -->
   <script>
     $(document).ready(() => {
+      getCategory(getCategorySuccess);
       $("#btnEditItem").click(() => {
         if (validate()) {
           let category = $("#category").val();
@@ -163,6 +164,9 @@
           );
         }
       });
+      $("#category").change(() => {
+        checkRequire("#category");
+      });
       $("#name").focusout(() => {
         checkRequire("#name");
       });
@@ -175,7 +179,7 @@
     });
 
     function validate() {
-      return checkRequire("#name") && checkRequire("#description") && checkRequire("#address");
+      return checkRequire("#category") && checkRequire("#name") && checkRequire("#description") && checkRequire("#address");
     }
 
     function addItemSuccess(data) {
@@ -184,6 +188,27 @@
 
     function addItemFails(err) {
       $("#errorNotif").show();
+    }
+    function getCategorySuccess(data) {
+      console.log(data);
+      let options = "";
+      let groupOption = "";
+      const selectTag = $("#category");
+      selectTag.html('<option hidden disabled selected>Chọn loại đồ dùng</option>');
+      let superCate = data.filter(category => category.suppercategoryId === null);
+      superCate.forEach(superCategory => {
+        groupOption = $("<optgroup/>", {
+          label: superCategory.name
+        })
+        let subCate = data.filter(category => category.suppercategoryId === superCategory.id);
+        subCate.forEach(subCategory => {
+          option = $("<option/>")
+          option.text(subCategory.name);
+          option.val(subCategory.id);
+          groupOption.append(option);
+        });
+        selectTag.append(groupOption);
+      });
     }
 
   </script>

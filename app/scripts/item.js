@@ -21,8 +21,6 @@ function addItem(
     method: 'POST',
     body: JSON.stringify(data),
     headers: {
-      'Access-Control-Allow-Origin': 'http://localhost:9000',
-      'Access-Control-Allow-Credentials': 'true',
       'Accept': 'application/json',
       'Content-Type': 'application/json',
       'Authorization': getAuthentoken()

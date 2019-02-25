@@ -1,7 +1,7 @@
 function checkRequire(tagId) {
   let tag = $(tagId);
   let val = tag.val();
-  if (val === undefined || val.length === 0) {
+  if (val === undefined || val === null || val.length === 0) {
     tag.addClass('unvalidate');
     tag.next().show();
     return false;
