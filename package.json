@@ -30,6 +30,9 @@
     "ws": "3.3.2"
   },
   "eslintConfig": {
+    "ecmaFeatures": {
+      "modules": true
+    },
     "env": {
       "es6": true,
       "node": true,
