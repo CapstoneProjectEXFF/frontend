@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Exff | Inventory</title>
+  <title>Exff | Exchange item between family and friend</title>
 
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <!-- Place favicon.ico in the root directory -->
@@ -65,18 +65,35 @@
     </div>
   </div>
 
-  <div class="inventory">
-    <div class="field__container clearfix">
-      <a class="reset" href="./form-item.html">
-        <button class="primary float-right" id="btnAddItem">Thêm đồ dùng</button>
-      </a>
+  <div class="hero-unit">
+      <h1>Error 404</h1>
+      <p>Not found</p>
+      <!-- <ul>
+        <li><a href="./login.html">Login</a></li>
+        <li><a href="./register.html">Register</a></li>
+        <li></li>
+        <li></li>
+      </ul> -->
     </div>
-  </div>
-  <br>
-  <div></div>
-  <div class="inventory card__container" id="inventory">
-  </div>
 
+  <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+  <script>
+    (function (b, o, i, l, e, r) {
+      b.GoogleAnalyticsObject = l;
+      b[l] || (b[l] =
+        function () {
+          (b[l].q = b[l].q || []).push(arguments)
+        });
+      b[l].l = +new Date;
+      e = o.createElement(i);
+      r = o.getElementsByTagName(i)[0];
+      e.src = 'https://www.google-analytics.com/analytics.js';
+      r.parentNode.insertBefore(e, r)
+    }(window, document, 'script', 'ga'));
+    ga('create', 'UA-XXXXX-X');
+    ga('send', 'pageview');
+
+  </script>
 
   <!-- build:js scripts/vendor/jquery.js -->
   <!-- bower:js -->
@@ -89,33 +106,10 @@
   <script src="scripts/main.js"></script>
   <script src="scripts/validation.js"></script>
   <script src="scripts/item.js"></script>
+  <script src="scripts/item.js"></script>
   <script src="scripts/login.js"></script>
   <script src="scripts/register.js"></script>
   <!-- endbuild -->
-  <script>
-    $(document).ready(() => {
-      getItemsByUserId(
-        getUserId(),
-        getItemsSuccess,
-        getItemsFalse
-      );
-    });
-    function getItemsSuccess(data) {
-      const inventoryTag = $("#inventory");
-      inventoryTag.html("");
-      if (data.length === 0) {
-        inventoryTag.html("<h1>Không có đồ dùng nào.</h1>");
-      }
-      data.forEach(item => {
-        const card = createItemCard(item, true);
-        inventoryTag.append(card);
-      });
-    };
-    function getItemsFalse(err) {
-      const inventoryTag = $("#inventory");
-      inventoryTag.html("<h1>Không có đồ dùng nào.</h1>");
-    };
-  </script>
 </body>
 
 </html>

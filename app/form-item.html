@@ -74,6 +74,7 @@
         <div class="field__container hidden" id="errorNotif">
           <span class="error">Đã xảy ra lỗi, vui lòng nhập lại sau.</span>
         </div>
+        <input type="text" name="id" id="id" disabled hidden />
         <div class="field__container">
           <label for="category">Loại đồ dùng</label>
           <select name="category" id="category">
@@ -112,28 +113,10 @@
     </div>
   </div>
 
-  <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-  <script>
-    (function (b, o, i, l, e, r) {
-      b.GoogleAnalyticsObject = l;
-      b[l] || (b[l] =
-        function () {
-          (b[l].q = b[l].q || []).push(arguments)
-        });
-      b[l].l = +new Date;
-      e = o.createElement(i);
-      r = o.getElementsByTagName(i)[0];
-      e.src = 'https://www.google-analytics.com/analytics.js';
-      r.parentNode.insertBefore(e, r)
-    }(window, document, 'script', 'ga'));
-    ga('create', 'UA-XXXXX-X');
-    ga('send', 'pageview');
-
-  </script>
-
   <!-- build:js scripts/vendor/jquery.js -->
   <!-- bower:js -->
-  <script src="/bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="/bower_components/jquery/dist/jquery.js"></script>
+  <script src="/bower_components/moment/moment.js"></script>
   <!-- endbower -->
   <!-- endbuild -->
 
@@ -144,24 +127,77 @@
   <script src="scripts/category.js"></script>
   <!-- endbuild -->
   <script>
+    let categoryLoaded = false;
     $(document).ready(() => {
+      let urlParams = new URLSearchParams(window.location.search);
       getCategory(getCategorySuccess);
+      if (urlParams.has("id")) {
+        let id = urlParams.get("id");
+        getItemTimeOut(id)
+      }
+      initForm();
+    });
+    function getItemTimeOut(id) {
+      if (categoryLoaded) {
+        getItem(
+          id,
+          getItemSuccess,
+          getItemFalse
+        );
+      } else {
+        setTimeout(getItemTimeOut, 50, id);
+      }
+    }
+    function getItemSuccess(data) {
+      const id = $("#id");
+      const category = $("#category");
+      const name = $("#name");
+      const description = $("#description");
+      const address = $("#address");
+      const privacy = $("#privacy");
+      id.val(data.id);
+      category.val(data.category.id);
+      name.val(data.name);
+      description.val(data.description);
+      address.val(data.address);
+      privacy.val(`${data.privacy == "1"}`);
+    };
+    function getItemFalse(err) {
+      // console.log(err);
+      window.location.href("./error404.html");
+    };
+
+    function initForm() {
       $("#btnEditItem").click(() => {
         if (validate()) {
+          let id = $("#id").val();
           let category = $("#category").val();
           let name = $("#name").val();
           let description = $("#description").val();
           let address = $("#address").val();
           let privacy = $("#privacy").val();
-          let api = addItem(
-            category,
-            name,
-            description,
-            address,
-            privacy,
-            addItemSuccess,
-            addItemFails
-          );
+          if (id !== null || id !== undefined) {
+            updateItem(
+              id,
+              category,
+              name,
+              description,
+              address,
+              privacy,
+              addItemSuccess,
+              addItemFails
+            );
+          } else {
+            addItem(
+              category,
+              name,
+              description,
+              address,
+              privacy,
+              addItemSuccess,
+              addItemFails
+            );
+          }
         }
       });
       $("#category").change(() => {
@@ -176,21 +212,22 @@
       $("#address").focusout(() => {
         checkRequire("#address");
       });
-    });
+    }
 
     function validate() {
       return checkRequire("#category") && checkRequire("#name") && checkRequire("#description") && checkRequire("#address");
     }
 
     function addItemSuccess(data) {
-      window.location.replace("./item.html");
+      // console.log(data);
+      window.location.replace(`./item.html?id=${data.id}`);
     }
 
     function addItemFails(err) {
       $("#errorNotif").show();
     }
     function getCategorySuccess(data) {
-      console.log(data);
+      // console.log(data);
       let options = "";
       let groupOption = "";
       const selectTag = $("#category");
@@ -209,6 +246,7 @@
         });
         selectTag.append(groupOption);
       });
+      categoryLoaded = true;
     }
 
   </script>

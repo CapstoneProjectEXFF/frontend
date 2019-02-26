@@ -33,6 +33,7 @@ function login(
       const json = responseJson;
       console.log(json);
       localStorage.setItem("EXFF_TOKEN", json.Authorization);
+      localStorage.setItem("ID", json.User.id);
       successCallback(responseJson);
     })
     .catch(err => {

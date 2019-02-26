@@ -96,7 +96,8 @@
 
   <!-- build:js scripts/vendor/jquery.js -->
   <!-- bower:js -->
-  <script src="/bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="/bower_components/jquery/dist/jquery.js"></script>
+  <script src="/bower_components/moment/moment.js"></script>
   <!-- endbower -->
   <!-- endbuild -->
 
@@ -124,7 +125,7 @@
         }
       });
       $("#phoneNumber").focusout(() => {
-        checkRegex('#phoneNumber', /^[a-z0-9]{6,12}$/);
+        checkRegex('#phoneNumber', /^[0-9]{9,10}$/);
       });
       $("#password").focusout(() => {
         checkRegex('#password', /^.{8,50}$/);
