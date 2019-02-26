@@ -25,6 +25,9 @@
   <!-- build:js scripts/vendor/modernizr.js -->
   <script src="/bower_components/modernizr/modernizr.js"></script>
   <!-- endbuild -->
+  <!-- build:js scripts/vendor/moment.js -->
+  <script src="/bower_components/moment/min/moment.min.js"></script>
+  <!-- endbuild -->
 </head>
 
 <body>
@@ -65,18 +68,39 @@
     </div>
   </div>
 
+  <br>
+  <br>
+
   <div class="item__form__container">
-      <div class="item__form">
-        <div class="position--relative">
-          <h1>Tên đồ dùng</h1>
-          <hr />
-          <p>Mô tả</p>
+    <div class="item__form">
+      <div class="item__info position--relative">
+        <p id="user"></p>
+        <p id="date"></p>
+        <hr />
+
+        <h1 id="itemName"></h1>
+        <br />
+        <p>
+          <i class="fas fa-box"></i>
+          <span id="itemCategory"></span>
+        </p>
+        <p>
+          <i class="fas fa-map-marker"></i>
+          <span id="itemAddress"></span>
+        </p>
+        <br>
+        <p><b>Thông tin:</b></p>
+        <p id="itemDescription"></p>
+        <hr />
+        <div class="clearfix">
+          <button class="primary float-right">Yêu cầu trao đổi</button>
         </div>
       </div>
-      <div class="item__form__image">
-        image
-      </div>
     </div>
+    <div class="item__form__image">
+      image
+    </div>
+  </div>
   <!-- <div class="hero-unit">
       <h1>Exff</h1>
       <p>Exchange between friend and family</p>
@@ -88,34 +112,54 @@
       </ul>
     </div> -->
 
-  <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-  <script>
-    (function (b, o, i, l, e, r) {
-      b.GoogleAnalyticsObject = l;
-      b[l] || (b[l] =
-        function () {
-          (b[l].q = b[l].q || []).push(arguments)
-        });
-      b[l].l = +new Date;
-      e = o.createElement(i);
-      r = o.getElementsByTagName(i)[0];
-      e.src = 'https://www.google-analytics.com/analytics.js';
-      r.parentNode.insertBefore(e, r)
-    }(window, document, 'script', 'ga'));
-    ga('create', 'UA-XXXXX-X');
-    ga('send', 'pageview');
-
-  </script>
-
   <!-- build:js scripts/vendor/jquery.js -->
   <!-- bower:js -->
-  <script src="/bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="/bower_components/jquery/dist/jquery.js"></script>
+  <script src="/bower_components/moment/moment.js"></script>
   <!-- endbower -->
   <!-- endbuild -->
 
   <!-- build:js scripts/main.js -->
   <script src="scripts/main.js"></script>
+  <script src="scripts/validation.js"></script>
+  <script src="scripts/item.js"></script>
+  <script src="scripts/login.js"></script>
+  <script src="scripts/register.js"></script>
   <!-- endbuild -->
+  <script>
+    $(document).ready(() => {
+      let urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has("id")) {
+        let id = urlParams.get("id");
+        getItem(
+          id,
+          getItemSuccess,
+          getItemFalse
+        );
+      } else {
+        window.location.replace("./error404.html");
+      }
+    });
+    function getItemSuccess(data) {
+      const user = $("#user");
+      const date = $("#date");
+      const category = $("#itemCategory");
+      const name = $("#itemName");
+      const description = $("#itemDescription");
+      const address = $("#itemAddress");
+      let time = moment(data.createTime).format("DD/MM/YYYY");
+      user.text(data.user.fullName);
+      date.text(time);
+      category.text(data.category.name);
+      name.text(data.name);
+      description.text(data.description);
+      address.text(data.address);
+    };
+    function getItemFalse(err) {
+      // console.log(err);
+      window.location.href("./error404.html");
+    };
+  </script>
 </body>
 
 </html>

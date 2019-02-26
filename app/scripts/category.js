@@ -1,18 +1,15 @@
-const REGISTER_URL = '/register';
+const CATEGORY_URL = '/category';
 
-//Register
-function register(
-  data,
+function getCategory(
   successCallback = DEFAULT_FUNCTION,
   failCallback = DEFAULT_FUNCTION
 ) {
-  let url = API_URL + REGISTER_URL;
+  let url = API_URL + CATEGORY_URL;
   let options = {
-    method: 'POST',
-    body: JSON.stringify(data),
+    method: 'GET',
     headers: {
       'Accept': 'application/json',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     }
   };
   fetch(url, options)

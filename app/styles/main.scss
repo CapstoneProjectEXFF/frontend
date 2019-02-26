@@ -27,6 +27,11 @@ body {
 .hidden{
   display: none;
 }
+.ellipsis{
+  white-space: nowrap; 
+  overflow: hidden;
+  text-overflow: ellipsis; 
+}
 // scroll
 ::-webkit-scrollbar{
   width: 6px;
@@ -119,6 +124,7 @@ textarea {
   }
 }
 select{
+  color: #000;
   height: 36px;
   width: 100%;
   padding: 0px 20px;
@@ -130,8 +136,9 @@ select{
     outline: none;
     border-color: $primary-color;
   }
-  &>option{
+  &>option,&>optgroup{
     font-size: 16px;
+    color: #000;
   }
 }
 button {
@@ -208,6 +215,49 @@ a {
     margin-right: auto;
   }
 }
+//card
+.card__container{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+.card {
+  width: 320px;
+  background-color: #fff;
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+.card__image{
+  width: 100%;
+  height: 300px;
+  background-image: url("../images/no-image-icon-13.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+.card__info{
+  width: 100%;
+  color: #333;
+  *{
+    width: 100%;
+    margin: 5px 0px;
+  }
+}
+.card__action{
+  color: #888;
+  .edit{
+    color: $primary-color;
+  }
+  .delete{
+    cursor: pointer;
+    color: $error-color;
+  }
+}
+
 // login
 .login__container {
   position: relative;
@@ -233,6 +283,27 @@ a {
 }
 .login__form__background {
   background-color: #ffffffe0;
+}
+//item
+.item__info{
+  h1,p{
+    margin: 0;
+  }
+  p{
+    color: #333;
+  }
+  #user, #date{
+    font-size: 0.9em;
+  }
+  #user{
+    font-weight: bold;
+  }
+}
+//inventory
+.inventory{
+  max-width: 1024px;
+  margin-left: auto;
+  margin-right: auto;
 }
 //form_item
 .item__form__container{
