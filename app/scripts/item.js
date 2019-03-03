@@ -171,6 +171,34 @@ function getItemsByUserId(
       failCallback(err);
     });
 }
+function createTradeOfferIventoryItem(item) {
+  return (
+    `<div class="list__item" id="item${item.id}" onclick="selectItem(${item.id},${item.user.id})">
+      <div class="list__item__image position--relative">
+        <div class="background" style="background-image: url()"></div>
+      </div>
+      <div class="list__item__info">
+          <h5 class="ellipsis">${item.category.name}</h5>
+          <h2 class="ellipsis">${item.name}</h2>
+          <p class="ellipsis"><i>${moment(item.createTime).format("DD/MM/YYYY")}</i></p>
+        </div>
+    </div>`
+  );
+}
+function createTradeOfferContentItem(item) {
+  return (
+    `<div class="list__item" id="selectItem${item.id}" onclick="deselectItem(${item.id})">
+      <div class="list__item__image position--relative">
+        <div class="background" style="background-image: url()"></div>
+      </div>
+      <div class="list__item__info">
+          <h5 class="ellipsis">${item.category.name}</h5>
+          <h2 class="ellipsis">${item.name}</h2>
+          <p class="ellipsis"><i>${moment(item.createTime).format("DD/MM/YYYY")}</i></p>
+        </div>
+    </div>`
+  );
+}
 function createItemCard(item, isEdit = false) {
   let action = isEdit?(
     `<hr>

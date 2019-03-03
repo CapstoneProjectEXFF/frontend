@@ -93,7 +93,9 @@
         <p id="itemDescription"></p>
         <hr />
         <div class="clearfix">
-          <button class="primary float-right">Yêu cầu trao đổi</button>
+          <a class="reset" href="#" id="tradeOfferLink">
+            <button class="primary float-right">Yêu cầu trao đổi</button>
+          </a>
         </div>
       </div>
     </div>
@@ -147,6 +149,7 @@
       const name = $("#itemName");
       const description = $("#itemDescription");
       const address = $("#itemAddress");
+      const tradeOfferLink = $("#tradeOfferLink");
       let time = moment(data.createTime).format("DD/MM/YYYY");
       user.text(data.user.fullName);
       date.text(time);
@@ -154,6 +157,7 @@
       name.text(data.name);
       description.text(data.description);
       address.text(data.address);
+      tradeOfferLink.attr("href", `./tradeoffer.html?userId=${data.user.id}`)
     };
     function getItemFalse(err) {
       // console.log(err);
