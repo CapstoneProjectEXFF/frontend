@@ -74,7 +74,7 @@
         <div class="field__container hidden" id="errorNotif">
           <span class="error">Đã xảy ra lỗi, vui lòng nhập lại sau.</span>
         </div>
-        <input type="text" name="id" id="id" disabled hidden />
+        <input type="text" name="id" id="id" value="" disabled hidden />
         <div class="field__container">
           <label for="category">Loại đồ dùng</label>
           <select name="category" id="category">
@@ -176,9 +176,8 @@
           let description = $("#description").val();
           let address = $("#address").val();
           let privacy = $("#privacy").val();
-          if (id !== null || id !== undefined) {
-            updateItem(
-              id,
+          if (id == null || id == undefined || id == "") {
+            addItem(
               category,
               name,
               description,
@@ -188,7 +187,8 @@
               addItemFails
             );
           } else {
-            addItem(
+            updateItem(
+              id,
               category,
               name,
               description,

@@ -258,6 +258,49 @@ a {
   }
 }
 
+//list
+.list{
+  
+}
+.list__item{
+  cursor: pointer;
+  display: flex;
+  width: 100%;
+  height: 84px;
+  border: 1px solid #ccc;
+  margin: 10px 0px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+.list__item__image{
+  width: 84px;
+  height: 100%;
+  background-color: #eee;
+  background-image: url("../images/no-image-icon-13.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+.list__item__info{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 5px 10px;
+  * {
+    margin: 0px;
+    width: 100%;
+  }
+  h5{
+    color: $primary-color;
+  }
+  h2 {
+    margin-bottom: 5px;
+  }
+  p {
+    font-weight: lighter;
+  }
+}
+
 // login
 .login__container {
   position: relative;
@@ -306,7 +349,91 @@ a {
   margin-right: auto;
 }
 //trade_offer
-
+.trade_offer__container{
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  max-width: 1024px;
+  min-height: 60vh;
+  margin-left: auto;
+  margin-right: auto;
+}
+.trade_offer__inventory__container,
+.trade_offer__content__container{
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 50%;
+  min-width: 340px;
+  min-height: 400px;
+  padding: 5px;
+  box-sizing: border-box;
+}
+.trade_offer__inventory__action{
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: nowrap;
+  div {
+    height: 36px;
+    line-height: 36px;
+    text-align: center;
+    width: 50%;
+    box-sizing: border-box;
+    transition: border 0.2s;
+  }
+  div.selected{
+    color: $primary-color;
+    border-bottom: 3px solid $primary-color;
+  }
+}
+.trade_offer__inventory{
+  position: relative;
+  flex-grow: 1;
+  &>div{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    padding: 5px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-top-color: $primary-color;
+    border-radius: 0px 0px 5px 5px;
+    overflow: auto;
+    box-sizing: border-box;
+  }
+}
+.trade_offer__content{
+  width: 100%;
+  height: 300px;
+  box-sizing: border-box;
+  &>div{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+    box-sizing: border-box;
+    h4 {
+      margin: 5px 0px;
+    }
+    .trade_offer__content__list{
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
+      overflow: auto;
+    }
+  }
+  &.bottomPadding{
+    padding-bottom: 5px;
+  }
+  &.topPadding{
+    padding-top: 5px;
+  }
+}
 //form_item
 .item__form__container{
   display: flex;

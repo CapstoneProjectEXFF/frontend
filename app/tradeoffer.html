@@ -1,0 +1,219 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Exff | Trade offer</title>
+
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <!-- Place favicon.ico in the root directory -->
+
+  <!-- build:css styles/vendor.css -->
+  <!-- bower:css -->
+  <!-- endbower -->
+  <!-- endbuild -->
+
+  <!-- build:css styles/main.css -->
+  <link rel="stylesheet" href="styles/main.css">
+  <!-- endbuild -->
+  <!-- build:css styles/font-awesome.css -->
+  <link rel="stylesheet" href="/bower_components/Font-Awesome/css/all.min.css">
+  <!-- endbuild -->
+
+  <!-- build:js scripts/vendor/modernizr.js -->
+  <script src="/bower_components/modernizr/modernizr.js"></script>
+  <!-- endbuild -->
+  <!-- build:js scripts/vendor/moment.js -->
+  <script src="/bower_components/moment/min/moment.min.js"></script>
+  <!-- endbuild -->
+</head>
+
+<body>
+  <!--[if lt IE 10]>
+      <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+  <div class="menu_bar__container">
+    <div class="menu_bar">
+      <div class="icon">
+        <a class="reset" href="/">
+          <img class="icon" src="./images/Logo-64px.png" alt="">
+        </a>
+      </div>
+      <div class="logo">
+        <a class="reset" href="/">
+          <span>Exff</span>
+        </a>
+      </div>
+      <div class="search_bar">
+        <input type="text" name="searchItem" id="searchItem" placeholder="Search..." />
+      </div>
+      <div class="menu_bar__icon">
+        <i class="fas fa-bell"></i>
+      </div>
+      <div class="menu_bar__icon">
+        <i class="fas fa-user-plus"></i>
+      </div>
+      <div class="menu_bar__icon">
+        <a class="reset" href="./inventory.html">
+          <i class="fas fa-boxes"></i>
+        </a>
+      </div>
+      <div class="user_icon">
+        <a class="reset" href="./login.html">
+          <i class="fas fa-user-circle"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+  <br>
+  <div class="inventory">
+    <div class="field__container clearfix">
+      <a class="reset" href="#">
+        <button class="primary float-right" id="btnRequestTradeOffer">Gửi yêu cầu</button>
+      </a>
+    </div>
+  </div>
+  <br>
+  <div class="trade_offer__container">
+    <div class="trade_offer__inventory__container">
+      <div class="trade_offer__inventory__action">
+        <div onclick="show('#myInventory')" class="selected" id="myInventoryTab">Kho của tôi</div>
+        <div onclick="show('#friendInventory')" id="friendInventoryTab">Kho của bạn bè</div>
+      </div>
+      <div class="trade_offer__inventory">
+        <div class="list" id="myInventory">
+        </div>
+        <div class="list" id="friendInventory" style="display: none;">
+        </div>
+      </div>
+    </div>
+    <div class="trade_offer__content__container">
+      <div class="trade_offer__content bottomPadding">
+        <div>
+          <h4>Trao</h4>
+          <div class="trade_offer__content__list" id="myTradeOffer"></div>
+        </div>
+      </div>
+      <div class="trade_offer__content topPadding">
+        <div>
+          <h4>Nhận</h4>
+          <div class="trade_offer__content__list" id="friendTradeOffer"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- build:js scripts/vendor/jquery.js -->
+  <!-- bower:js -->
+  <script src="/bower_components/jquery/dist/jquery.js"></script>
+  <script src="/bower_components/moment/moment.js"></script>
+  <!-- endbower -->
+  <!-- endbuild -->
+
+  <!-- build:js scripts/main.js -->
+  <script src="scripts/main.js"></script>
+  <script src="scripts/validation.js"></script>
+  <script src="scripts/item.js"></script>
+  <script src="scripts/item.js"></script>
+  <script src="scripts/login.js"></script>
+  <script src="scripts/register.js"></script>
+  <!-- endbuild -->
+  <script>
+    const USER_ID = getUserId();
+    let receiverId;
+    let myItems = [];
+    let friendItems = [];
+    let sendedItems = []; // list item want to send
+    let receivedItems = []; // list item want to receive 
+    $(document).ready(() => {
+      let urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has("userId")) {
+        receiverId = urlParams.get("userId");
+        getItemsByUserId(
+          id,
+          getFriendInventory,
+          getFriendInventoryFalse
+        );
+        getItemsByUserId(
+          USER_ID,
+          getMyInventory,
+          getMyInventoryFalse
+        );
+      } else {
+        window.location.replace("./error404.html");
+      }
+      if (urlParams.has("id")) {
+        let id = urlParams.get("id");
+      }
+      $("#btnRequestTradeOffer").click(() => {
+        addTransaction(receiverId);
+      });
+    });
+    function getMyInventory(data) {
+      myItems = data;
+      getItemsSuccess(data, "#myInventory");
+    }
+    function getMyInventoryFalse(err) {
+      getItemsFalse(err, "#myInventory");
+    }
+    function getFriendInventory(data) {
+      friendItems = data;
+      getItemsSuccess(data, "#friendInventory");
+    }
+    function getFriendInventoryFalse(err) {
+      getItemsFalse(err, "#friendInventory");
+    }
+    function getItemsSuccess(data, tagId) {
+      const inventoryTag = $(tagId);
+      inventoryTag.html("");
+      if (data.length === 0) {
+        inventoryTag.html("<h1>Không có đồ dùng nào.</h1>");
+      }
+      data.forEach(item => {
+        const listItem = createTradeOfferIventoryItem(item);
+        inventoryTag.append(listItem);
+      });
+    };
+    function getItemsFalse(err, tagId) {
+      const inventoryTag = $(tagId);
+      inventoryTag.html("<h1>Không có đồ dùng nào.</h1>");
+    };
+    function show(tagId) {
+      const hideTagId = tagId === "#myInventory" ? "#friendInventory" : "#myInventory";
+
+      $(tagId).show();
+      $(tagId + "Tab").addClass("selected");
+      $(hideTagId).hide();
+      $(hideTagId + "Tab").removeClass("selected");
+    }
+    function selectItem(itemId, userId) {
+      let tradeOfferContentTag;
+      const itemTag = $("#item" + itemId);
+      let item;
+      if (userId == USER_ID){
+        tradeOfferContentTag = $("#myTradeOffer");
+        sendedItems.push(itemId);
+        item = myItems.find((value) => value.id == itemId);
+      } else {
+        tradeOfferContentTag = $("#friendTradeOffer");
+        receivedItems.push(itemId);
+        item = friendItems.find((value) => value.id == itemId);
+      }
+      
+      itemTag.hide();
+      tradeOfferContentTag.append(createTradeOfferContentItem(item));
+    }
+    function deselectItem(itemId) {
+      const itemTag = $("#item" + itemId);
+      const selectItemTag = $("#selectItem" + itemId);
+      itemTag.show();
+      selectItemTag.remove();
+    }
+  </script>
+</body>
+
+</html>
