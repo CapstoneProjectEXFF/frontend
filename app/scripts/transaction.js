@@ -2,16 +2,21 @@ const TRANSACTION_URL = '/transaction';
 
 function addTransaction(
   receiverId,
-  donationId = null,
+  senderItems = [],
+  receiverItems = [],
+  donationPostId = -1,
   status = 0,
   successCallback = DEFAULT_FUNCTION,
   failCallback = DEFAULT_FUNCTION
 ) {
-  let url = API_URL + CATEGORY_URL;
+  let url = API_URL + TRANSACTION_URL;
   let data = {
-    'receiverId': receiverId,
-    'donationId': donationId,
-    'status': status
+    'transaction': {
+      'receiverId': receiverId,
+      'donationPostId': donationPostId,
+      'status': status,
+    },
+    'details': createDetails(senderItems, receiverItems)
   };
   let options = {
     method: 'POST',
@@ -36,4 +41,19 @@ function addTransaction(
     .catch(err => {
       failCallback(err);
     });
+}
+
+function createDetails(senderItems, receiverItems) {
+  let details = [];
+  senderItems.forEach(id => {
+    details.push({
+      'itemId': id
+    })
+  });
+  receiverItems.forEach(id => {
+    details.push({
+      'itemId': id
+    })
+  });
+  return details;
 }

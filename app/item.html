@@ -100,7 +100,7 @@
       </div>
     </div>
     <div class="item__form__image">
-      image
+      <img id="image">
     </div>
   </div>
   <!-- <div class="hero-unit">
@@ -149,6 +149,7 @@
       const name = $("#itemName");
       const description = $("#itemDescription");
       const address = $("#itemAddress");
+      const image = $("#image");
       const tradeOfferLink = $("#tradeOfferLink");
       let time = moment(data.createTime).format("DD/MM/YYYY");
       user.text(data.user.fullName);
@@ -158,6 +159,9 @@
       description.text(data.description);
       address.text(data.address);
       tradeOfferLink.attr("href", `./tradeoffer.html?userId=${data.user.id}`)
+      if (data.images != null && data.images.length > 0) {
+        image.attr('src',data.images[0].url);
+      }
     };
     function getItemFalse(err) {
       // console.log(err);

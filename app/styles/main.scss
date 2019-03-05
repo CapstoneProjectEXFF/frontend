@@ -207,12 +207,37 @@ a {
     font-weight: bolder;
   }
   .menu_bar__icon {
+    position: relative;
     font-size: 1em;
     min-width: 48px;
   }
   .search_bar{
     margin-left: auto;
     margin-right: auto;
+  }
+}
+.notification__container {
+  $distance: 32px;
+  position: absolute;
+  width: 300px;
+  height: 500px;
+  top: $distance;
+  right: (- $distance);
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  overflow: auto;
+  z-index: 10;
+  &::before{
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    border: $distance / 2 solid #fff0;
+    border-top-width: 0px;
+    border-bottom-color: #ccc;
+    top: -$distance / 2;
+    right: $distance + 8px;
   }
 }
 //card
@@ -234,7 +259,6 @@ a {
 .card__image{
   width: 100%;
   height: 300px;
-  background-image: url("../images/no-image-icon-13.png");
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
@@ -276,7 +300,6 @@ a {
   width: 84px;
   height: 100%;
   background-color: #eee;
-  background-image: url("../images/no-image-icon-13.png");
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
@@ -458,6 +481,14 @@ a {
 }
 .item__form{
   border-right: 1px solid #888;
+}
+.item__form__image{
+  overflow: hidden;
+  img {
+    width: 100%;
+    max-width: 100%;
+    max-height: 100%;
+  }
 }
 // default
 .hero-unit {

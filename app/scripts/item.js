@@ -6,6 +6,7 @@ function addItem(
   description,
   address,
   privacy,
+  urls = [],
   successCallback = DEFAULT_FUNCTION,
   failCallback = DEFAULT_FUNCTION
 ) {
@@ -15,7 +16,8 @@ function addItem(
     'name': name,
     'description': description,
     'address': address,
-    'privacy': privacy
+    'privacy': privacy,
+    'urls': urls
   };
   let options = {
     method: 'POST',
@@ -50,6 +52,7 @@ function updateItem(
   description,
   address,
   privacy,
+  urls = [],
   successCallback = DEFAULT_FUNCTION,
   failCallback = DEFAULT_FUNCTION
 ) {
@@ -60,7 +63,8 @@ function updateItem(
     'name': name,
     'description': description,
     'address': address,
-    'privacy': privacy
+    'privacy': privacy,
+    'urls': urls
   };
   let options = {
     method: 'PUT',
@@ -172,10 +176,13 @@ function getItemsByUserId(
     });
 }
 function createTradeOfferIventoryItem(item) {
+  const image = (item.images[0] != null && item.images[0] != undefined)
+    ? (item.images[0].url)
+    : ('./images/no-image-icon-13.png');
   return (
     `<div class="list__item" id="item${item.id}" onclick="selectItem(${item.id},${item.user.id})">
       <div class="list__item__image position--relative">
-        <div class="background" style="background-image: url()"></div>
+        <div class="background" style="background-image: url(${image})"></div>
       </div>
       <div class="list__item__info">
           <h5 class="ellipsis">${item.category.name}</h5>
@@ -186,10 +193,13 @@ function createTradeOfferIventoryItem(item) {
   );
 }
 function createTradeOfferContentItem(item) {
+  const image = (item.images[0] != null && item.images[0] != undefined)
+    ? (item.images[0].url)
+    : ('./images/no-image-icon-13.png');
   return (
     `<div class="list__item" id="selectItem${item.id}" onclick="deselectItem(${item.id})">
       <div class="list__item__image position--relative">
-        <div class="background" style="background-image: url()"></div>
+        <div class="background" style="background-image: url(${image})"></div>
       </div>
       <div class="list__item__info">
           <h5 class="ellipsis">${item.category.name}</h5>
@@ -200,19 +210,22 @@ function createTradeOfferContentItem(item) {
   );
 }
 function createItemCard(item, isEdit = false) {
-  let action = isEdit?(
+  const image = (item.images[0] != null && item.images[0] != undefined)
+    ? (item.images[0].url)
+    : ('./images/no-image-icon-13.png');
+  const action = isEdit ? (
     `<hr>
     <div class="card__action clearfix">
       <a class="primary float-right" href="./form-item.html?id=${item.id}">
         <i class="fas fa-edit"></i> Edit
       </a>
     </div>`
-  ):'';
+  ) : '';
   return (
     `<div class="card">
       <a class="reset" href="./item.html?id=${item.id}">
         <div class="card__image position--relative">
-          <div class="background" style="background-image: url()"></div>
+          <div class="background" style="background-image: url(${image})"></div>
         </div>
         <div class="card__info">
           <h3 class="ellipsis">${item.name}</h3>

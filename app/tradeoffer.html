@@ -121,6 +121,7 @@
   <script src="scripts/item.js"></script>
   <script src="scripts/login.js"></script>
   <script src="scripts/register.js"></script>
+  <script src="scripts/transaction.js"></script>
   <!-- endbuild -->
   <script>
     const USER_ID = getUserId();
@@ -134,7 +135,7 @@
       if (urlParams.has("userId")) {
         receiverId = urlParams.get("userId");
         getItemsByUserId(
-          id,
+          receiverId,
           getFriendInventory,
           getFriendInventoryFalse
         );
@@ -150,9 +151,19 @@
         let id = urlParams.get("id");
       }
       $("#btnRequestTradeOffer").click(() => {
-        addTransaction(receiverId);
+        addTransaction(
+          receiverId,
+          sendedItems, 
+          receivedItems,
+          -1,
+          0,
+          sendRequestSuccess
+          );
       });
     });
+    function sendRequestSuccess(data) {
+      alert("Đã gửi yêu cầu");
+    }
     function getMyInventory(data) {
       myItems = data;
       getItemsSuccess(data, "#myInventory");
