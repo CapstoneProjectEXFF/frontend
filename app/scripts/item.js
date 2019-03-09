@@ -197,7 +197,7 @@ function createTradeOfferContentItem(item) {
     ? (item.images[0].url)
     : ('./images/no-image-icon-13.png');
   return (
-    `<div class="list__item" id="selectItem${item.id}" onclick="deselectItem(${item.id})">
+    `<div class="list__item" id="selectItem${item.id}" onclick="deselectItem(${item.id},${item.user.id})">
       <div class="list__item__image position--relative">
         <div class="background" style="background-image: url(${image})"></div>
       </div>

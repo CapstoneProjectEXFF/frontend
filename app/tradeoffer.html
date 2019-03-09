@@ -34,50 +34,50 @@
   <!--[if lt IE 10]>
       <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
-  <div class="menu_bar__container">
-    <div class="menu_bar">
-      <div class="icon">
-        <a class="reset" href="/">
-          <img class="icon" src="./images/Logo-64px.png" alt="">
-        </a>
-      </div>
-      <div class="logo">
-        <a class="reset" href="/">
-          <span>Exff</span>
-        </a>
-      </div>
-      <div class="search_bar">
-        <input type="text" name="searchItem" id="searchItem" placeholder="Search..." />
-      </div>
-      <div class="menu_bar__icon">
-        <i class="fas fa-bell"></i>
-      </div>
-      <div class="menu_bar__icon">
-        <i class="fas fa-user-plus"></i>
-      </div>
-      <div class="menu_bar__icon">
-        <a class="reset" href="./inventory.html">
-          <i class="fas fa-boxes"></i>
-        </a>
-      </div>
-      <div class="user_icon">
-        <a class="reset" href="./login.html">
-          <i class="fas fa-user-circle"></i>
-        </a>
+    <div class="menu_bar__container">
+      <div class="menu_bar">
+        <div class="icon">
+          <a class="reset" href="/">
+            <img class="icon" src="./images/Logo-64px.png" alt="">
+          </a>
+        </div>
+        <div class="logo">
+          <a class="reset" href="/">
+            <span>Exff</span>
+          </a>
+        </div>
+        <div class="search_bar">
+          <input type="text" name="searchItem" id="searchItem" placeholder="Search..." />
+        </div>
+        <div class="menu_bar__icon" id="btnBell">
+          <i class="fas fa-bell"></i>
+        </div>
+        <div class="menu_bar__icon">
+          <i class="fas fa-user-plus"></i>
+        </div>
+        <div class="menu_bar__icon">
+          <a class="reset" href="./inventory.html">
+            <i class="fas fa-boxes"></i>
+          </a>
+        </div>
+        <div class="user_icon" id="userInfoIcon">
+          <a class="reset" href="./login.html">
+            <i class="fas fa-user-circle"></i>
+          </a>
+        </div>
       </div>
     </div>
-  </div>
   <br>
   <div class="inventory">
     <div class="field__container clearfix">
-      <a class="reset" href="#">
-        <button class="primary float-right" id="btnRequestTradeOffer">Gửi yêu cầu</button>
-      </a>
+      <button class="primary float-right" id="btnRequestTradeOffer" style="display: none;">Gửi yêu cầu</button>
+      <button class="primary float-right" id="btnConfirmTradeOffer" style="display: none;">Chấp nhận</button>
+      <button class="primary float-right" id="btnEdit" style="display: none;">Thay đổi</button>
     </div>
   </div>
   <br>
   <div class="trade_offer__container">
-    <div class="trade_offer__inventory__container">
+    <div class="trade_offer__inventory__container" id="inventoryContainer">
       <div class="trade_offer__inventory__action">
         <div onclick="show('#myInventory')" class="selected" id="myInventoryTab">Kho của tôi</div>
         <div onclick="show('#friendInventory')" id="friendInventoryTab">Kho của bạn bè</div>
@@ -125,6 +125,8 @@
   <!-- endbuild -->
   <script>
     const USER_ID = getUserId();
+    let transactionId;
+    let senderId;
     let receiverId;
     let myItems = [];
     let friendItems = [];
@@ -132,37 +134,80 @@
     let receivedItems = []; // list item want to receive 
     $(document).ready(() => {
       let urlParams = new URLSearchParams(window.location.search);
-      if (urlParams.has("userId")) {
-        receiverId = urlParams.get("userId");
-        getItemsByUserId(
-          receiverId,
-          getFriendInventory,
-          getFriendInventoryFalse
-        );
-        getItemsByUserId(
-          USER_ID,
-          getMyInventory,
-          getMyInventoryFalse
-        );
-      } else {
-        window.location.replace("./error404.html");
-      }
       if (urlParams.has("id")) {
-        let id = urlParams.get("id");
+        initUpdateView(urlParams);
+      } else {
+        initCreateView(urlParams);
       }
-      $("#btnRequestTradeOffer").click(() => {
+    });
+    function initUpdateView(urlParams) {
+      transactionId = urlParams.get("id");
+      getTransaction(
+        transactionId,
+        getTransactionSuccess,
+        getTransactionFail
+      );
+    }
+    function getTransactionSuccess(data) {
+      senderId = data.transaction.senderId;
+      receiverId = data.transaction.receiverId;
+      renderTradeOfferContent(data.details);
+      $("#inventoryContainer").hide();
+      $("#btnConfirmTradeOffer").show();
+      $("#btnConfirmTradeOffer").click(() => {
         addTransaction(
           receiverId,
-          sendedItems, 
+          sendedItems,
           receivedItems,
           -1,
           0,
           sendRequestSuccess
-          );
+        );
       });
-    });
+    }
+    function getTransactionFail(err) {
+      window.location.replace("./error404.html");
+    }
+    function initCreateView(urlParams) {
+      if (urlParams.has("userId")) {
+        receiverId = urlParams.get("userId");
+        getInventory(USER_ID, receiverId)
+      } else {
+        window.location.replace("./error404.html");
+      }
+      if (urlParams.has("itemId")) {
+        let id = urlParams.get("itemId");
+      }
+      $("#btnRequestTradeOffer").show();
+      $("#btnRequestTradeOffer").click(() => {
+        addTransaction(
+          receiverId,
+          sendedItems,
+          receivedItems,
+          -1,
+          0,
+          sendRequestSuccess
+        );
+      });
+    }
+    function getInventory(myId, fridenId) {
+      getItemsByUserId(
+        fridenId,
+        getFriendInventory,
+        getFriendInventoryFalse
+      );
+      getItemsByUserId(
+        myId,
+        getMyInventory,
+        getMyInventoryFalse
+      );
+    }
+
+
+    
     function sendRequestSuccess(data) {
       alert("Đã gửi yêu cầu");
+      window.location.replace("/");
     }
     function getMyInventory(data) {
       myItems = data;
@@ -205,24 +250,43 @@
       let tradeOfferContentTag;
       const itemTag = $("#item" + itemId);
       let item;
-      if (userId == USER_ID){
+      if (userId == USER_ID) {
         tradeOfferContentTag = $("#myTradeOffer");
-        sendedItems.push(itemId);
         item = myItems.find((value) => value.id == itemId);
+        sendedItems.push(item);
       } else {
         tradeOfferContentTag = $("#friendTradeOffer");
-        receivedItems.push(itemId);
         item = friendItems.find((value) => value.id == itemId);
+        receivedItems.push(item);
       }
-      
       itemTag.hide();
       tradeOfferContentTag.append(createTradeOfferContentItem(item));
     }
-    function deselectItem(itemId) {
+    function deselectItem(itemId, userId) {
       const itemTag = $("#item" + itemId);
       const selectItemTag = $("#selectItem" + itemId);
       itemTag.show();
       selectItemTag.remove();
+      if (userId == USER_ID) {
+        sendedItems = sendedItems.filter(item => item.id != itemId);
+      } else {
+        receivedItems = receivedItems.filter(item => item.id != itemId);
+      }
+    }
+    function renderTradeOfferContent(details) {
+      const myTradeOfferContentTag = $("#myTradeOffer");
+      const friendTradeOfferContentTag = $("#friendTradeOffer");
+      myTradeOfferContentTag.html("");
+      friendTradeOfferContentTag.html("");
+      details.forEach(detail => {
+        if (detail.userId == USER_ID) {
+          myTradeOfferContentTag.append(createTradeOfferContentItem(detail.item));
+          sendedItems.push(detail.item);
+        } else {
+          friendTradeOfferContentTag.append(createTradeOfferContentItem(detail.item));
+          receivedItems.push(detail.item);
+        }
+      });
     }
   </script>
 </body>

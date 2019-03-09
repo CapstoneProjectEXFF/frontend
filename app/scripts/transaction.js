@@ -35,24 +35,85 @@ function addTransaction(
         throw error;
       }
       return response.json();
-    }).then((responseJson) => {
+    })
+    .then((responseJson) => {
       successCallback(responseJson);
     })
     .catch(err => {
       failCallback(err);
     });
 }
-
+function getReceivedTransaction(
+  successCallback = DEFAULT_FUNCTION,
+  failCallback = DEFAULT_FUNCTION
+) {
+  let url = API_URL + TRANSACTION_URL;
+  let options = {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': getAuthentoken()
+    }
+  };
+  fetch(url, options)
+    .then((response) => {
+      if (!response.ok) {
+        var error = new Error(response.statusText);
+        error.response = response;
+        throw error;
+      }
+      return response.json();
+    })
+    .then((responseJson) => {
+      successCallback(responseJson);
+    })
+    .catch(err => {
+      failCallback(err);
+    });
+}
+function getTransaction(
+  id,
+  successCallback = DEFAULT_FUNCTION,
+  failCallback = DEFAULT_FUNCTION
+) {
+  let url = API_URL + TRANSACTION_URL + `/${id}`;
+  let options = {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': getAuthentoken()
+    }
+  };
+  fetch(url, options)
+    .then((response) => {
+      if (!response.ok) {
+        var error = new Error(response.statusText);
+        error.response = response;
+        throw error;
+      }
+      return response.json();
+    })
+    .then((responseJson) => {
+      successCallback(responseJson);
+    })
+    .catch(err => {
+      failCallback(err);
+    });
+}
 function createDetails(senderItems, receiverItems) {
   let details = [];
-  senderItems.forEach(id => {
+  senderItems.forEach(item => {
     details.push({
-      'itemId': id
+      'itemId': item.id,
+      'userId': item.user.id
     })
   });
-  receiverItems.forEach(id => {
+  receiverItems.forEach(item => {
     details.push({
-      'itemId': id
+      'itemId': item.id,
+      'userId': item.user.id
     })
   });
   return details;

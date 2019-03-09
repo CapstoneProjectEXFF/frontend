@@ -1,29 +1,50 @@
-// const CATEGORY_URL = '/category';
 
-// function getCategory(
-//   successCallback = DEFAULT_FUNCTION,
-//   failCallback = DEFAULT_FUNCTION
-// ) {
-//   let url = API_URL + CATEGORY_URL;
-//   let options = {
-//     method: 'GET',
-//     headers: {
-//       'Accept': 'application/json',
-//       'Content-Type': 'application/json',
-//     }
-//   };
-//   fetch(url, options)
-//     .then((response) => {
-//       if (!response.ok) {
-//         var error = new Error(response.statusText);
-//         error.response = response;
-//         throw error;
-//       }
-//       return response.json();
-//     }).then((responseJson) => {
-//       successCallback(responseJson);
-//     })
-//     .catch(err => {
-//       failCallback(err);
-//     });
-// }
+let notification = [];
+
+$(document).ready(() => {
+  const btnBell = $('#btnBell');
+  btnBell.append(renderNotificationContainer);
+  btnBell.click(() => {
+    const notificationContainer = $('#notificationPopup');
+    notificationContainer.toggle();
+    if (notification.length <= 0) {
+      getReceivedTransaction((data) => {
+        notification = data;
+        renderNotificationList(notification);
+      });
+    } else {
+      renderNotificationList(notification);
+    }
+  })
+})
+
+function renderNotificationList(notifs) {
+  const notificationContainer = $('#notificationContainer');
+  if (notifs.length <= 0) {
+    notificationContainer.html('Không có giao dịch nào.');
+  } else {
+    notificationContainer.html('');
+    notifs.forEach(notif => {
+      notificationContainer.append(renderNotification(notif));
+    });
+  }
+}
+
+function renderNotification(notif) {
+  return `
+    <a class="reset" href="/tradeoffer.html?id=${notif.id}">
+      <div class="notification">
+        <p class="notification__content">Bạn nhận được một yêu cầu trao đổi từ <b>${notif.sender.fullName}</b></p>
+        <p class="notification__time">${moment(notif.modifyTime).format('DD/MM/YYYY')}</p>
+      </div>
+    </a>
+  `;
+}
+
+function renderNotificationContainer() {
+  return `
+    <div class="notification__popup" id="notificationPopup" style="display:none">
+      <div class="notification__container" id="notificationContainer"></div>
+    </div>
+    `
+}
