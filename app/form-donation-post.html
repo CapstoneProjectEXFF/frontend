@@ -72,42 +72,24 @@
   <div class="item__form__container">
     <div class="item__form">
       <div class="position--relative">
-        <h1>Đồ dùng</h1>
+        <h1>Đăng bài</h1>
         <hr />
         <div class="field__container hidden" id="errorNotif">
           <span class="error">Đã xảy ra lỗi, vui lòng nhập lại sau.</span>
         </div>
         <input type="text" name="id" id="id" value="" disabled hidden />
         <div class="field__container">
-          <label for="category">Loại đồ dùng</label>
-          <select name="category" id="category">
-          </select>
-          <p class="error hidden">Loại đồ dùng không được để trống.</p>
-        </div>
-        <div class="field__container">
-          <label for="name">Tên đồ dùng</label>
-          <input type="text" name="name" id="name" />
-          <p class="error hidden">Tên đồ dùng không được để trống.</p>
-        </div>
-        <div class="field__container">
-          <label for="description">Mô tả</label>
-          <textarea name="description" id="description"></textarea>
-          <p class="error hidden">Mô tả không được để trống.</p>
+          <label for="content">Nội dung</label>
+          <textarea name="content" id="content"></textarea>
+          <p class="error hidden">Nội dung không được để trống.</p>
         </div>
         <div class="field__container">
           <label for="address">Địa chỉ</label>
           <input type="text" name="address" id="address" />
           <p class="error hidden">Địa chỉ không được để trống.</p>
         </div>
-        <div class="field__container">
-          <label for="privacy">Chia sẻ với</label>
-          <select name="privacy" id="privacy">
-            <option value="0">Mọi người</option>
-            <option value="1" selected>Bạn bè</option>
-          </select>
-        </div>
         <div class="field__container clearfix">
-          <button class="primary float-right" id="btnEditItem">Xác nhận</button>
+          <button class="primary float-right" id="btnEditDonationPost">Xác nhận</button>
         </div>
       </div>
     </div>
@@ -127,140 +109,86 @@
   <!-- build:js scripts/main.js -->
   <script src="scripts/main.js"></script>
   <script src="scripts/validation.js"></script>
-  <script src="scripts/item.js"></script>
+  <script src="scripts/donation-post.js"></script>
   <script src="scripts/category.js"></script>
   <script src="scripts/image.js"></script>
   <!-- endbuild -->
   <script>
-    let categoryLoaded = false;
     let urls = [];
     let images = [];
     $(document).ready(() => {
       let urlParams = new URLSearchParams(window.location.search);
-      getCategory(getCategorySuccess);
       if (urlParams.has("id")) {
         let id = urlParams.get("id");
-        getItemTimeOut(id)
+        getDonationPost(
+          id,
+          getDonationPostSuccess,
+          getDonationPostFalse
+        );
       }
       initForm();
     });
-    function getItemTimeOut(id) {
-      if (categoryLoaded) {
-        getItem(
-          id,
-          getItemSuccess,
-          getItemFalse
-        );
-      } else {
-        setTimeout(getItemTimeOut, 50, id);
-      }
-    }
-    function getItemSuccess(data) {
+    function getDonationPostSuccess(data) {
       const id = $("#id");
-      const category = $("#category");
-      const name = $("#name");
-      const description = $("#description");
-      const address = $("#address");
-      const privacy = $("#privacy");
+      const content = $("#content");
       id.val(data.id);
-      category.val(data.category.id);
-      name.val(data.name);
-      description.val(data.description);
-      address.val(data.address);
-      privacy.val(`${data.privacy == "1"}`);
+      content.val(data.content);
       images = data.images;
       if (images != null && images.length > 0) {
         showImage(images[0].url);
       }
     };
-    function getItemFalse(err) {
+    function getDonationPostFalse(err) {
       // console.log(err);
       window.location.href("./error404.html");
     };
 
     function initForm() {
-      $("#btnEditItem").click(() => {
+      $("#btnEditDonationPost").click(() => {
         if (validate()) {
           let id = $("#id").val();
-          let category = $("#category").val();
-          let name = $("#name").val();
-          let description = $("#description").val();
+          let content = $("#content").val();
           let address = $("#address").val();
-          let privacy = $("#privacy").val();
           if (id == null || id == undefined || id == "") {
-            addItem(
-              category,
-              name,
-              description,
+            addDonationPost(
+              content,
               address,
-              privacy,
               urls,
-              addItemSuccess,
-              addItemFails
+              addDonationPostSuccess,
+              addDonationPostFails
             );
           } else {
-            updateItem(
+            updateDonationPost(
               id,
-              category,
-              name,
-              description,
+              content,
               address,
-              privacy,
               urls,
-              addItemSuccess,
-              addItemFails
+              addDonationPostSuccess,
+              addDonationPostFails
             );
           }
         }
       });
-      $("#category").change(() => {
-        checkRequire("#category");
+      $("#content").change(() => {
+        checkRequire("#content");
       });
-      $("#name").focusout(() => {
-        checkRequire("#name");
-      });
-      $("#description").focusout(() => {
-        checkRequire("#description");
-      });
-      $("#address").focusout(() => {
+      $("#address").change(() => {
         checkRequire("#address");
       });
       $("#image").change(uploadImage);
     }
 
     function validate() {
-      return checkRequire("#category") && checkRequire("#name") && checkRequire("#description") && checkRequire("#address");
+      return checkRequire("#content") && checkRequire("#address");
     }
 
-    function addItemSuccess(data) {
+    function addDonationPostSuccess(data) {
       // console.log(data);
-      window.location.replace(`./item.html?id=${data.id}`);
+      window.location.replace(`./donation-post.html?id=${data.id}`);
     }
 
-    function addItemFails(err) {
+    function addDonationPostFails(err) {
       $("#errorNotif").show();
-    }
-    function getCategorySuccess(data) {
-      // console.log(data);
-      let options = "";
-      let groupOption = "";
-      const selectTag = $("#category");
-      selectTag.html('<option hidden disabled selected>Chọn loại đồ dùng</option>');
-      let superCate = data.filter(category => category.suppercategoryId === null);
-      superCate.forEach(superCategory => {
-        groupOption = $("<optgroup/>", {
-          label: superCategory.name
-        })
-        let subCate = data.filter(category => category.suppercategoryId === superCategory.id);
-        subCate.forEach(subCategory => {
-          option = $("<option/>")
-          option.text(subCategory.name);
-          option.val(subCategory.id);
-          groupOption.append(option);
-        });
-        selectTag.append(groupOption);
-      });
-      categoryLoaded = true;
     }
     function uploadImage(event) {
       const file = event.target.files[0];
