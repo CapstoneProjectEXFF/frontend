@@ -31,7 +31,6 @@ function login(
       return response.json();
     }).then((responseJson) => {
       const json = responseJson;
-      console.log(json);
       localStorage.setItem("EXFF_TOKEN", json.Authorization);
       localStorage.setItem("ID", json.User.id);
       localStorage.setItem("USER_INFO", JSON.stringify(json.User));

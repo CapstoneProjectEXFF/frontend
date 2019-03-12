@@ -33,8 +33,15 @@ function renderUserInfo(name) {
     <span style="font-size:0.8em">
       ${name}
     </span>
-    <a class="reset" href="./login.html">
+    <a class="reset" href="./login.html" onclick="logout()">
       <i class="fas fa-sign-out-alt"></i>
     </a>
   `;
+}
+
+//logout
+function logout() {
+  localStorage.removeItem("EXFF_TOKEN");
+  localStorage.removeItem("ID");
+  localStorage.removeItem("USER_INFO");
 }

@@ -1,0 +1,171 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Exff | Donation post</title>
+
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <!-- Place favicon.ico in the root directory -->
+
+  <!-- build:css styles/vendor.css -->
+  <!-- bower:css -->
+  <!-- endbower -->
+  <!-- endbuild -->
+
+  <!-- build:css styles/main.css -->
+  <link rel="stylesheet" href="styles/main.css">
+  <!-- endbuild -->
+  <!-- build:css styles/font-awesome.css -->
+  <link rel="stylesheet" href="/bower_components/Font-Awesome/css/all.min.css">
+  <!-- endbuild -->
+
+  <!-- build:js scripts/vendor/modernizr.js -->
+  <script src="/bower_components/modernizr/modernizr.js"></script>
+  <!-- endbuild -->
+  <!-- build:js scripts/vendor/moment.js -->
+  <script src="/bower_components/moment/min/moment.min.js"></script>
+  <!-- endbuild -->
+</head>
+
+<body>
+  <!--[if lt IE 10]>
+      <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+    <div class="menu_bar__container">
+      <div class="menu_bar">
+        <div class="icon">
+          <a class="reset" href="/">
+            <img class="icon" src="./images/Logo-64px.png" alt="">
+          </a>
+        </div>
+        <div class="logo">
+          <a class="reset" href="/">
+            <span>Exff</span>
+          </a>
+        </div>
+        <div class="search_bar">
+          <input type="text" name="searchItem" id="searchItem" placeholder="Search..." />
+        </div>
+        <div class="menu_bar__icon" id="btnBell">
+          <i class="fas fa-bell"></i>
+        </div>
+        <div class="menu_bar__icon">
+          <i class="fas fa-user-plus"></i>
+        </div>
+        <div class="menu_bar__icon">
+          <a class="reset" href="./inventory.html">
+            <i class="fas fa-boxes"></i>
+          </a>
+        </div>
+        <div class="user_icon" id="userInfoIcon">
+          <a class="reset" href="./login.html">
+            <i class="fas fa-user-circle"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+  <br>
+  <br>
+
+  <div class="item__form__container">
+    <div class="item__form">
+      <div class="item__info position--relative">
+        <p id="user"></p>
+        <p id="date"></p>
+        <hr />
+
+        <h1>Quyên góp</h1>
+        <br />
+        <!-- <p>
+          <i class="fas fa-box"></i>
+          <span id="itemCategory"></span>
+        </p> -->
+        <p>
+          <i class="fas fa-map-marker"></i>
+          <span id="address"></span>
+        </p>
+        <br>
+        <p id="postContent"></p>
+        <hr />
+        <div class="clearfix">
+          <a class="reset" id="tradeOfferLink" style="display: none;">
+            <button class="primary float-right">Quyên góp</button>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="item__form__image">
+      <img id="image">
+    </div>
+  </div>
+  <!-- <div class="hero-unit">
+      <h1>Exff</h1>
+      <p>Exchange between friend and family</p>
+      <ul>
+        <li><a href="./login.html">Login</a></li>
+        <li><a href="./register.html">Register</a></li>
+        <li></li>
+        <li></li>
+      </ul>
+    </div> -->
+
+  <!-- build:js scripts/vendor/jquery.js -->
+  <!-- bower:js -->
+  <script src="/bower_components/jquery/dist/jquery.js"></script>
+  <script src="/bower_components/moment/moment.js"></script>
+  <!-- endbower -->
+  <!-- endbuild -->
+
+  <!-- build:js scripts/main.js -->
+  <script src="scripts/main.js"></script>
+  <script src="scripts/validation.js"></script>
+  <script src="scripts/donation-post.js"></script>
+  <script src="scripts/login.js"></script>
+  <script src="scripts/register.js"></script>
+  <!-- endbuild -->
+  <script>
+    $(document).ready(() => {
+      let urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has("id")) {
+        let id = urlParams.get("id");
+        getDonationPost(
+          id,
+          getDonationPostSuccess,
+          getDonationPostFalse
+        );
+      } else {
+        window.location.replace("./error404.html");
+      }
+    });
+    function getDonationPostSuccess(data) {
+      const user = $("#user");
+      const date = $("#date");
+      const address = $("#address");
+      const postContent = $("#postContent");
+      const image = $("#image");
+      const tradeOfferLink = $("#tradeOfferLink");
+      let time = moment(data.createTime).format("DD/MM/YYYY");
+      user.text(data.user.fullName);
+      date.text(time);
+      address.text(data.address);
+      postContent.text(data.content);
+      if (data.user.id != getUserId()) {
+        tradeOfferLink.show();
+        tradeOfferLink.attr("href", `./tradeoffer.html?userId=${data.user.id}`)
+      }
+      if (data.images != null && data.images.length > 0) {
+        image.attr('src',data.images[0].url);
+      }
+    };
+    function getDonationPostFalse(err) {
+      // console.log(err);
+      window.location.href("./error404.html");
+    };
+  </script>
+</body>
+
+</html>
