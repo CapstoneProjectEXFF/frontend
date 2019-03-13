@@ -19,7 +19,7 @@ $(document).ready(() => {
   } else {
     userInforIcon.html(renderLogin());
   }
-})
+});
 
 function renderLogin() {
   return `

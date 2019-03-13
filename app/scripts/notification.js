@@ -1,34 +1,4 @@
-
 let notification = [];
-
-$(document).ready(() => {
-  const btnBell = $('#btnBell');
-  btnBell.append(renderNotificationContainer);
-  btnBell.click(() => {
-    const notificationContainer = $('#notificationPopup');
-    notificationContainer.toggle();
-    if (notification.length <= 0) {
-      getReceivedTransaction((data) => {
-        notification = data;
-        renderNotificationList(notification);
-      });
-    } else {
-      renderNotificationList(notification);
-    }
-  })
-})
-
-function renderNotificationList(notifs) {
-  const notificationContainer = $('#notificationContainer');
-  if (notifs.length <= 0) {
-    notificationContainer.html('Không có giao dịch nào.');
-  } else {
-    notificationContainer.html('');
-    notifs.forEach(notif => {
-      notificationContainer.append(renderNotification(notif));
-    });
-  }
-}
 
 function renderNotification(notif) {
   return `
@@ -46,5 +16,34 @@ function renderNotificationContainer() {
     <div class="notification__popup" id="notificationPopup" style="display:none">
       <div class="notification__container" id="notificationContainer"></div>
     </div>
-    `
+    `;
 }
+
+function renderNotificationList(notifs) {
+  const notificationContainer = $('#notificationContainer');
+  if (notifs.length <= 0) {
+    notificationContainer.html('Không có giao dịch nào.');
+  } else {
+    notificationContainer.html('');
+    notifs.forEach(notif => {
+      notificationContainer.append(renderNotification(notif));
+    });
+  }
+}
+
+$(document).ready(() => {
+  const btnBell = $('#btnBell');
+  btnBell.append(renderNotificationContainer);
+  btnBell.click(() => {
+    const notificationContainer = $('#notificationPopup');
+    notificationContainer.toggle();
+    if (notification.length <= 0) {
+      getReceivedTransaction((data) => {
+        notification = data;
+        renderNotificationList(notification);
+      });
+    } else {
+      renderNotificationList(notification);
+    }
+  });
+});

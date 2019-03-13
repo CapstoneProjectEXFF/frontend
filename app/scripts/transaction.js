@@ -1,5 +1,22 @@
 const TRANSACTION_URL = '/transaction';
 
+function createDetails(senderItems, receiverItems) {
+  let details = [];
+  senderItems.forEach(item => {
+    details.push({
+      'itemId': item.id,
+      'userId': item.user.id
+    });
+  });
+  receiverItems.forEach(item => {
+    details.push({
+      'itemId': item.id,
+      'userId': item.user.id
+    });
+  });
+  return details;
+}
+
 function addTransaction(
   receiverId,
   senderItems = [],
@@ -14,7 +31,7 @@ function addTransaction(
     'transaction': {
       'receiverId': receiverId,
       'donationPostId': donationPostId,
-      'status': status,
+      'status': status
     },
     'details': createDetails(senderItems, receiverItems)
   };
@@ -102,19 +119,4 @@ function getTransaction(
       failCallback(err);
     });
 }
-function createDetails(senderItems, receiverItems) {
-  let details = [];
-  senderItems.forEach(item => {
-    details.push({
-      'itemId': item.id,
-      'userId': item.user.id
-    })
-  });
-  receiverItems.forEach(item => {
-    details.push({
-      'itemId': item.id,
-      'userId': item.user.id
-    })
-  });
-  return details;
-}
+

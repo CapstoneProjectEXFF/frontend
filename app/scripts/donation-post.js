@@ -121,7 +121,6 @@ function getDonationPosts(
       'Content-Type': 'application/json'
     }
   };
-  
   fetch(url, options)
     .then((response) => {
       if (!response.ok) {
@@ -168,7 +167,7 @@ function getDonationPosts(
 // }
 
 function createDonationPostCard(donationPost, isEdit = false) {
-  const image = (donationPost.images[0] != null && donationPost.images[0] != undefined)
+  const image = (donationPost.images[0] !== null && donationPost.images[0] !== undefined)
     ? (donationPost.images[0].url)
     : ('./images/no-image-icon-13.png');
   const action = isEdit ? (
@@ -179,7 +178,7 @@ function createDonationPostCard(donationPost, isEdit = false) {
       </a>
     </div>`
   ) : '';
-  const donateAction = (donationPost.user.id != getUserId()) ? (
+  const donateAction = (donationPost.user.id !== getUserId()) ? (
     `<a class="reset" href="./tradeoffer.html?userId=${donationPost.user.id}">
       <button class="primary">Quyên góp</button>
     </a>`

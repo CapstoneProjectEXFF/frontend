@@ -176,7 +176,7 @@ function getItemsByUserId(
     });
 }
 function createTradeOfferIventoryItem(item) {
-  const image = (item.images[0] != null && item.images[0] != undefined)
+  const image = (item.images[0] !== null && item.images[0] !== undefined)
     ? (item.images[0].url)
     : ('./images/no-image-icon-13.png');
   return (
@@ -193,7 +193,7 @@ function createTradeOfferIventoryItem(item) {
   );
 }
 function createTradeOfferContentItem(item) {
-  const image = (item.images[0] != null && item.images[0] != undefined)
+  const image = (item.images[0] !== null && item.images[0] !== undefined)
     ? (item.images[0].url)
     : ('./images/no-image-icon-13.png');
   return (
@@ -210,7 +210,7 @@ function createTradeOfferContentItem(item) {
   );
 }
 function createItemCard(item, isEdit = false) {
-  const image = (item.images[0] != null && item.images[0] != undefined)
+  const image = (item.images[0] !== null && item.images[0] !== undefined)
     ? (item.images[0].url)
     : ('./images/no-image-icon-13.png');
   const action = isEdit ? (
@@ -236,7 +236,7 @@ function createItemCard(item, isEdit = false) {
     </div>`
   );
 }
-{/* <span class="delete float-right">
+/* <span class="delete float-right">
       <i class="fas fa-trash"></i> Delete
     </span>
-    <span class="float-right">&nbsp;&nbsp;|&nbsp;&nbsp;</span> */}
+    <span class="float-right">&nbsp;&nbsp;|&nbsp;&nbsp;</span> */

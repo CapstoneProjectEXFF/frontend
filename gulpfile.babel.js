@@ -165,7 +165,15 @@ gulp.task('wiredep', () => {
     .pipe(gulp.dest('app'));
 });
 
-gulp.task('build', ['lint', 'html', 'images', 'fonts', 'extras'], () => {
+//bowercop
+gulp.task('icons', () => {
+  gulp.src([
+    'bower_components/Font-Awesome/webfonts/**.*'
+])
+.pipe(gulp.dest('dist/vendor/font-awesome/webfonts/'));
+});
+
+gulp.task('build', ['lint', 'html', 'images', 'fonts', 'extras', 'icons'], () => {
   return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
 });
 
