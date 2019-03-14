@@ -4,6 +4,7 @@
   "dependencies": {
     "jquery": "~2.1.1",
     "modernizr": "~2.8.1",
-    "moment": "^2.24.0"
+    "moment": "^2.24.0",
+    "Font-Awesome": "^5.7.2"
   }
 }
