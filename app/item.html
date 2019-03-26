@@ -123,6 +123,7 @@
 
   <!-- build:js scripts/main.js -->
   <script src="scripts/main.js"></script>
+  <script src="scripts/menubar.js"></script>
   <script src="scripts/validation.js"></script>
   <script src="scripts/item.js"></script>
   <script src="scripts/login.js"></script>
@@ -160,7 +161,7 @@
       address.text(data.address);
       if (data.user.id != getUserId()) {
         tradeOfferLink.show();
-        tradeOfferLink.attr("href", `./tradeoffer.html?userId=${data.user.id}`)
+        tradeOfferLink.attr("href", `./tradeoffer-send.html?userId=${data.user.id}&itemId=${data.id}`)
       }
       if (data.images != null && data.images.length > 0) {
         image.attr('src',data.images[0].url);

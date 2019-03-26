@@ -5,6 +5,7 @@ $light-color: #fff;
 $primary-color: #0c8ae8;
 $default-color: #888;
 $error-color: #ff3333;
+$boder-color: #ccc;
 body {
   position: relative;
   margin: 0;
@@ -566,6 +567,9 @@ $distance: 32px;
     overflow: auto;
     box-sizing: border-box;
   }
+  h4 {
+    margin: 5px 0px;
+  }
 }
 .trade_offer__content{
   width: 100%;
@@ -633,6 +637,53 @@ $distance: 32px;
 #itemDescription, #postContent{
   white-space: pre-wrap;
 }
+
+// profile
+$profile-height: 150px;
+$profile-container-padding: 8px;
+.profile__container {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  height: $profile-height;
+  background-color: #fff;
+  padding: $profile-container-padding;
+  border: 1px solid $boder-color;
+  border-top-left-radius: $profile-height;
+  border-bottom-left-radius: $profile-height;
+  overflow: hidden;
+  box-sizing: border-box;
+  .avatar {
+    position: relative;
+    width: $profile-height - 2 * $profile-container-padding;
+    height: $profile-height - 2 * $profile-container-padding;
+    background-color: #ccc;
+    border-radius: $profile-height;
+    overflow: hidden;
+  }
+  .profile__info{
+    max-width: 710px;
+    flex-grow: 1;
+  }
+  p{
+    width: 100%;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    margin: 0px;
+    padding: 2px 10px;
+    color: #333;
+    box-sizing: border-box;
+  }
+  .profile__name{
+    font-size: 1.5em;
+  }
+}
+
+.profile__form__container{
+  background-color: #fff;
+}
+
 // default
 .hero-unit {
   margin: 50px auto 0 auto;

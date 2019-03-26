@@ -179,7 +179,7 @@ function createDonationPostCard(donationPost, isEdit = false) {
     </div>`
   ) : '';
   const donateAction = (donationPost.user.id !== getUserId()) ? (
-    `<a class="reset" href="./tradeoffer.html?userId=${donationPost.user.id}">
+    `<a class="reset" href="./donation-send.html?donationPostId=${donationPost.user.id}">
       <button class="primary">Quyên góp</button>
     </a>`
   ) : '';

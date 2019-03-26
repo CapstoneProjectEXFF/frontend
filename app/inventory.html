@@ -65,6 +65,26 @@
     </div>
   </div>
 
+  <br>
+
+  <div class="div--center profile__container">
+    <div class="avatar">
+      <div class="background" id="avatar" style="background-image: url('./images/no-image-icon-13.png')"></div>
+    </div>
+    <div class="profile__info">
+      <p class="profile__name" id="userName">tên</p>
+      <p class="profile__phonenumber"><b>Số điện thoại: </b><span id="userPhoneNum"></span></p>
+      <!-- <p class="profile__address" id="userAddress">địa chỉ</p> -->
+      <p class="profile__item"><b id="userItemNum"></b> đồ vật</p>
+    </div>
+    <div class="profile__action">
+      <a href="./profile.html" class="primary">
+        <i class="fas fa-edit"></i>
+        Chỉnh sửa thông tin
+      </a>
+    </div>
+  </div>
+
   <div class="inventory">
     <div class="field__container clearfix">
       <div class="float-right">
@@ -77,8 +97,6 @@
       </div>
     </div>
   </div>
-  <br>
-  <div></div>
   <div class="inventory card__container" id="inventory">
   </div>
 
@@ -92,6 +110,7 @@
 
   <!-- build:js scripts/main.js -->
   <script src="scripts/main.js"></script>
+  <script src="scripts/menubar.js"></script>
   <script src="scripts/validation.js"></script>
   <script src="scripts/item.js"></script>
   <script src="scripts/login.js"></script>
@@ -99,15 +118,19 @@
   <!-- endbuild -->
   <script>
     $(document).ready(() => {
+      renderUserInfo(getUserInfo());
       getItemsByUserId(
         getUserId(),
+        ITEM_ENABLE,
         getItemsSuccess,
         getItemsFalse
       );
     });
     function getItemsSuccess(data) {
       const inventoryTag = $("#inventory");
+      const itemNumTag = $("#userItemNum");
       inventoryTag.html("");
+      itemNumTag.text(data.length);
       if (data.length === 0) {
         inventoryTag.html("<h1>Không có đồ dùng nào.</h1>");
       }
@@ -120,6 +143,13 @@
       const inventoryTag = $("#inventory");
       inventoryTag.html("<h1>Không có đồ dùng nào.</h1>");
     };
+    function renderUserInfo(user) {
+      $('#userName').text(user.fullName);
+      $('#userPhoneNum').text(user.phoneNumber);
+      if (user.avatar !== undefined && user.avatar !== null) {
+        $('#avatar').css('background-image', `url('${user.avatar}'`);
+      }
+    }
   </script>
 </body>
 

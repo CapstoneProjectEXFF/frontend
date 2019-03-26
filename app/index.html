@@ -101,7 +101,8 @@
   <!-- endbuild -->
   <script>
     $(document).ready(() => {
-      getItems(
+      getItemsByStatus(
+        ITEM_ENABLE,
         getItemsSuccess,
         getItemsFalse
       );

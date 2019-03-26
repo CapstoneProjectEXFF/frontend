@@ -126,6 +126,7 @@
 
   <!-- build:js scripts/main.js -->
   <script src="scripts/main.js"></script>
+  <script src="scripts/menubar.js"></script>
   <script src="scripts/validation.js"></script>
   <script src="scripts/item.js"></script>
   <script src="scripts/category.js"></script>
@@ -169,7 +170,7 @@
       name.val(data.name);
       description.val(data.description);
       address.val(data.address);
-      privacy.val(`${data.privacy == "1"}`);
+      privacy.val(`${data.privacy}`);
       images = data.images;
       if (images != null && images.length > 0) {
         showImage(images[0].url);
