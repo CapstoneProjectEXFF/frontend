@@ -64,7 +64,8 @@ function updateItem(
     'description': description,
     'address': address,
     'privacy': privacy,
-    'urls': urls
+    'newUrls': urls,
+    'removedUrlIds': []
   };
   let options = {
     method: 'PUT',
@@ -120,6 +121,34 @@ function getItem(
     });
 }
 
+function getItemsByStatus(
+  status = ITEM_ENABLE,
+  successCallback = DEFAULT_FUNCTION,
+  failCallback = DEFAULT_FUNCTION
+) {
+  let url = API_URL + ITEM_URL + `?status=${status}`;
+  let options = {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    }
+  };
+  fetch(url, options)
+    .then((response) => {
+      if (!response.ok) {
+        var error = new Error(response.statusText);
+        error.response = response;
+        throw error;
+      }
+      return response.json();
+    }).then((responseJson) => {
+      successCallback(responseJson);
+    })
+    .catch(err => {
+      failCallback(err);
+    });
+}
 function getItems(
   successCallback = DEFAULT_FUNCTION,
   failCallback = DEFAULT_FUNCTION
@@ -149,10 +178,11 @@ function getItems(
 }
 function getItemsByUserId(
   userId,
+  status = ITEM_ENABLE,
   successCallback = DEFAULT_FUNCTION,
   failCallback = DEFAULT_FUNCTION
 ) {
-  let url = API_URL + `/user/${userId}` + ITEM_URL;
+  let url = API_URL + `/user/${userId}` + ITEM_URL + `?status=${status}`;
   let options = {
     method: 'GET',
     headers: {
@@ -175,12 +205,13 @@ function getItemsByUserId(
       failCallback(err);
     });
 }
-function createTradeOfferIventoryItem(item) {
+function createTradeOfferIventoryItem(item, isSelected = false) {
   const image = (item.images[0] !== null && item.images[0] !== undefined)
     ? (item.images[0].url)
     : ('./images/no-image-icon-13.png');
+  const notDisplay = (isSelected) ? 'style="display:none"' : '';
   return (
-    `<div class="list__item" id="item${item.id}" onclick="selectItem(${item.id},${item.user.id})">
+    `<div class="list__item" id="item${item.id}" onclick="selectItem(${item.id},${item.user.id})" ${notDisplay}>
       <div class="list__item__image position--relative">
         <div class="background" style="background-image: url(${image})"></div>
       </div>
@@ -192,12 +223,13 @@ function createTradeOfferIventoryItem(item) {
     </div>`
   );
 }
-function createTradeOfferContentItem(item) {
+function createTradeOfferContentItem(item, isClickable = false) {
   const image = (item.images[0] !== null && item.images[0] !== undefined)
     ? (item.images[0].url)
     : ('./images/no-image-icon-13.png');
+  const onclickaction = (isClickable) ? `onclick="deselectItem(${item.id},${item.user.id})"` : '';
   return (
-    `<div class="list__item" id="selectItem${item.id}" onclick="deselectItem(${item.id},${item.user.id})">
+    `<div class="list__item" id="selectItem${item.id}" ${onclickaction}>
       <div class="list__item__image position--relative">
         <div class="background" style="background-image: url(${image})"></div>
       </div>

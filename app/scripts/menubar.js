@@ -1,5 +1,3 @@
-import { toUnicode } from "punycode";
-
 const notificationPopupTagId = 'notificationPopup';
 const notificationContainerTagId = 'notificationContainer';
 const relationshipNotifPopupTagId = 'relationshipNotifPopup';
@@ -11,11 +9,14 @@ let relationshipNotif = [];
 // notification -----------------------------
 
 function renderNotification(notif) {
+  let message = (notif.senderId === Number(getUserId())) ?
+    `<b>${notif.receiver.fullName}</b> đề xuất một yêu trao đổi` :
+    `Bạn nhận được một yêu cầu trao đổi từ <b>${notif.sender.fullName}</b>`;
   return `
-    <a class="reset" href="/tradeoffer.html?id=${notif.id}">
+    <a class="reset" href="/tradeoffer-confirm.html?id=${notif.id}">
       <div class="notification">
-        <p class="notification__content">Bạn nhận được một yêu cầu trao đổi từ <b>${notif.sender.fullName}</b></p>
-        <p class="notification__time">${moment(notif.modifyTime).format('DD/MM/YYYY')}</p>
+        <p class="notification__content">${message}</p>
+        <p class="notification__time">${moment(notif.modifyTime).format('hh:mm DD/MM/YYYY')}</p>
       </div>
     </a>
   `;

@@ -34,45 +34,43 @@
   <!--[if lt IE 10]>
       <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
-    <div class="menu_bar__container">
-      <div class="menu_bar">
-        <div class="icon">
-          <a class="reset" href="/">
-            <img class="icon" src="./images/Logo-64px.png" alt="">
-          </a>
-        </div>
-        <div class="logo">
-          <a class="reset" href="/">
-            <span>Exff</span>
-          </a>
-        </div>
-        <div class="search_bar">
-          <input type="text" name="searchItem" id="searchItem" placeholder="Search..." />
-        </div>
-        <div class="menu_bar__icon" id="btnBell">
-          <i class="fas fa-bell"></i>
-        </div>
-        <div class="menu_bar__icon">
-          <i class="fas fa-user-plus"></i>
-        </div>
-        <div class="menu_bar__icon">
-          <a class="reset" href="./inventory.html">
-            <i class="fas fa-boxes"></i>
-          </a>
-        </div>
-        <div class="user_icon" id="userInfoIcon">
-          <a class="reset" href="./login.html">
-            <i class="fas fa-user-circle"></i>
-          </a>
-        </div>
+  <div class="menu_bar__container">
+    <div class="menu_bar">
+      <div class="icon">
+        <a class="reset" href="/">
+          <img class="icon" src="./images/Logo-64px.png" alt="">
+        </a>
+      </div>
+      <div class="logo">
+        <a class="reset" href="/">
+          <span>Exff</span>
+        </a>
+      </div>
+      <div class="search_bar">
+        <input type="text" name="searchItem" id="searchItem" placeholder="Search..." />
+      </div>
+      <div class="menu_bar__icon" id="btnBell">
+        <i class="fas fa-bell"></i>
+      </div>
+      <div class="menu_bar__icon">
+        <i class="fas fa-user-plus"></i>
+      </div>
+      <div class="menu_bar__icon">
+        <a class="reset" href="./inventory.html">
+          <i class="fas fa-boxes"></i>
+        </a>
+      </div>
+      <div class="user_icon" id="userInfoIcon">
+        <a class="reset" href="./login.html">
+          <i class="fas fa-user-circle"></i>
+        </a>
       </div>
     </div>
+  </div>
   <br>
   <div class="inventory">
     <div class="field__container clearfix">
       <button class="primary float-right" id="btnRequestTradeOffer" style="display: none;">Gửi yêu cầu</button>
-      <button class="primary float-right" id="btnConfirmTradeOffer" style="display: none;">Chấp nhận</button>
-      <button class="primary float-right" id="btnEdit" style="display: none;">Thay đổi</button>
     </div>
   </div>
   <br>
@@ -116,6 +114,7 @@
 
   <!-- build:js scripts/main.js -->
   <script src="scripts/main.js"></script>
+  <script src="scripts/menubar.js"></script>
   <script src="scripts/validation.js"></script>
   <script src="scripts/item.js"></script>
   <script src="scripts/item.js"></script>
@@ -125,49 +124,17 @@
   <!-- endbuild -->
   <script>
     const USER_ID = getUserId();
+    let urlSelectedItemId;
     let transactionId;
     let senderId;
     let receiverId;
     let myItems = [];
     let friendItems = [];
-    let sendedItems = []; // list item want to send
-    let receivedItems = []; // list item want to receive 
+    let details = [];
     $(document).ready(() => {
       let urlParams = new URLSearchParams(window.location.search);
-      if (urlParams.has("id")) {
-        initUpdateView(urlParams);
-      } else {
-        initCreateView(urlParams);
-      }
+      initCreateView(urlParams);
     });
-    function initUpdateView(urlParams) {
-      transactionId = urlParams.get("id");
-      getTransaction(
-        transactionId,
-        getTransactionSuccess,
-        getTransactionFail
-      );
-    }
-    function getTransactionSuccess(data) {
-      senderId = data.transaction.senderId;
-      receiverId = data.transaction.receiverId;
-      renderTradeOfferContent(data.details);
-      $("#inventoryContainer").hide();
-      $("#btnConfirmTradeOffer").show();
-      $("#btnConfirmTradeOffer").click(() => {
-        addTransaction(
-          receiverId,
-          sendedItems,
-          receivedItems,
-          -1,
-          0,
-          sendRequestSuccess
-        );
-      });
-    }
-    function getTransactionFail(err) {
-      window.location.replace("./error404.html");
-    }
     function initCreateView(urlParams) {
       if (urlParams.has("userId")) {
         receiverId = urlParams.get("userId");
@@ -176,39 +143,41 @@
         window.location.replace("./error404.html");
       }
       if (urlParams.has("itemId")) {
-        let id = urlParams.get("itemId");
+        urlSelectedItemId = urlParams.get("itemId");
       }
       $("#btnRequestTradeOffer").show();
       $("#btnRequestTradeOffer").click(() => {
-        addTransaction(
+        addTradeOffer(
           receiverId,
-          sendedItems,
-          receivedItems,
-          -1,
-          0,
-          sendRequestSuccess
+          details,
+          sendRequestSuccess,
+          sendRequestFails
         );
       });
+    }
+    function sendRequestSuccess(data) {
+      alert("Đã gửi yêu cầu");
+      window.location.replace("/");
+    }
+    function sendRequestFails(err) {
+      alert("Có lỗi");
+      console.log(err);
     }
     function getInventory(myId, fridenId) {
       getItemsByUserId(
         fridenId,
+        ITEM_ENABLE,
         getFriendInventory,
         getFriendInventoryFalse
       );
       getItemsByUserId(
         myId,
+        ITEM_ENABLE,
         getMyInventory,
         getMyInventoryFalse
       );
     }
 
-
-    
-    function sendRequestSuccess(data) {
-      alert("Đã gửi yêu cầu");
-      window.location.replace("/");
-    }
     function getMyInventory(data) {
       myItems = data;
       getItemsSuccess(data, "#myInventory");
@@ -219,6 +188,9 @@
     function getFriendInventory(data) {
       friendItems = data;
       getItemsSuccess(data, "#friendInventory");
+      if (urlSelectedItemId !== undefined) {
+        selectItem(urlSelectedItemId, receiverId);
+      }
     }
     function getFriendInventoryFalse(err) {
       getItemsFalse(err, "#friendInventory");
@@ -253,14 +225,16 @@
       if (userId == USER_ID) {
         tradeOfferContentTag = $("#myTradeOffer");
         item = myItems.find((value) => value.id == itemId);
-        sendedItems.push(item);
       } else {
         tradeOfferContentTag = $("#friendTradeOffer");
         item = friendItems.find((value) => value.id == itemId);
-        receivedItems.push(item);
       }
+      details.push({
+        'itemId': item.id,
+        'userId': item.user.id
+      });
       itemTag.hide();
-      tradeOfferContentTag.append(createTradeOfferContentItem(item));
+      tradeOfferContentTag.append(createTradeOfferContentItem(item, true));
     }
     function deselectItem(itemId, userId) {
       const itemTag = $("#item" + itemId);
@@ -272,18 +246,20 @@
       } else {
         receivedItems = receivedItems.filter(item => item.id != itemId);
       }
+      deleteItem = details.find(detail => detail.itemId === itemId && detail.id !== undefined);
+      delete deleteItem.transactionId;
     }
-    function renderTradeOfferContent(details) {
+    function renderTradeOfferContent(details, isClickable = false) {
       const myTradeOfferContentTag = $("#myTradeOffer");
       const friendTradeOfferContentTag = $("#friendTradeOffer");
       myTradeOfferContentTag.html("");
       friendTradeOfferContentTag.html("");
       details.forEach(detail => {
         if (detail.userId == USER_ID) {
-          myTradeOfferContentTag.append(createTradeOfferContentItem(detail.item));
+          myTradeOfferContentTag.append(createTradeOfferContentItem(detail.item, isClickable));
           sendedItems.push(detail.item);
         } else {
-          friendTradeOfferContentTag.append(createTradeOfferContentItem(detail.item));
+          friendTradeOfferContentTag.append(createTradeOfferContentItem(detail.item, isClickable));
           receivedItems.push(detail.item);
         }
       });

@@ -46,7 +46,7 @@
       <div class="search_bar">
         <input type="text" name="searchItem" id="searchItem" placeholder="Search..." />
       </div>
-      <div class="menu_bar__icon">
+      <div class="menu_bar__icon" id="btnBell">
         <i class="fas fa-bell"></i>
       </div>
       <div class="menu_bar__icon" id="btnFriend">
@@ -57,43 +57,28 @@
           <i class="fas fa-boxes"></i>
         </a>
       </div>
-      <div class="user_icon">
+      <div class="user_icon" id="userInfoIcon">
         <a class="reset" href="./login.html">
           <i class="fas fa-user-circle"></i>
         </a>
       </div>
     </div>
   </div>
+  <br>
+  <br>
+  <div class="div--center profile__form__container">
+    <div>
 
-  <div class="hero-unit">
-      <h1>Error 404</h1>
-      <p>Not found</p>
-      <!-- <ul>
-        <li><a href="./login.html">Login</a></li>
-        <li><a href="./register.html">Register</a></li>
-        <li></li>
-        <li></li>
-      </ul> -->
     </div>
+    <hr>
+    <div>
 
-  <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-  <script>
-    (function (b, o, i, l, e, r) {
-      b.GoogleAnalyticsObject = l;
-      b[l] || (b[l] =
-        function () {
-          (b[l].q = b[l].q || []).push(arguments)
-        });
-      b[l].l = +new Date;
-      e = o.createElement(i);
-      r = o.getElementsByTagName(i)[0];
-      e.src = 'https://www.google-analytics.com/analytics.js';
-      r.parentNode.insertBefore(e, r)
-    }(window, document, 'script', 'ga'));
-    ga('create', 'UA-XXXXX-X');
-    ga('send', 'pageview');
-
-  </script>
+    </div>
+    <hr>
+    <div>
+      
+    </div>
+  </div>
 
   <!-- build:js scripts/vendor/jquery.js -->
   <!-- bower:js -->
@@ -105,12 +90,19 @@
   <!-- build:js scripts/main.js -->
   <script src="scripts/main.js"></script>
   <script src="scripts/menubar.js"></script>
+  <script src="scripts/relationship.js"></script>
+  <script src="scripts/transaction.js"></script>
   <script src="scripts/validation.js"></script>
   <script src="scripts/item.js"></script>
-  <script src="scripts/item.js"></script>
+  <script src="scripts/donation-post.js"></script>
   <script src="scripts/login.js"></script>
   <script src="scripts/register.js"></script>
   <!-- endbuild -->
+  <script>
+    $(document).ready(() => {
+
+    });
+  </script>
 </body>
 
 </html>

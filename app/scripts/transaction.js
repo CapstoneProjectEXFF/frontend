@@ -19,10 +19,8 @@ function createDetails(senderItems, receiverItems) {
 
 function addTransaction(
   receiverId,
-  senderItems = [],
-  receiverItems = [],
-  donationPostId = -1,
-  status = 0,
+  details = [],
+  donationPostId = null,
   successCallback = DEFAULT_FUNCTION,
   failCallback = DEFAULT_FUNCTION
 ) {
@@ -30,10 +28,9 @@ function addTransaction(
   let data = {
     'transaction': {
       'receiverId': receiverId,
-      'donationPostId': donationPostId,
-      'status': status
+      'donationPostId': donationPostId
     },
-    'details': createDetails(senderItems, receiverItems)
+    'details': details
   };
   let options = {
     method: 'POST',
@@ -118,5 +115,163 @@ function getTransaction(
     .catch(err => {
       failCallback(err);
     });
+}
+
+function confirmTransaction(
+  id,
+  successCallback = DEFAULT_FUNCTION,
+  failCallback = DEFAULT_FUNCTION
+) {
+  let url = API_URL + TRANSACTION_URL + `/${id}`;
+  let options = {
+    method: 'PUT',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': getAuthentoken()
+    }
+  };
+  fetch(url, options)
+    .then((response) => {
+      if (!response.ok) {
+        var error = new Error(response.statusText);
+        error.response = response;
+        throw error;
+      }
+      return response.json();
+    })
+    .then((responseJson) => {
+      successCallback(responseJson);
+    })
+    .catch(err => {
+      failCallback(err);
+    });
+}
+
+function updateTransaction(
+  id,
+  receiverId,
+  details = [],
+  donationPostId = null,
+  successCallback = DEFAULT_FUNCTION,
+  failCallback = DEFAULT_FUNCTION
+) {
+  let url = API_URL + TRANSACTION_URL;
+  let data = {
+    'transaction': {
+      'id': id,
+      'receiverId': receiverId,
+      'donationPostId': donationPostId
+    },
+    'details': details
+  };
+  let options = {
+    method: 'PUT',
+    body: JSON.stringify(data),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': getAuthentoken()
+    }
+  };
+  fetch(url, options)
+    .then((response) => {
+      if (!response.ok) {
+        var error = new Error(response.statusText);
+        error.response = response;
+        throw error;
+      }
+      return response.json();
+    })
+    .then((responseJson) => {
+      successCallback(responseJson);
+    })
+    .catch(err => {
+      failCallback(err);
+    });
+}
+
+function deleteTransaction(
+  id,
+  successCallback = DEFAULT_FUNCTION,
+  failCallback = DEFAULT_FUNCTION
+) {
+  let url = API_URL + TRANSACTION_URL;
+  let data = {
+    'transaction': {
+      'id': id
+    },
+    'details': []
+  };
+  let options = {
+    method: 'DELETE',
+    body: JSON.stringify(data),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': getAuthentoken()
+    }
+  };
+  fetch(url, options)
+    .then((response) => {
+      if (!response.ok) {
+        var error = new Error(response.statusText);
+        error.response = response;
+        throw error;
+      }
+      return response.json();
+    })
+    .then((responseJson) => {
+      successCallback(responseJson);
+    })
+    .catch(err => {
+      failCallback(err);
+    });
+}
+
+function addTradeOffer(
+  receiverId,
+  details = [],
+  successCallback = DEFAULT_FUNCTION,
+  failCallback = DEFAULT_FUNCTION
+) {
+  addTransaction(
+    receiverId,
+    details,
+    null,
+    successCallback,
+    failCallback
+  );
+}
+
+function addDonationTransaction(
+  receiverId,
+  details = [],
+  donationPostId,
+  successCallback = DEFAULT_FUNCTION,
+  failCallback = DEFAULT_FUNCTION
+) {
+  addTransaction(
+    receiverId,
+    details,
+    donationPostId,
+    successCallback,
+    failCallback
+  );
+}
+
+function updateTradeOffer(
+  id,
+  receiverId,
+  details,
+  successCallback
+) {
+  updateTransaction(
+    id,
+    receiverId,
+    details,
+    null,
+    successCallback
+  );
 }
 
