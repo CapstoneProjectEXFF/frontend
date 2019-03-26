@@ -5,6 +5,7 @@ $light-color: #fff;
 $primary-color: #0c8ae8;
 $default-color: #888;
 $error-color: #ff3333;
+$sucsess-color: #28a745;
 $boder-color: #ccc;
 body {
   position: relative;
@@ -83,6 +84,11 @@ body {
 .error{
   font-size: 0.8em;
   color: $error-color;
+  font-weight: bold;
+}
+.success{
+  font-size: 0.8em;
+  color: $sucsess-color;
   font-weight: bold;
 }
 label {
@@ -681,7 +687,18 @@ $profile-container-padding: 8px;
 }
 
 .profile__form__container{
+  padding: 10px;
   background-color: #fff;
+  border: 1px solid $boder-color;
+  border-radius: 5px;
+  box-sizing: border-box;
+  .avatar {
+    position: relative;
+    max-width: 100%;
+    max-height: 200px;
+    background-color: #ccc;
+    overflow: hidden;
+  }
 }
 
 // default
