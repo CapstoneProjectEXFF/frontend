@@ -18,7 +18,7 @@
   <!-- build:css styles/main.css -->
   <link rel="stylesheet" href="styles/main.css">
   <!-- endbuild -->
-  <!-- build:css styles/font-awesome.css -->
+  <!-- build:css vendor/font-awesome/css/font-awesome.min.css -->
   <link rel="stylesheet" href="/bower_components/Font-Awesome/css/all.min.css">
   <!-- endbuild -->
 
@@ -46,10 +46,10 @@
       <div class="search_bar">
         <input type="text" name="searchItem" id="searchItem" placeholder="Search..." />
       </div>
-      <div class="menu_bar__icon">
+      <div class="menu_bar__icon" id="btnBell">
         <i class="fas fa-bell"></i>
       </div>
-      <div class="menu_bar__icon">
+      <div class="menu_bar__icon" id="btnFriend">
         <i class="fas fa-user-plus"></i>
       </div>
       <div class="menu_bar__icon">
@@ -57,7 +57,7 @@
           <i class="fas fa-boxes"></i>
         </a>
       </div>
-      <div class="user_icon">
+      <div class="user_icon" id="userInfoIcon">
         <a class="reset" href="./login.html">
           <i class="fas fa-user-circle"></i>
         </a>
@@ -66,9 +66,20 @@
   </div>
   <br>
   <br>
-  <div class="inventory card__container" id="inventory">
+  <div>
+    <div class="div--center index__action">
+      <div onclick="show('#itemsContainer')" class="selected" id="itemsContainerTab">Đô dùng</div>
+      <div onclick="show('#postsContainer')" id="postsContainerTab">Từ thiện</div>
+    </div>
   </div>
-
+  <div>
+    <div id="itemsContainer">
+      <div class="div--center card__container" id="items"></div>
+    </div>
+    <div id="postsContainer">
+      <div class="div--center post__container" id="donationPosts"></div>
+    </div>
+  </div>
 
   <!-- build:js scripts/vendor/jquery.js -->
   <!-- bower:js -->
@@ -79,35 +90,71 @@
 
   <!-- build:js scripts/main.js -->
   <script src="scripts/main.js"></script>
+  <script src="scripts/menubar.js"></script>
+  <script src="scripts/relationship.js"></script>
+  <script src="scripts/transaction.js"></script>
   <script src="scripts/validation.js"></script>
   <script src="scripts/item.js"></script>
-  <script src="scripts/item.js"></script>
+  <script src="scripts/donation-post.js"></script>
   <script src="scripts/login.js"></script>
   <script src="scripts/register.js"></script>
   <!-- endbuild -->
   <script>
-      $(document).ready(() => {
-        getItems(
-          getItemsSuccess,
-          getItemsFalse
-        );
+    $(document).ready(() => {
+      getItemsByStatus(
+        ITEM_ENABLE,
+        getItemsSuccess,
+        getItemsFalse
+      );
+      getDonationPosts(
+        0,
+        10,
+        getDonationPostsSuccess,
+        getDonationPostsFalse,
+      );
+      $("#itemsContainer").show();
+      $("#postsContainer").hide();
+    });
+    function getItemsSuccess(data) {
+      const itemsTag = $("#items");
+      itemsTag.html("");
+      if (data.length === 0) {
+        itemsTag.html("<h1>Không có đồ dùng nào.</h1>");
+      }
+      data.forEach(item => {
+        const card = createItemCard(item);
+        itemsTag.append(card);
       });
-      function getItemsSuccess(data) {
-        const inventoryTag = $("#inventory");
-        inventoryTag.html("");
-        if (data.length === 0) {
-          inventoryTag.html("<h1>Không có đồ dùng nào.</h1>");
-        }
-        data.forEach(item => {
-          const card = createItemCard(item);
-          inventoryTag.append(card);
-        });
-      };
-      function getItemsFalse(err) {
-        const inventoryTag = $("#inventory");
-        inventoryTag.html("<h1>Không có đồ dùng nào.</h1>");
-      };
-    </script>
+    };
+    function getItemsFalse(err) {
+      const itemsTag = $("#items");
+      itemsTag.html("<h1>Không có đồ dùng nào.</h1>");
+    };
+
+    function getDonationPostsSuccess(data) {
+      const donationPostsTag = $("#donationPosts");
+      donationPostsTag.html("");
+      if (data.length === 0) {
+        donationPostsTag.html("<h1>Không có bài viết nào.</h1>");
+      }
+      data.forEach(donationPost => {
+        const card = createDonationPostCard(donationPost);
+        donationPostsTag.append(card);
+      });
+    };
+    function getDonationPostsFalse(err) {
+      const donationPostsTag = $("#donationPosts");
+      donationPostsTag.html("<h1>Không có bài viết nào.</h1>");
+    };
+
+    function show(tagId) {
+      const hideTagId = tagId === "#itemsContainer" ? "#postsContainer" : "#itemsContainer";
+      $(tagId).show();
+      $(tagId + "Tab").addClass("selected");
+      $(hideTagId).hide();
+      $(hideTagId + "Tab").removeClass("selected");
+    }
+  </script>
 </body>
 
 </html>

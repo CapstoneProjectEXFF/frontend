@@ -5,6 +5,7 @@ $light-color: #fff;
 $primary-color: #0c8ae8;
 $default-color: #888;
 $error-color: #ff3333;
+$boder-color: #ccc;
 body {
   position: relative;
   margin: 0;
@@ -144,18 +145,39 @@ select{
 button {
   cursor: pointer;
   background-color: $default-color;
-  border: 0px solid #000;
+  border: 2px solid $default-color;
   border-radius: 100vh;
-  padding: 8px 18px;
+  padding: 4px 14px;
   font-size: 18px;
+  box-sizing: border-box;
+  &.size--mini{
+    padding: 2px 6px;
+    font-size: 14px;
+  }
   &.primary {
     color: $light-color;
     background-color: $primary-color;
+    border-color: $primary-color;
     &:hover {
       background-color: lighten($color: $primary-color, $amount: 5%);
+      border-color: lighten($color: $primary-color, $amount: 5%);
     }
     &:active{
       background-color: darken($color: $primary-color, $amount: 5%);
+      border-color: darken($color: $primary-color, $amount: 5%);
+    }
+  }
+  &.primary--o {
+    color: $primary-color;
+    background-color: #ffffff00;
+    border-color: $primary-color;
+    &:hover {
+      color: lighten($color: $primary-color, $amount: 5%);
+      border-color: lighten($color: $primary-color, $amount: 5%);
+    }
+    &:active{
+      color: darken($color: $primary-color, $amount: 5%);
+      border-color: darken($color: $primary-color, $amount: 5%);
     }
   }
   &:focus {
@@ -207,6 +229,7 @@ a {
     font-weight: bolder;
   }
   .menu_bar__icon {
+    position: relative;
     font-size: 1em;
     min-width: 48px;
   }
@@ -214,6 +237,51 @@ a {
     margin-left: auto;
     margin-right: auto;
   }
+}
+$distance: 32px;
+.notification__popup {
+  position: absolute;
+  width: 300px;
+  height: 500px;
+  top: $distance;
+  right: (- $distance);
+  padding: 10px 0px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  overflow: visible;
+  z-index: 10;
+  &::before{
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    border: ($distance / 2) solid #fff0;
+    border-top-width: 0px;
+    border-bottom-color: #ccc;
+    top: -$distance / 2;
+    right: $distance + 8px;
+  }
+}
+.notification__container{
+  width: 100%;
+  height: 100%;
+  text-align: left;
+  overflow: auto;
+}
+.notification{
+  padding: 10px 10px;
+  border-bottom: 1px solid #ccc;
+}
+.notification__content{
+  font-size: 0.9em;
+  margin: 0px;
+  margin-bottom: 5px;
+}
+.notification__time{
+  font-size: 0.8em;
+  color: #555;
+  margin: 0px;
 }
 //card
 .card__container{
@@ -234,7 +302,6 @@ a {
 .card__image{
   width: 100%;
   height: 300px;
-  background-image: url("../images/no-image-icon-13.png");
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
@@ -258,6 +325,141 @@ a {
   }
 }
 
+//post
+.post__container{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+.post__outline{
+  width: 50%;
+  min-width: 320px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+.post {
+  width: 100%;
+  background-color: #fff;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+.post__image{
+  width: 100%;
+  height: 300px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+.post__info{
+  width: 100%;
+  color: #333;
+  p{
+    width: 100%;
+    margin: 5px 0px;
+  }
+}
+.post__user__info{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  p{
+    margin: 5px 0px;
+  }
+  button{
+    white-space: nowrap;
+  }
+}
+.user__info{
+  width: 100%;
+}
+.info__name{
+  color: $primary-color;
+  font-weight: bold;
+  font-size: 1em;
+}
+.info__time{
+  color: $default-color;
+  font-weight: lighter;
+  font-size: 0.9em;
+}
+.info__address{
+  color: $default-color;
+  font-weight: lighter;
+  font-size: 0.9em;
+}
+.post__action{
+  color: #888;
+  .edit{
+    color: $primary-color;
+  }
+  .delete{
+    cursor: pointer;
+    color: $error-color;
+  }
+}
+//list
+.list{
+  position: relative;
+}
+.list__item{
+  cursor: pointer;
+  display: flex;
+  width: 100%;
+  height: 84px;
+  border: 1px solid #ccc;
+  margin: 10px 0px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+.list__item__image{
+  width: 84px;
+  height: 100%;
+  background-color: #eee;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+.list__item__info{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 5px 10px;
+  * {
+    margin: 0px;
+    width: 100%;
+  }
+  h5{
+    color: $primary-color;
+  }
+  h2 {
+    margin-bottom: 5px;
+  }
+  p {
+    font-weight: lighter;
+  }
+}
+//index
+.index__action{
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  border-bottom: 1px solid $default-color;
+  div {
+    padding: 0px 20px;
+    height: 36px;
+    line-height: 36px;
+    text-align: center;
+    box-sizing: border-box;
+    transition: border 0.2s;
+  }
+  div.selected{
+    color: $primary-color;
+    border-bottom: 3px solid $primary-color;
+  }
+}
 // login
 .login__container {
   position: relative;
@@ -300,13 +502,105 @@ a {
   }
 }
 //inventory
+.div--center{
+  max-width: 1024px;
+  margin-left: auto;
+  margin-right: auto;
+}
 .inventory{
   max-width: 1024px;
   margin-left: auto;
   margin-right: auto;
 }
 //trade_offer
-
+.trade_offer__container{
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  max-width: 1024px;
+  min-height: 60vh;
+  margin-left: auto;
+  margin-right: auto;
+}
+.trade_offer__inventory__container,
+.trade_offer__content__container{
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 50%;
+  min-width: 340px;
+  min-height: 400px;
+  padding: 5px;
+  box-sizing: border-box;
+}
+.trade_offer__inventory__action{
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: nowrap;
+  div {
+    height: 36px;
+    line-height: 36px;
+    text-align: center;
+    width: 50%;
+    box-sizing: border-box;
+    transition: border 0.2s;
+  }
+  div.selected{
+    color: $primary-color;
+    border-bottom: 3px solid $primary-color;
+  }
+}
+.trade_offer__inventory{
+  position: relative;
+  flex-grow: 1;
+  &>div{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    padding: 5px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-top-color: $primary-color;
+    border-radius: 0px 0px 5px 5px;
+    overflow: auto;
+    box-sizing: border-box;
+  }
+  h4 {
+    margin: 5px 0px;
+  }
+}
+.trade_offer__content{
+  width: 100%;
+  height: 300px;
+  box-sizing: border-box;
+  &>div{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+    box-sizing: border-box;
+    h4 {
+      margin: 5px 0px;
+    }
+    .trade_offer__content__list{
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
+      overflow: auto;
+    }
+  }
+  &.bottomPadding{
+    padding-bottom: 5px;
+  }
+  &.topPadding{
+    padding-top: 5px;
+  }
+}
 //form_item
 .item__form__container{
   display: flex;
@@ -332,6 +626,64 @@ a {
 .item__form{
   border-right: 1px solid #888;
 }
+.item__form__image{
+  overflow: hidden;
+  img {
+    width: 100%;
+    max-width: 100%;
+    max-height: 100%;
+  }
+}
+#itemDescription, #postContent{
+  white-space: pre-wrap;
+}
+
+// profile
+$profile-height: 150px;
+$profile-container-padding: 8px;
+.profile__container {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  height: $profile-height;
+  background-color: #fff;
+  padding: $profile-container-padding;
+  border: 1px solid $boder-color;
+  border-top-left-radius: $profile-height;
+  border-bottom-left-radius: $profile-height;
+  overflow: hidden;
+  box-sizing: border-box;
+  .avatar {
+    position: relative;
+    width: $profile-height - 2 * $profile-container-padding;
+    height: $profile-height - 2 * $profile-container-padding;
+    background-color: #ccc;
+    border-radius: $profile-height;
+    overflow: hidden;
+  }
+  .profile__info{
+    max-width: 710px;
+    flex-grow: 1;
+  }
+  p{
+    width: 100%;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    margin: 0px;
+    padding: 2px 10px;
+    color: #333;
+    box-sizing: border-box;
+  }
+  .profile__name{
+    font-size: 1.5em;
+  }
+}
+
+.profile__form__container{
+  background-color: #fff;
+}
+
 // default
 .hero-unit {
   margin: 50px auto 0 auto;

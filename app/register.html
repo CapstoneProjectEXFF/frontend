@@ -37,62 +37,46 @@
     <div class="login__form position--absolute center">
       <div class="background login__form__background"></div>
       <div class="position--relative">
-        <h1>Tạo tài khoản</h1>
-        <hr />
-        <div class="field__container hidden" id="errorNotif">
-          <span class="error">Đăng ký thất bại.</span>
-        </div>
-        <div class="field__container">
-          <label for="phoneNumber">Số điện thoại</label>
-          <input type="text" name="phoneNumber" id="phoneNumber" />
-          <p class="error hidden">Số điện thoại phải có từ 9 đến 10 chữ số.</p>
-        </div>
-        <div class="field__container">
-          <label for="password">Mật khẩu</label>
-          <input type="password" name="password" id="password" />
-          <p class="error hidden">Mật khẩu phải có từ 8 đến 50 kí tự.</p>
-        </div>
-        <div class="field__container">
-          <label for="password">Xác nhận mật khẩu</label>
-          <input type="password" name="confirmPassword" id="confirmPassword" />
-          <p class="error hidden">Không trùng với mật khẩu.</p>
-        </div>
-        <div class="field__container">
-          <label for="fullname">Họ và tên</label>
-          <input type="text" name="fullname" id="fullname" />
-          <p class="error hidden">Họ và tên không được để trống.</p>
-        </div>
-        <div class="field__container clearfix">
-          <button class="primary float-right" id="btnRegister">Đăng ký</button>
-        </div>
-        <hr />
-        <div class="field__container clearfix">
-          <a class="primary float-right" href="./login.html">Đăng nhập</a>
-          <span class="float-right">&nbsp;|&nbsp;</span>
-          <a class="primary float-right" href="/">Về trang chủ</a>
-        </div>
+        <form action="#" id="form">
+          <h1>Tạo tài khoản</h1>
+          <hr />
+          <div class="field__container hidden" id="errorNotif">
+            <span class="error">Đăng ký thất bại.</span>
+          </div>
+          <div class="field__container">
+            <label for="phoneNumber">Số điện thoại</label>
+            <input type="text" name="phoneNumber" id="phoneNumber" />
+            <p class="error hidden">Số điện thoại phải có từ 9 đến 10 chữ số.</p>
+          </div>
+          <div class="field__container">
+            <label for="password">Mật khẩu</label>
+            <input type="password" name="password" id="password" />
+            <p class="error hidden">Mật khẩu phải có từ 8 đến 50 kí tự.</p>
+          </div>
+          <div class="field__container">
+            <label for="password">Xác nhận mật khẩu</label>
+            <input type="password" name="confirmPassword" id="confirmPassword" />
+            <p class="error hidden">Không trùng với mật khẩu.</p>
+          </div>
+          <div class="field__container">
+            <label for="fullname">Họ và tên</label>
+            <input type="text" name="fullname" id="fullname" />
+            <p class="error hidden">Họ và tên không được để trống.</p>
+          </div>
+          <div class="field__container clearfix">
+            <button class="primary float-right" id="btnRegister">Đăng ký</button>
+          </div>
+          <hr />
+          <div class="field__container clearfix">
+            <a class="primary float-right" href="./login.html">Đăng nhập</a>
+            <span class="float-right">&nbsp;|&nbsp;</span>
+            <a class="primary float-right" href="/">Về trang chủ</a>
+          </div>
+        </form>
       </div>
     </div>
   </div>
 
-  <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
-  <script>
-    (function (b, o, i, l, e, r) {
-      b.GoogleAnalyticsObject = l;
-      b[l] ||
-        (b[l] = function () {
-          (b[l].q = b[l].q || []).push(arguments);
-        });
-      b[l].l = +new Date();
-      e = o.createElement(i);
-      r = o.getElementsByTagName(i)[0];
-      e.src = "https://www.google-analytics.com/analytics.js";
-      r.parentNode.insertBefore(e, r);
-    })(window, document, "script", "ga");
-    ga("create", "UA-XXXXX-X");
-    ga("send", "pageview");
-
-  </script>
 
   <!-- build:js scripts/vendor/jquery.js -->
   <!-- bower:js -->
@@ -110,7 +94,8 @@
   <!-- endbuild -->
   <script>
     $(document).ready(() => {
-      $("#btnRegister").click(() => {
+      $("#form").submit((event) => {
+        event.preventDefault();
         if (validate()) {
           let phoneNumber = $("#phoneNumber").val();
           let password = $("#password").val();

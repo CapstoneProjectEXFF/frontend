@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Exff | Item</title>
+  <title>Exff | Donation post</title>
 
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <!-- Place favicon.ico in the root directory -->
@@ -78,23 +78,22 @@
         <p id="date"></p>
         <hr />
 
-        <h1 id="itemName"></h1>
+        <h1>Quyên góp</h1>
         <br />
-        <p>
+        <!-- <p>
           <i class="fas fa-box"></i>
           <span id="itemCategory"></span>
-        </p>
+        </p> -->
         <p>
           <i class="fas fa-map-marker"></i>
-          <span id="itemAddress"></span>
+          <span id="address"></span>
         </p>
         <br>
-        <p><b>Thông tin:</b></p>
-        <p id="itemDescription"></p>
+        <p id="postContent"></p>
         <hr />
         <div class="clearfix">
           <a class="reset" id="tradeOfferLink" style="display: none;">
-            <button class="primary float-right">Yêu cầu trao đổi</button>
+            <button class="primary float-right">Quyên góp</button>
           </a>
         </div>
       </div>
@@ -125,7 +124,7 @@
   <script src="scripts/main.js"></script>
   <script src="scripts/menubar.js"></script>
   <script src="scripts/validation.js"></script>
-  <script src="scripts/item.js"></script>
+  <script src="scripts/donation-post.js"></script>
   <script src="scripts/login.js"></script>
   <script src="scripts/register.js"></script>
   <!-- endbuild -->
@@ -134,40 +133,36 @@
       let urlParams = new URLSearchParams(window.location.search);
       if (urlParams.has("id")) {
         let id = urlParams.get("id");
-        getItem(
+        getDonationPost(
           id,
-          getItemSuccess,
-          getItemFalse
+          getDonationPostSuccess,
+          getDonationPostFalse
         );
       } else {
         window.location.replace("./error404.html");
       }
     });
-    function getItemSuccess(data) {
+    function getDonationPostSuccess(data) {
       const user = $("#user");
       const date = $("#date");
-      const category = $("#itemCategory");
-      const name = $("#itemName");
-      const description = $("#itemDescription");
-      const address = $("#itemAddress");
+      const address = $("#address");
+      const postContent = $("#postContent");
       const image = $("#image");
       const tradeOfferLink = $("#tradeOfferLink");
       let time = moment(data.createTime).format("DD/MM/YYYY");
       user.text(data.user.fullName);
       date.text(time);
-      category.text(data.category.name);
-      name.text(data.name);
-      description.text(data.description);
       address.text(data.address);
+      postContent.text(data.content);
       if (data.user.id != getUserId()) {
         tradeOfferLink.show();
-        tradeOfferLink.attr("href", `./tradeoffer-send.html?userId=${data.user.id}&itemId=${data.id}`)
+        tradeOfferLink.attr("href", `./tradeoffer.html?userId=${data.user.id}`)
       }
       if (data.images != null && data.images.length > 0) {
         image.attr('src',data.images[0].url);
       }
     };
-    function getItemFalse(err) {
+    function getDonationPostFalse(err) {
       // console.log(err);
       window.location.href("./error404.html");
     };

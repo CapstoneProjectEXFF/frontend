@@ -18,7 +18,7 @@
   <!-- build:css styles/main.css -->
   <link rel="stylesheet" href="styles/main.css">
   <!-- endbuild -->
-  <!-- build:css styles/font-awesome.css -->
+  <!-- build:css vendor/font-awesome/css/font-awesome.min.css -->
   <link rel="stylesheet" href="/bower_components/Font-Awesome/css/all.min.css">
   <!-- endbuild -->
 
@@ -29,8 +29,8 @@
 
 <body>
   <!--[if lt IE 10]>
-      <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-    <![endif]-->
+    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+  <![endif]-->
   <div class="menu_bar__container">
     <div class="menu_bar">
       <div class="icon">
@@ -46,10 +46,10 @@
       <div class="search_bar">
         <input type="text" name="searchItem" id="searchItem" placeholder="Search..." />
       </div>
-      <div class="menu_bar__icon">
+      <div class="menu_bar__icon" id="btnBell">
         <i class="fas fa-bell"></i>
       </div>
-      <div class="menu_bar__icon">
+      <div class="menu_bar__icon" id="btnFriend">
         <i class="fas fa-user-plus"></i>
       </div>
       <div class="menu_bar__icon">
@@ -57,7 +57,7 @@
           <i class="fas fa-boxes"></i>
         </a>
       </div>
-      <div class="user_icon">
+      <div class="user_icon" id="userInfoIcon">
         <a class="reset" href="./login.html">
           <i class="fas fa-user-circle"></i>
         </a>
@@ -65,15 +65,38 @@
     </div>
   </div>
 
-  <div class="inventory">
-    <div class="field__container clearfix">
-      <a class="reset" href="./form-item.html">
-        <button class="primary float-right" id="btnAddItem">Thêm đồ dùng</button>
+  <br>
+
+  <div class="div--center profile__container">
+    <div class="avatar">
+      <div class="background" id="avatar" style="background-image: url('./images/no-image-icon-13.png')"></div>
+    </div>
+    <div class="profile__info">
+      <p class="profile__name" id="userName">tên</p>
+      <p class="profile__phonenumber"><b>Số điện thoại: </b><span id="userPhoneNum"></span></p>
+      <!-- <p class="profile__address" id="userAddress">địa chỉ</p> -->
+      <p class="profile__item"><b id="userItemNum"></b> đồ vật</p>
+    </div>
+    <div class="profile__action">
+      <a href="./profile.html" class="primary">
+        <i class="fas fa-edit"></i>
+        Chỉnh sửa thông tin
       </a>
     </div>
   </div>
-  <br>
-  <div></div>
+
+  <div class="inventory">
+    <div class="field__container clearfix">
+      <div class="float-right">
+        <a class="reset" href="./form-item.html">
+          <button class="primary" id="btnAddItem">Thêm đồ dùng</button>
+        </a>
+        <a class="reset" href="./form-donation-post.html">
+          <button class="primary" id="btnAddDonationPost">Tạo từ thiện</button>
+        </a>
+      </div>
+    </div>
+  </div>
   <div class="inventory card__container" id="inventory">
   </div>
 
@@ -87,6 +110,7 @@
 
   <!-- build:js scripts/main.js -->
   <script src="scripts/main.js"></script>
+  <script src="scripts/menubar.js"></script>
   <script src="scripts/validation.js"></script>
   <script src="scripts/item.js"></script>
   <script src="scripts/login.js"></script>
@@ -94,15 +118,19 @@
   <!-- endbuild -->
   <script>
     $(document).ready(() => {
+      renderUserInfo(getUserInfo());
       getItemsByUserId(
         getUserId(),
+        ITEM_ENABLE,
         getItemsSuccess,
         getItemsFalse
       );
     });
     function getItemsSuccess(data) {
       const inventoryTag = $("#inventory");
+      const itemNumTag = $("#userItemNum");
       inventoryTag.html("");
+      itemNumTag.text(data.length);
       if (data.length === 0) {
         inventoryTag.html("<h1>Không có đồ dùng nào.</h1>");
       }
@@ -115,6 +143,13 @@
       const inventoryTag = $("#inventory");
       inventoryTag.html("<h1>Không có đồ dùng nào.</h1>");
     };
+    function renderUserInfo(user) {
+      $('#userName').text(user.fullName);
+      $('#userPhoneNum').text(user.phoneNumber);
+      if (user.avatar !== undefined && user.avatar !== null) {
+        $('#avatar').css('background-image', `url('${user.avatar}'`);
+      }
+    }
   </script>
 </body>
 

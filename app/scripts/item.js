@@ -6,6 +6,7 @@ function addItem(
   description,
   address,
   privacy,
+  urls = [],
   successCallback = DEFAULT_FUNCTION,
   failCallback = DEFAULT_FUNCTION
 ) {
@@ -15,7 +16,8 @@ function addItem(
     'name': name,
     'description': description,
     'address': address,
-    'privacy': privacy
+    'privacy': privacy,
+    'urls': urls
   };
   let options = {
     method: 'POST',
@@ -50,6 +52,7 @@ function updateItem(
   description,
   address,
   privacy,
+  urls = [],
   successCallback = DEFAULT_FUNCTION,
   failCallback = DEFAULT_FUNCTION
 ) {
@@ -60,7 +63,9 @@ function updateItem(
     'name': name,
     'description': description,
     'address': address,
-    'privacy': privacy
+    'privacy': privacy,
+    'newUrls': urls,
+    'removedUrlIds': []
   };
   let options = {
     method: 'PUT',
@@ -116,6 +121,34 @@ function getItem(
     });
 }
 
+function getItemsByStatus(
+  status = ITEM_ENABLE,
+  successCallback = DEFAULT_FUNCTION,
+  failCallback = DEFAULT_FUNCTION
+) {
+  let url = API_URL + ITEM_URL + `?status=${status}`;
+  let options = {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    }
+  };
+  fetch(url, options)
+    .then((response) => {
+      if (!response.ok) {
+        var error = new Error(response.statusText);
+        error.response = response;
+        throw error;
+      }
+      return response.json();
+    }).then((responseJson) => {
+      successCallback(responseJson);
+    })
+    .catch(err => {
+      failCallback(err);
+    });
+}
 function getItems(
   successCallback = DEFAULT_FUNCTION,
   failCallback = DEFAULT_FUNCTION
@@ -145,10 +178,11 @@ function getItems(
 }
 function getItemsByUserId(
   userId,
+  status = ITEM_ENABLE,
   successCallback = DEFAULT_FUNCTION,
   failCallback = DEFAULT_FUNCTION
 ) {
-  let url = API_URL + `/user/${userId}` + ITEM_URL;
+  let url = API_URL + `/user/${userId}` + ITEM_URL + `?status=${status}`;
   let options = {
     method: 'GET',
     headers: {
@@ -171,20 +205,59 @@ function getItemsByUserId(
       failCallback(err);
     });
 }
+function createTradeOfferIventoryItem(item, isSelected = false) {
+  const image = (item.images[0] !== null && item.images[0] !== undefined)
+    ? (item.images[0].url)
+    : ('./images/no-image-icon-13.png');
+  const notDisplay = (isSelected) ? 'style="display:none"' : '';
+  return (
+    `<div class="list__item" id="item${item.id}" onclick="selectItem(${item.id},${item.user.id})" ${notDisplay}>
+      <div class="list__item__image position--relative">
+        <div class="background" style="background-image: url(${image})"></div>
+      </div>
+      <div class="list__item__info">
+          <h5 class="ellipsis">${item.category.name}</h5>
+          <h2 class="ellipsis">${item.name}</h2>
+          <p class="ellipsis"><i>${moment(item.createTime).format("DD/MM/YYYY")}</i></p>
+        </div>
+    </div>`
+  );
+}
+function createTradeOfferContentItem(item, isClickable = false) {
+  const image = (item.images[0] !== null && item.images[0] !== undefined)
+    ? (item.images[0].url)
+    : ('./images/no-image-icon-13.png');
+  const onclickaction = (isClickable) ? `onclick="deselectItem(${item.id},${item.user.id})"` : '';
+  return (
+    `<div class="list__item" id="selectItem${item.id}" ${onclickaction}>
+      <div class="list__item__image position--relative">
+        <div class="background" style="background-image: url(${image})"></div>
+      </div>
+      <div class="list__item__info">
+          <h5 class="ellipsis">${item.category.name}</h5>
+          <h2 class="ellipsis">${item.name}</h2>
+          <p class="ellipsis"><i>${moment(item.createTime).format("DD/MM/YYYY")}</i></p>
+        </div>
+    </div>`
+  );
+}
 function createItemCard(item, isEdit = false) {
-  let action = isEdit?(
+  const image = (item.images[0] !== null && item.images[0] !== undefined)
+    ? (item.images[0].url)
+    : ('./images/no-image-icon-13.png');
+  const action = isEdit ? (
     `<hr>
     <div class="card__action clearfix">
       <a class="primary float-right" href="./form-item.html?id=${item.id}">
         <i class="fas fa-edit"></i> Edit
       </a>
     </div>`
-  ):'';
+  ) : '';
   return (
     `<div class="card">
       <a class="reset" href="./item.html?id=${item.id}">
         <div class="card__image position--relative">
-          <div class="background" style="background-image: url()"></div>
+          <div class="background" style="background-image: url(${image})"></div>
         </div>
         <div class="card__info">
           <h3 class="ellipsis">${item.name}</h3>
@@ -195,7 +268,7 @@ function createItemCard(item, isEdit = false) {
     </div>`
   );
 }
-{/* <span class="delete float-right">
+/* <span class="delete float-right">
       <i class="fas fa-trash"></i> Delete
     </span>
-    <span class="float-right">&nbsp;&nbsp;|&nbsp;&nbsp;</span> */}
+    <span class="float-right">&nbsp;&nbsp;|&nbsp;&nbsp;</span> */
