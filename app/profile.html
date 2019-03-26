@@ -25,6 +25,8 @@
   <!-- build:js scripts/vendor/modernizr.js -->
   <script src="/bower_components/modernizr/modernizr.js"></script>
   <!-- endbuild -->
+  <!-- firebase -->
+  <script src="https://www.gstatic.com/firebasejs/5.8.5/firebase.js"></script>
 </head>
 
 <body>
@@ -68,15 +70,65 @@
   <br>
   <div class="div--center profile__form__container">
     <div>
-
+      <h2>Thông tin tài khoản</h2>
+      <div class="field__container hidden" id="errorNotif">
+        <span class="error">Sửa thất bại.</span>
+      </div>
+      <div class="field__container hidden" id="successNotif">
+        <span class="success">Cập nhập thành công.</span>
+      </div>
+      <div class="field__container">
+        <label for="image">Avatar</label>
+        <input type="file" name="image" id="image" accept="image/*">
+      </div>
+      <img class="avatar" id="imageUploaded" />
+    </div>
+    <div>
+      <form action="#" id="formInfor">
+        <input type="hidden" name="avatar" id="avatar" />
+        <div class="field__container">
+          <label for="phoneNumber">Số điện thoại</label>
+          <input type="text" name="phoneNumber" id="phoneNumber" disabled />
+        </div>
+        <div class="field__container">
+          <label for="fullname">Họ và tên</label>
+          <input type="text" name="fullname" id="fullname" />
+          <p class="error hidden">Họ và tên không được để trống.</p>
+        </div>
+        <div class="field__container clearfix">
+          <button class="primary float-right">Cập nhập</button>
+        </div>
+      </form>
     </div>
     <hr>
     <div>
-
-    </div>
-    <hr>
-    <div>
-      
+      <form action="#" id="formPassword">
+        <h2>Thay đổi mật khẩu</h2>
+        <div class="field__container hidden" id="errorPasswordNotif">
+          <span class="error">Thay đổi thất bại, mật khẩu cũ không chính xác.</span>
+        </div>
+        <div class="field__container hidden" id="successPasswordNotif">
+          <span class="success">Thay đổi thành công.</span>
+        </div>
+        <div class="field__container">
+          <label for="oldPassword">Mật khẩu cũ</label>
+          <input type="password" name="oldPassword" id="oldPassword" />
+          <p class="error hidden">Mật khẩu phải có từ 8 đến 50 kí tự.</p>
+        </div>
+        <div class="field__container">
+          <label for="password">Mật khẩu mới</label>
+          <input type="password" name="password" id="password" />
+          <p class="error hidden">Mật khẩu phải có từ 8 đến 50 kí tự.</p>
+        </div>
+        <div class="field__container">
+          <label for="password">Xác nhận mật khẩu mới</label>
+          <input type="password" name="confirmPassword" id="confirmPassword" />
+          <p class="error hidden">Không trùng với mật khẩu.</p>
+        </div>
+        <div class="field__container clearfix">
+          <button class="primary float-right">Cập nhập</button>
+        </div>
+      </form>
     </div>
   </div>
 
@@ -97,11 +149,95 @@
   <script src="scripts/donation-post.js"></script>
   <script src="scripts/login.js"></script>
   <script src="scripts/register.js"></script>
+  <script src="scripts/user.js"></script>
+  <!-- endbuild -->
+  <!-- build:js scripts/firebase-image.js -->
+  <script src="scripts/firebase-image.js"></script>
   <!-- endbuild -->
   <script>
     $(document).ready(() => {
-
+      getUser(
+        initForm
+      );
+      $("#formInfor").submit((event) => {
+        event.preventDefault();
+        if (checkRequire('#fullname')) {
+          let avatar = $("#avatar").val();
+          let fullName = $("#fullname").val();
+          let data = {
+            "avatar": avatar,
+            "fullName": fullName
+          }
+          updateUser(data, updateSuccess, updateFails);
+        }
+      });
+      $("#formPassword").submit((event) => {
+        event.preventDefault();
+        if (validatePasswordForm()) {
+          let oldPassword = $("#oldPassword").val();
+          let password = $("#password").val();
+          let data = {
+            "oldPassword": oldPassword,
+            "newPassword": password
+          }
+          updateUserPasword(data, updatePasswordSuccess, updatePasswordFails);
+        }
+      });
+      $("#oldPassword").focusout(() => {
+        checkRegex('#oldPassword', /^.{8,50}$/);
+      });
+      $("#password").focusout(() => {
+        checkRegex('#password', /^.{8,50}$/);
+      });
+      $("#confirmPassword").focusout(() => {
+        checkMatch('#confirmPassword', $("#password").val());
+      });
+      $("#fullname").focusout(() => {
+        checkRequire('#fullname');
+      });
+      $("#image").change(uploadImage);
     });
+    function initForm(user) {
+      $("#phoneNumber").val(user.phoneNumber);
+      $("#avatar").val(user.avatar);
+      $("#fullname").val(user.fullName);
+      $("#imageUploaded").attr('src', user.avatar);
+    }
+    function validatePasswordForm() {
+      return checkRegex('#oldPassword', /^.{8,50}$/) &&
+        checkRegex('#password', /^.{8,50}$/) &&
+        checkMatch('#confirmPassword', $("#password").val());
+    }
+    function updateSuccess(data) {
+      $("#successNotif").show();
+      $("#errorNotif").hide();
+    }
+
+    function updateFails(err) {
+      $("#errorNotif").show();
+      $("#successNotif").hide();
+    }
+    function updatePasswordSuccess(data) {
+      $("#successPasswordNotif").show();
+      $("#errorPasswordNotif").hide();
+      localStorage.removeItem('EXFF_TOKEN');
+      localStorage.removeItem('ID');
+      localStorage.removeItem('USER_INFO');
+      window.location.replace('./login.html');
+    }
+
+    function updatePasswordFails(err) {
+      $("#errorPasswordNotif").show();
+      $("#successPasswordNotif").hide();
+    }
+    function uploadImage(event) {
+      const file = event.target.files[0];
+      uploadImageToFirebase(file, showImage);
+    }
+    function showImage(url) {
+      $("#avatar").val(url);
+      $("#imageUploaded").attr('src', url);
+    }
   </script>
 </body>
 
