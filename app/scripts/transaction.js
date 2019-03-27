@@ -24,6 +24,10 @@ function addTransaction(
   successCallback = DEFAULT_FUNCTION,
   failCallback = DEFAULT_FUNCTION
 ) {
+  if (details.length <= 0) {
+    failCallback("Empty details");
+    return;
+  }
   let url = API_URL + TRANSACTION_URL;
   let data = {
     'transaction': {
@@ -156,6 +160,10 @@ function updateTransaction(
   successCallback = DEFAULT_FUNCTION,
   failCallback = DEFAULT_FUNCTION
 ) {
+  if (details.length <= 0) {
+    failCallback("Empty details");
+    return;
+  }
   let url = API_URL + TRANSACTION_URL;
   let data = {
     'transaction': {

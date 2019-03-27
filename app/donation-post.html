@@ -156,7 +156,7 @@
       postContent.text(data.content);
       if (data.user.id != getUserId()) {
         tradeOfferLink.show();
-        tradeOfferLink.attr("href", `./tradeoffer.html?userId=${data.user.id}`)
+        tradeOfferLink.attr("href", `./donation-send.html?donationPostId=${data.id}`)
       }
       if (data.images != null && data.images.length > 0) {
         image.attr('src',data.images[0].url);
