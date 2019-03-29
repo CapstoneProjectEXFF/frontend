@@ -136,7 +136,9 @@
   <script src="scripts/transaction.js"></script>
   <!-- endbuild -->
   <script>
-    const socket = io("http://35.247.191.68:3000");
+    //const socket = io("http://35.247.191.68:3000");
+    const socket = io("http://localhost:3000");
+    let roomInfo;
     let roomName;
     $(document).ready(() => {
       $('#chatForm').submit(function (e) {
@@ -155,9 +157,14 @@
     });
     function socketConnect() {
       roomName = `${USER_ID}${receiverId}${new Date().getTime()}`;
+      roomInfo = {
+         room: roomName,
+         userA: `${USER_ID}`,
+         userB: `${receiverId}`
+      }
       socket.emit(
         "room",
-        roomName
+        roomInfo
       );
     }
     function socketSendTradeInfo(userId, itemId, action = "add-item") {
@@ -167,6 +174,16 @@
         'room': roomName
       };
       socket.emit(action, tradeInfo);
+    }
+
+    function socketSendTradeInfo(userId, itemId, action) {
+      let tradeInfo = {
+        'userId': userId,
+        'itemId': itemId,
+        'room': roomName
+      };
+      socket.emit(action, tradeInfo);
+      console.log(action)
     }
   </script>
   <script>
@@ -292,12 +309,12 @@
       const selectItemTag = $("#selectItem" + itemId);
       itemTag.show();
       selectItemTag.remove();
-      if (userId == USER_ID) {
-        sendedItems = sendedItems.filter(item => item.id != itemId);
-      } else {
-        receivedItems = receivedItems.filter(item => item.id != itemId);
-      }
-      socketSendTradeInfo(item.user.id, item.id, "remove-item");
+      //if (userId == USER_ID) {
+      //  sendedItems = sendedItems.filter(item => item.id != itemId);
+      //} else {
+      //  receivedItems = receivedItems.filter(item => item.id != itemId);
+      //}
+      socketSendTradeInfo(userId, itemId, "remove-item");
       deleteItem = details.find(detail => detail.itemId === itemId && detail.id !== undefined);
       delete deleteItem.transactionId;
     }
