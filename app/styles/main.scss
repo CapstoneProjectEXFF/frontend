@@ -15,6 +15,7 @@ $card-padding: 10px;
 // general
 @import 'general';
 
+@import 'flexstyle';
 // scroll
 @import 'scroll';
 // background
@@ -36,6 +37,9 @@ $card-padding: 10px;
 
 //list
 @import 'listitem';
+
+//user profile, list_user
+@import 'userprofile';
 
 //index
 .index__action{

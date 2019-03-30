@@ -149,7 +149,7 @@ $(document).ready(() => {
   const userInforIcon = $('#userInfoIcon');
   const userInfo = getUserInfo();
   if (userInfo != null) {
-    userInforIcon.html(renderUserInfo(userInfo.fullName));
+    userInforIcon.html(renderUserAvatar(userInfo.avatar));
   } else {
     userInforIcon.html(renderLogin());
   }
@@ -162,11 +162,15 @@ function renderLogin() {
     </a>
   `;
 }
-function renderUserInfo(name) {
+function renderUserAvatar(avatar) {
+  const image = (avatar !== null && avatar !== undefined)
+    ? (avatar)
+    : ('./images/no-image-icon-13.png');
   return `
-    <span style="font-size:0.8em">
-      ${name}
-    </span>
+    <div class="avatar">
+      <div class="background" style="background-image: url(${image});"></div>
+    </div>
+    <span>&nbsp;</span>
     <a class="reset" href="./login.html" onclick="logout()">
       <i class="fas fa-sign-out-alt"></i>
     </a>

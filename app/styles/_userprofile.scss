@@ -1,0 +1,47 @@
+$user-avatar-size: 84px;
+$list-user-padding: 10px;
+.list__user{
+  position: relative;
+  cursor: pointer;
+  width: 100%;
+  min-height: 104px;
+  border: 1px solid #ccc;
+  margin: 10px 0px;
+  overflow: hidden;
+  box-sizing: border-box;
+  &.margin--none{
+    margin: 0px;
+  }
+}
+
+.list__user__image{
+  position: absolute;
+  width: $user-avatar-size;
+  height: $user-avatar-size;
+  left: 10px;
+  top: 10px;
+  border-radius: 100vh;
+  overflow: hidden;
+  background-color: #eee;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+.list__user__info{
+  padding: 10px 10px;
+  padding-left: $user-avatar-size + $list-user-padding + 10px;
+  overflow: auto;
+  h3, h5, p {
+    margin: 0px;
+    // width: 100%;
+  }
+  h3{
+    color: $primary-color;
+  }
+  h5 {
+    margin-bottom: 5px;
+  }
+  p {
+    font-weight: lighter;
+  }
+}

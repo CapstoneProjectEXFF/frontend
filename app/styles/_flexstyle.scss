@@ -1,0 +1,15 @@
+.flex {
+  display: flex;
+}
+.flex_vertical{
+  flex-direction: column;
+}
+.flex_no_wrap {
+  flex-wrap: nowrap;
+}
+.flex_grow__0{
+  flex-grow: 0;
+}
+.flex_grow__1{
+  flex-grow: 1;
+}

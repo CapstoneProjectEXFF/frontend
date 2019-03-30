@@ -113,15 +113,22 @@ function createUserCard(user) {
   const image = (user.avatar !== null && user.avatar !== undefined)
     ? (user.avatar)
     : ('./images/no-image-icon-13.png');
+  const addFriendButton = (user.id + '' !== getUserId())
+    ? `<div><button class="primary size--mini">Thêm bạn</button></div>`
+    : '';
   return (
-    `<div class="list__item" id="user${user.id}">
-      <div class="list__item__image position--relative">
+    `<div class="list__user background--color-white" id="user${user.id}">
+      <div class="list__user__image position--relative">
         <div class="background" style="background-image: url(${image})"></div>
       </div>
-      <div class="list__item__info">
-        <h5 class="ellipsis">${user.fullName}</h5>
-        <h2 class="ellipsis">${user.phoneNumber}</h2>
-        <button class="primary">Thêm bạn</button>
+      <div class="list__user__info">
+        <div class="flex flex_no_wrap">
+          <div class="flex flex_vertical flex_grow__1">
+            <h3 class="ellipsis">${user.fullName}</h3>
+            <h5 class="ellipsis">${user.phoneNumber}</h5>
+          </div>
+          ${addFriendButton}
+        </div>
       </div>
     </div>`
   );
@@ -131,13 +138,13 @@ function createChatRoom(user) {
     ? (user.avatar)
     : ('./images/no-image-icon-13.png');
   return (
-    `<div class="list__item" id="user${user.id}">
-      <div class="list__item__image position--relative">
+    `<div class="list__user" id="user${user.id}">
+      <div class="list__user__image position--relative">
         <div class="background" style="background-image: url(${image})"></div>
       </div>
-      <div class="list__item__info">
-        <h5 class="ellipsis">${user.fullName}</h5>
-        <h2 class="ellipsis">${user.phoneNumber}</h2>
+      <div class="list__user__info">
+        <h3 class="ellipsis">${user.fullName}</h3>
+        <h5 class="ellipsis">${user.phoneNumber}</h5>
       </div>
     </div>`
   );

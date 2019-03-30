@@ -44,6 +44,21 @@
       right: 0;
     }
   }
+  .user_icon{
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+  }
+  .avatar {
+    position: relative;
+    display: inline-block;
+    width: 36px;
+    height: 36px;
+    border-radius: 100vh;
+    box-sizing: border-box;
+    overflow: hidden;
+    background-color: $default-color;
+  }
 }
 
 $distance: 32px;
