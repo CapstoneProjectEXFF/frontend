@@ -31,3 +31,25 @@ function getUserId() {
 function getUserInfo() {
   return JSON.parse(localStorage.getItem('USER_INFO'));
 }
+
+function fetchApi(
+  url,
+  options,
+  successCallback,
+  failCallback
+) {
+  fetch(url, options)
+    .then((response) => {
+      if (!response.ok) {
+        var error = new Error(response.statusText);
+        error.response = response;
+        throw error;
+      }
+      return response.json();
+    }).then((responseJson) => {
+      successCallback(responseJson);
+    })
+    .catch(err => {
+      failCallback(err);
+    });
+}

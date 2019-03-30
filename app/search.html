@@ -70,18 +70,15 @@
   <br>
   <br>
   <div>
-    <div class="div--center index__action">
-      <div onclick="show('#itemsContainer')" class="selected" id="itemsContainerTab">Đô dùng</div>
-      <div onclick="show('#postsContainer')" id="postsContainerTab">Từ thiện</div>
+    <div>
+      <div class="div--center card__container" id="users"></div>
     </div>
-  </div>
-  <div>
-    <div id="itemsContainer">
+    <div>
       <div class="div--center card__container" id="items"></div>
     </div>
-    <div id="postsContainer">
-      <div class="div--center post__container" id="donationPosts"></div>
-    </div>
+    <div></div>
+    <div class="div--center post__container" id="donationPosts"></div>
+  </div>
   </div>
 
   <!-- build:js scripts/vendor/jquery.js -->
@@ -101,23 +98,52 @@
   <script src="scripts/donation-post.js"></script>
   <script src="scripts/login.js"></script>
   <script src="scripts/register.js"></script>
+  <script src="scripts/user.js"></script>
   <!-- endbuild -->
   <script>
+    let searchValue;
     $(document).ready(() => {
-      getItemsByStatus(
-        ITEM_ENABLE,
-        getItemsSuccess,
-        getItemsFalse
-      );
-      getDonationPosts(
-        0,
-        10,
-        getDonationPostsSuccess,
-        getDonationPostsFalse,
-      );
-      $("#itemsContainer").show();
-      $("#postsContainer").hide();
+      let urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has("search")) {
+        searchValue = urlParams.get("search");
+        $('#inputSearch').val(searchValue);
+      } else if (urlParams.has("phone")) {
+        searchValue = urlParams.get("phone");
+        $('#inputSearch').val(searchValue);
+        findUserByPhone(
+          searchValue,
+          getUserSuccess,
+          getUserFalse
+        );
+      }
+
+      // getItemsByStatus(
+      //   ITEM_ENABLE,
+      //   getItemsSuccess,
+      //   getItemsFalse
+      // );
+      // getDonationPosts(
+      //   0,
+      //   10,
+      //   getDonationPostsSuccess,
+      //   getDonationPostsFalse,
+      // );
+      // $("#itemsContainer").show();
+      // $("#postsContainer").hide();
     });
+    function getUserSuccess(data) {
+      const usersTag = $("#users");
+      usersTag.html("");
+      if (data === null) {
+        usersTag.html("<h1>Không tìm thấy người nào.</h1>");
+      }
+        const card = createUserCard(data);
+        usersTag.append(card);
+    };
+    function getUserFalse(err) {
+      const usersTag = $("#users");
+      usersTag.html("<h1>Không tìm thấy người nào.</h1>");
+    };
     function getItemsSuccess(data) {
       const itemsTag = $("#items");
       itemsTag.html("");
@@ -150,13 +176,13 @@
       donationPostsTag.html("<h1>Không có bài viết nào.</h1>");
     };
 
-    function show(tagId) {
-      const hideTagId = tagId === "#itemsContainer" ? "#postsContainer" : "#itemsContainer";
-      $(tagId).show();
-      $(tagId + "Tab").addClass("selected");
-      $(hideTagId).hide();
-      $(hideTagId + "Tab").removeClass("selected");
-    }
+    // function show(tagId) {
+    //   const hideTagId = tagId === "#itemsContainer" ? "#postsContainer" : "#itemsContainer";
+    //   $(tagId).show();
+    //   $(tagId + "Tab").addClass("selected");
+    //   $(hideTagId).hide();
+    //   $(hideTagId + "Tab").removeClass("selected");
+    // }
   </script>
 </body>
 

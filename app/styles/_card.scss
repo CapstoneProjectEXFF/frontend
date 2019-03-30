@@ -1,0 +1,40 @@
+.card__container{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+.card {
+  width: $card-width;
+  background-color: #fff;
+  margin: $card-margin;
+  padding: $card-padding;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+.card__image{
+  width: 100%;
+  height: $card-heigh;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+.card__info{
+  width: 100%;
+  color: #333;
+  *{
+    width: 100%;
+    margin: 5px 0px;
+  }
+}
+.card__action{
+  color: #888;
+  .edit{
+    color: $primary-color;
+  }
+  .delete{
+    cursor: pointer;
+    color: $error-color;
+  }
+}

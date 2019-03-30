@@ -64,7 +64,17 @@ $(document).ready(() => {
   });
 });
 // friend relationship -----------------------------
-
+function renderRelationshipNotifContainer(popupId, containerId) {
+  return `
+    <div class="notification__popup" id="${popupId}" style="display:none">
+      <div>
+        <a class="primary" href="./chat.html">Chat</a>
+      </div>
+      <hr>
+      <div class="notification__container" id="${containerId}"></div>
+    </div>
+    `;
+}
 function renderRelationshipNotif(notif) {
   return `
     <div class="notification" id="relationship${notif.id}">
@@ -88,7 +98,7 @@ function renderRelationshipNotifList(notifs) {
   relationshipNotif = notifs;
   const notificationContainer = $(`#${relationshipNotifContainerTagId}`);
   if (notifs.length <= 0) {
-    notificationContainer.html('Không có yêu cầu kết bạn nào.');
+    notificationContainer.html('<p style="text-align:center;">Không có yêu cầu kết bạn nào.</p>');
   } else {
     notificationContainer.html('');
     notifs.forEach(notif => {
@@ -114,7 +124,7 @@ function confirmAddFriend(id) {
 $(document).ready(() => {
   const btnFriend = $('#btnFriend');
   btnFriend.append(
-    renderNotificationContainer(
+    renderRelationshipNotifContainer(
       relationshipNotifPopupTagId,
       relationshipNotifContainerTagId
     )
@@ -172,3 +182,17 @@ function logout() {
 
 // render menubar
 
+// search form
+
+$(document).ready(() => {
+  const searchForm = $('#searchForm');
+  searchForm.submit((event) => {
+    event.preventDefault();
+    const inputSearch = $('#inputSearch').val();
+    if (/^[0-9]{1,10}$/.test(inputSearch)){
+      window.location.replace(`./search.html?phone=${inputSearch}`);
+    } else {
+      window.location.replace(`./search.html?search=${inputSearch}`);
+    }
+  });
+});

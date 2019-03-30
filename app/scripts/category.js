@@ -12,18 +12,10 @@ function getCategory(
       'Content-Type': 'application/json'
     }
   };
-  fetch(url, options)
-    .then((response) => {
-      if (!response.ok) {
-        var error = new Error(response.statusText);
-        error.response = response;
-        throw error;
-      }
-      return response.json();
-    }).then((responseJson) => {
-      successCallback(responseJson);
-    })
-    .catch(err => {
-      failCallback(err);
-    });
+  fetchApi(
+    url,
+    options,
+    successCallback,
+    failCallback
+  );
 }

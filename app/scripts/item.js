@@ -28,21 +28,12 @@ function addItem(
       'Authorization': getAuthentoken()
     }
   };
-  fetch(url, options)
-    .then((response) => {
-      if (!response.ok) {
-        var error = new Error(response.statusText);
-        error.response = response;
-        throw error;
-      }
-      return response.json();
-    }).then((responseJson) => {
-      const json = responseJson;
-      successCallback(responseJson);
-    })
-    .catch(err => {
-      failCallback(err);
-    });
+  fetchApi(
+    url,
+    options,
+    successCallback,
+    failCallback
+  );
 }
 
 function updateItem(
@@ -76,20 +67,12 @@ function updateItem(
       'Authorization': getAuthentoken()
     }
   };
-  fetch(url, options)
-    .then((response) => {
-      if (!response.ok) {
-        var error = new Error(response.statusText);
-        error.response = response;
-        throw error;
-      }
-      return response.json();
-    }).then((responseJson) => {
-      successCallback(responseJson);
-    })
-    .catch(err => {
-      failCallback(err);
-    });
+  fetchApi(
+    url,
+    options,
+    successCallback,
+    failCallback
+  );
 }
 
 function getItem(
@@ -105,20 +88,12 @@ function getItem(
       'Content-Type': 'application/json'
     }
   };
-  fetch(url, options)
-    .then((response) => {
-      if (!response.ok) {
-        var error = new Error(response.statusText);
-        error.response = response;
-        throw error;
-      }
-      return response.json();
-    }).then((responseJson) => {
-      successCallback(responseJson);
-    })
-    .catch(err => {
-      failCallback(err);
-    });
+  fetchApi(
+    url,
+    options,
+    successCallback,
+    failCallback
+  );
 }
 
 function getItemsByStatus(
@@ -134,20 +109,12 @@ function getItemsByStatus(
       'Content-Type': 'application/json'
     }
   };
-  fetch(url, options)
-    .then((response) => {
-      if (!response.ok) {
-        var error = new Error(response.statusText);
-        error.response = response;
-        throw error;
-      }
-      return response.json();
-    }).then((responseJson) => {
-      successCallback(responseJson);
-    })
-    .catch(err => {
-      failCallback(err);
-    });
+  fetchApi(
+    url,
+    options,
+    successCallback,
+    failCallback
+  );
 }
 function getItems(
   successCallback = DEFAULT_FUNCTION,
@@ -161,20 +128,12 @@ function getItems(
       'Content-Type': 'application/json'
     }
   };
-  fetch(url, options)
-    .then((response) => {
-      if (!response.ok) {
-        var error = new Error(response.statusText);
-        error.response = response;
-        throw error;
-      }
-      return response.json();
-    }).then((responseJson) => {
-      successCallback(responseJson);
-    })
-    .catch(err => {
-      failCallback(err);
-    });
+  fetchApi(
+    url,
+    options,
+    successCallback,
+    failCallback
+  );
 }
 function getItemsByUserId(
   userId,
@@ -190,20 +149,12 @@ function getItemsByUserId(
       'Content-Type': 'application/json'
     }
   };
-  fetch(url, options)
-    .then((response) => {
-      if (!response.ok) {
-        var error = new Error(response.statusText);
-        error.response = response;
-        throw error;
-      }
-      return response.json();
-    }).then((responseJson) => {
-      successCallback(responseJson);
-    })
-    .catch(err => {
-      failCallback(err);
-    });
+  fetchApi(
+    url,
+    options,
+    successCallback,
+    failCallback
+  );
 }
 function createTradeOfferIventoryItem(item, isSelected = false) {
   const image = (item.images[0] !== null && item.images[0] !== undefined)

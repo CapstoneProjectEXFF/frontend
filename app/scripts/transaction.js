@@ -45,21 +45,12 @@ function addTransaction(
       'Authorization': getAuthentoken()
     }
   };
-  fetch(url, options)
-    .then((response) => {
-      if (!response.ok) {
-        var error = new Error(response.statusText);
-        error.response = response;
-        throw error;
-      }
-      return response.json();
-    })
-    .then((responseJson) => {
-      successCallback(responseJson);
-    })
-    .catch(err => {
-      failCallback(err);
-    });
+  fetchApi(
+    url,
+    options,
+    successCallback,
+    failCallback
+  );
 }
 function getReceivedTransaction(
   successCallback = DEFAULT_FUNCTION,
@@ -74,21 +65,12 @@ function getReceivedTransaction(
       'Authorization': getAuthentoken()
     }
   };
-  fetch(url, options)
-    .then((response) => {
-      if (!response.ok) {
-        var error = new Error(response.statusText);
-        error.response = response;
-        throw error;
-      }
-      return response.json();
-    })
-    .then((responseJson) => {
-      successCallback(responseJson);
-    })
-    .catch(err => {
-      failCallback(err);
-    });
+  fetchApi(
+    url,
+    options,
+    successCallback,
+    failCallback
+  );
 }
 function getTransaction(
   id,
@@ -104,21 +86,12 @@ function getTransaction(
       'Authorization': getAuthentoken()
     }
   };
-  fetch(url, options)
-    .then((response) => {
-      if (!response.ok) {
-        var error = new Error(response.statusText);
-        error.response = response;
-        throw error;
-      }
-      return response.json();
-    })
-    .then((responseJson) => {
-      successCallback(responseJson);
-    })
-    .catch(err => {
-      failCallback(err);
-    });
+  fetchApi(
+    url,
+    options,
+    successCallback,
+    failCallback
+  );
 }
 
 function confirmTransaction(
@@ -135,21 +108,12 @@ function confirmTransaction(
       'Authorization': getAuthentoken()
     }
   };
-  fetch(url, options)
-    .then((response) => {
-      if (!response.ok) {
-        var error = new Error(response.statusText);
-        error.response = response;
-        throw error;
-      }
-      return response.json();
-    })
-    .then((responseJson) => {
-      successCallback(responseJson);
-    })
-    .catch(err => {
-      failCallback(err);
-    });
+  fetchApi(
+    url,
+    options,
+    successCallback,
+    failCallback
+  );
 }
 
 function updateTransaction(
@@ -182,21 +146,12 @@ function updateTransaction(
       'Authorization': getAuthentoken()
     }
   };
-  fetch(url, options)
-    .then((response) => {
-      if (!response.ok) {
-        var error = new Error(response.statusText);
-        error.response = response;
-        throw error;
-      }
-      return response.json();
-    })
-    .then((responseJson) => {
-      successCallback(responseJson);
-    })
-    .catch(err => {
-      failCallback(err);
-    });
+  fetchApi(
+    url,
+    options,
+    successCallback,
+    failCallback
+  );
 }
 
 function deleteTransaction(
@@ -220,21 +175,12 @@ function deleteTransaction(
       'Authorization': getAuthentoken()
     }
   };
-  fetch(url, options)
-    .then((response) => {
-      if (!response.ok) {
-        var error = new Error(response.statusText);
-        error.response = response;
-        throw error;
-      }
-      return response.json();
-    })
-    .then((responseJson) => {
-      successCallback(responseJson);
-    })
-    .catch(err => {
-      failCallback(err);
-    });
+  fetchApi(
+    url,
+    options,
+    successCallback,
+    failCallback
+  );
 }
 
 function addTradeOffer(

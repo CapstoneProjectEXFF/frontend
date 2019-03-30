@@ -7,446 +7,36 @@ $default-color: #888;
 $error-color: #ff3333;
 $sucsess-color: #28a745;
 $boder-color: #ccc;
-body {
-  position: relative;
-  margin: 0;
-  padding: 0;
-  background: #fafafa;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  color: #333;
-}
-.float-left {
-  float: left;
-}
-.float-right {
-  float: right;
-}
-.clearfix::after {
-  content: "";
-  clear: both;
-  display: table;
-}
-.hidden{
-  display: none;
-}
-.ellipsis{
-  white-space: nowrap; 
-  overflow: hidden;
-  text-overflow: ellipsis; 
-}
+$card-width: 240px;
+$card-heigh: 240px;
+$card-margin: 8px;
+$card-padding: 10px;
+
+// general
+@import 'general';
+
 // scroll
-::-webkit-scrollbar{
-  width: 6px;
-  box-sizing: border-box;
-}
-::-webkit-scrollbar-track {
-  background: #fff0; 
-}
-::-webkit-scrollbar-thumb {
-  border-radius: 3px;
-  background: #888;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #555; 
-}
+@import 'scroll';
 // background
-.background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  box-sizing: border-box;
-  z-index: 0;
-}
+@import 'background';
 
 // custom position
-.position--absolute {
-  position: absolute;
-}
-.position--relative {
-  position: relative;
-}
-.center {
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-}
+@import 'position';
 
 // custom form
-.field__container {
-  padding: 8px 24px;
-  box-sizing: border-box;
-}
-.error{
-  font-size: 0.8em;
-  color: $error-color;
-  font-weight: bold;
-}
-.success{
-  font-size: 0.8em;
-  color: $sucsess-color;
-  font-weight: bold;
-}
-label {
-  font-size: 14px;
-  font-weight: bold;
-}
-input[type="text"],
-input[type="password"] {
-  height: 36px;
-  width: 100%;
-  padding: 0px 24px;
-  border: 1px solid #000;
-  border-radius: 18px;
-  font-size: 18px;
-  box-sizing: border-box;
-  &:focus {
-    outline: none;
-    border-color: $primary-color;
-  }
-  &.unvalidate{
-    border-color: $error-color;
-  }
-}
-textarea {
-  min-height: 108px;
-  width: 100%;
-  padding: 12px 24px;
-  border: 1px solid #000;
-  border-radius: 18px;
-  font-size: 18px;
-  box-sizing: border-box;
-  resize: none;
-  overflow: auto;
-  &:focus {
-    outline: none;
-    border-color: $primary-color;
-  }
-  &.unvalidate{
-    border-color: $error-color;
-  }
-}
-select{
-  color: #000;
-  height: 36px;
-  width: 100%;
-  padding: 0px 20px;
-  border: 1px solid #000;
-  border-radius: 18px;
-  font-size: 18px;
-  box-sizing: border-box;
-  &:focus {
-    outline: none;
-    border-color: $primary-color;
-  }
-  &>option,&>optgroup{
-    font-size: 16px;
-    color: #000;
-  }
-}
-button {
-  cursor: pointer;
-  background-color: $default-color;
-  border: 2px solid $default-color;
-  border-radius: 100vh;
-  padding: 4px 14px;
-  font-size: 18px;
-  box-sizing: border-box;
-  &.size--mini{
-    padding: 2px 6px;
-    font-size: 14px;
-  }
-  &.primary {
-    color: $light-color;
-    background-color: $primary-color;
-    border-color: $primary-color;
-    &:hover {
-      background-color: lighten($color: $primary-color, $amount: 5%);
-      border-color: lighten($color: $primary-color, $amount: 5%);
-    }
-    &:active{
-      background-color: darken($color: $primary-color, $amount: 5%);
-      border-color: darken($color: $primary-color, $amount: 5%);
-    }
-  }
-  &.primary--o {
-    color: $primary-color;
-    background-color: #ffffff00;
-    border-color: $primary-color;
-    &:hover {
-      color: lighten($color: $primary-color, $amount: 5%);
-      border-color: lighten($color: $primary-color, $amount: 5%);
-    }
-    &:active{
-      color: darken($color: $primary-color, $amount: 5%);
-      border-color: darken($color: $primary-color, $amount: 5%);
-    }
-  }
-  &:focus {
-    outline: none;
-  }
-}
-
-// custom link
-a {
-  text-decoration: none;
-  &.primary {
-    color: $primary-color;
-    &:visited {
-      color: $primary-color;
-    }
-  }
-  &.reset {
-    color: inherit;
-    &:visited {
-      color: inherit;
-    }
-  }
-}
+@import 'form';
 // menu bar
-.menu_bar__container{
-  width: 100%;
-}
-.menu_bar {
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
-  max-width: 1024px;
-  height: 48px;
-  margin-left: auto;
-  margin-right: auto;
-  &>*{
-    text-align: center;
-    min-width: 48px;
-  }
-  .icon{
-    width: 48px;
-    height: 48px;
-  }
-  .logo, .user_icon{
-    font-size: 1.5em;
-    color: $primary-color;
-  }
-  .logo{
-    font-weight: bolder;
-  }
-  .menu_bar__icon {
-    position: relative;
-    font-size: 1em;
-    min-width: 48px;
-  }
-  .search_bar{
-    margin-left: auto;
-    margin-right: auto;
-  }
-}
-$distance: 32px;
-.notification__popup {
-  position: absolute;
-  width: 300px;
-  height: 500px;
-  top: $distance;
-  right: (- $distance);
-  padding: 10px 0px;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  overflow: visible;
-  z-index: 10;
-  &::before{
-    content: "";
-    position: absolute;
-    width: 0;
-    height: 0;
-    border: ($distance / 2) solid #fff0;
-    border-top-width: 0px;
-    border-bottom-color: #ccc;
-    top: -$distance / 2;
-    right: $distance + 8px;
-  }
-}
-.notification__container{
-  width: 100%;
-  height: 100%;
-  text-align: left;
-  overflow: auto;
-}
-.notification{
-  padding: 10px 10px;
-  border-bottom: 1px solid #ccc;
-}
-.notification__content{
-  font-size: 0.9em;
-  margin: 0px;
-  margin-bottom: 5px;
-}
-.notification__time{
-  font-size: 0.8em;
-  color: #555;
-  margin: 0px;
-}
+@import 'menubar';
+
 //card
-.card__container{
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-}
-.card {
-  width: 320px;
-  background-color: #fff;
-  margin: 10px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-sizing: border-box;
-  overflow: hidden;
-}
-.card__image{
-  width: 100%;
-  height: 300px;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
-}
-.card__info{
-  width: 100%;
-  color: #333;
-  *{
-    width: 100%;
-    margin: 5px 0px;
-  }
-}
-.card__action{
-  color: #888;
-  .edit{
-    color: $primary-color;
-  }
-  .delete{
-    cursor: pointer;
-    color: $error-color;
-  }
-}
+@import 'card';
 
 //post
-.post__container{
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-}
-.post__outline{
-  width: 50%;
-  min-width: 320px;
-  padding: 10px;
-  box-sizing: border-box;
-}
-.post {
-  width: 100%;
-  background-color: #fff;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-sizing: border-box;
-  overflow: hidden;
-}
-.post__image{
-  width: 100%;
-  height: 300px;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
-}
-.post__info{
-  width: 100%;
-  color: #333;
-  p{
-    width: 100%;
-    margin: 5px 0px;
-  }
-}
-.post__user__info{
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  p{
-    margin: 5px 0px;
-  }
-  button{
-    white-space: nowrap;
-  }
-}
-.user__info{
-  width: 100%;
-}
-.info__name{
-  color: $primary-color;
-  font-weight: bold;
-  font-size: 1em;
-}
-.info__time{
-  color: $default-color;
-  font-weight: lighter;
-  font-size: 0.9em;
-}
-.info__address{
-  color: $default-color;
-  font-weight: lighter;
-  font-size: 0.9em;
-}
-.post__action{
-  color: #888;
-  .edit{
-    color: $primary-color;
-  }
-  .delete{
-    cursor: pointer;
-    color: $error-color;
-  }
-}
+@import 'post';
+
 //list
-.list{
-  position: relative;
-}
-.list__item{
-  cursor: pointer;
-  display: flex;
-  width: 100%;
-  height: 84px;
-  border: 1px solid #ccc;
-  margin: 10px 0px;
-  overflow: hidden;
-  box-sizing: border-box;
-}
-.list__item__image{
-  width: 84px;
-  height: 100%;
-  background-color: #eee;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
-}
-.list__item__info{
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  padding: 5px 10px;
-  * {
-    margin: 0px;
-    width: 100%;
-  }
-  h5{
-    color: $primary-color;
-  }
-  h2 {
-    margin-bottom: 5px;
-  }
-  p {
-    font-weight: lighter;
-  }
-}
+@import 'listitem';
+
 //index
 .index__action{
   display: flex;
@@ -466,6 +56,7 @@ $distance: 32px;
     border-bottom: 3px solid $primary-color;
   }
 }
+
 // login
 .login__container {
   position: relative;
@@ -699,6 +290,53 @@ $profile-container-padding: 8px;
     background-color: #ccc;
     overflow: hidden;
   }
+}
+// chat
+.chat__container{
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: stretch;
+  height: 100vh;
+  overflow: auto;
+  & > div{
+    height: 100%;
+    overflow: auto;
+    box-sizing: border-box;
+  }
+}
+//chat room
+.chat__room {
+  width: 384px;
+}
+
+// chat box
+.chat__box{
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  border: 1px solid $default-color;
+}
+.chat__content{
+  flex-grow: 1;
+}
+.chat__form{
+  position: relative;
+  input{
+    padding-right: 56px;
+    border-color: #0c8ae8;
+  }
+  #btnSearch{
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+}
+
+// chat inventory
+.chat__inventory{
+  width: 384px;
 }
 
 // default
