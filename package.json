@@ -47,5 +47,8 @@
         "single"
       ]
     }
+  },
+  "dependencies": {
+    "socket.io": "^2.2.0"
   }
 }
