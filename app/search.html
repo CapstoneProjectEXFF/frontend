@@ -69,15 +69,19 @@
   </div>
   <br>
   <br>
-  <div>
+  <div class="div--center">
     <div>
+      <h3>Người dùng</h3>
       <div class="div--center card__container" id="users"></div>
     </div>
     <div>
+      <h3>Đồ dùng dùng</h3>
       <div class="div--center card__container" id="items"></div>
     </div>
-    <div></div>
-    <div class="div--center post__container" id="donationPosts"></div>
+    <div>
+      <h3>Quyên góp</h3>
+      <div class="div--center post__container" id="donationPosts"></div>
+    </div>
   </div>
   </div>
 
@@ -117,17 +121,17 @@
         );
       }
 
-      // getItemsByStatus(
-      //   ITEM_ENABLE,
-      //   getItemsSuccess,
-      //   getItemsFalse
-      // );
-      // getDonationPosts(
-      //   0,
-      //   10,
-      //   getDonationPostsSuccess,
-      //   getDonationPostsFalse,
-      // );
+      getItemsByStatus(
+        ITEM_ENABLE,
+        getItemsSuccess,
+        getItemsFalse
+      );
+      getDonationPosts(
+        0,
+        10,
+        getDonationPostsSuccess,
+        getDonationPostsFalse,
+      );
       // $("#itemsContainer").show();
       // $("#postsContainer").hide();
     });
@@ -137,8 +141,8 @@
       if (data === null) {
         usersTag.html("<h1>Không tìm thấy người nào.</h1>");
       }
-        const card = createUserCard(data);
-        usersTag.append(card);
+      const card = createUserCard(data);
+      usersTag.append(card);
     };
     function getUserFalse(err) {
       const usersTag = $("#users");
