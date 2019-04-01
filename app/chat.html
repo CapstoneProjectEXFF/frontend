@@ -21,12 +21,23 @@
   <!-- build:css vendor/font-awesome/css/font-awesome.min.css -->
   <link rel="stylesheet" href="/bower_components/Font-Awesome/css/all.min.css">
   <!-- endbuild -->
+  <!-- build:css vendor/datetimepicker/jquery.datetimepicker.min.css -->
+  <link rel="stylesheet" href="/bower_components/datetimepicker/build/jquery.datetimepicker.min.css">
+  <!-- endbuild -->
 
   <!-- build:js scripts/vendor/modernizr.js -->
   <script src="/bower_components/modernizr/modernizr.js"></script>
   <!-- endbuild -->
+  <!-- build:js scripts/vendor/jquery.js -->
+  <!-- bower:js -->
+  <script src="/bower_components/jquery/dist/jquery.js"></script>
+  <!-- endbower -->
+  <!-- endbuild -->
   <!-- build:js scripts/vendor/moment.js -->
   <script src="/bower_components/moment/min/moment.min.js"></script>
+  <!-- endbuild -->
+  <!-- build:js scripts/vendor/jquery.datetimepicker.full.min.js -->
+  <script src="/bower_components/datetimepicker/build/jquery.datetimepicker.full.min.js"></script>
   <!-- endbuild -->
   <!-- build:js scripts/vendor/socket.js -->
   <script src="/bower_components/socket.io-client/dist/socket.io.js"></script>
@@ -84,7 +95,7 @@
     </div>
     <div class="chat__box">
       <div class="chat__content" id="chatContent">
-        
+
       </div>
       <div class="chat__form">
         <form action="#" id="messageForm">
@@ -94,6 +105,11 @@
       </div>
     </div>
     <div class="chat__inventory">
+      <div class="chat__inventory__action">
+        <input type="text" name="txtAddress" placeholder="Địa chỉ">
+        <input class="" type="text" name="txtDateTime" id="datetimepicker">
+        <button class="primary" id="btnBlock">Chốt</button>
+      </div>
       <div class="trade_offer__container">
         <div class="trade_offer__inventory__container" id="inventoryContainer">
           <div class="trade_offer__inventory__action">
@@ -127,12 +143,7 @@
 
 
 
-  <!-- build:js scripts/vendor/jquery.js -->
-  <!-- bower:js -->
-  <script src="/bower_components/jquery/dist/jquery.js"></script>
-  <script src="/bower_components/moment/moment.js"></script>
-  <!-- endbower -->
-  <!-- endbuild -->
+
 
   <!-- build:js scripts/main.js -->
   <script src="scripts/main.js"></script>
@@ -149,6 +160,7 @@
   <!-- build:js scripts/view/chat-view.js-->
   <script src="scripts/view/chat-view.js"></script>
   <!-- endbuild -->
+
 </body>
 
 </html>

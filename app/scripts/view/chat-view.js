@@ -17,22 +17,34 @@ let myItems = [];
 let friendItems = [];
 let details = [];
 $(document).ready(() => {
-  // initChatRoomFromUrl();
+  let urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.has("userId")) {
+    initChatRoomFromUrl();
+  } else {
+    initRooms();
+  }
   initMessageForm();
-  initRooms();
   socket.on('item-added', function (itemInfo) {
     // console.log(itemInfo);
   });
+  initDateTime();
 });
+
+function initDateTime() {
+  $('#datetimepicker').datetimepicker({
+    format: 'd/m/Y, H:i'
+  });
+  $('#datetimepicker').val(moment().format('DD/MM/YYYY, hh:mm'));
+}
 
 function initChatRoomFromUrl() {
   let urlParams = new URLSearchParams(window.location.search);
   if (urlParams.has("userId")) {
     receiverId = urlParams.get("userId");
     socketConnectRoom();
-    initRooms();
+    // initRooms();
     // initUserInfo(USER_ID, receiverId);
-    initInventory(USER_ID, receiverId);
+    // initInventory(USER_ID, receiverId);
     if (urlParams.has("itemId")) {
       urlSelectedItemId = urlParams.get("itemId");
     }
@@ -97,9 +109,10 @@ function socketConnectRoom() { //create connect
     userB: `${receiverId}`
   };
   socket.emit(
-    "room",
+    "get-room",
     roomInfo
   );
+  socket.on('room-ready', initRooms);
 }
 
 function socketSendTradeInfo(userId, itemId, action = "add-item") {
