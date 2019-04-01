@@ -9,7 +9,26 @@ function getChatRooms(
   let options = {
     method: 'GET',
     headers: {
-      'Access-Control-Allow-Origin': '*',
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    }
+  };
+  fetchApi(
+    url,
+    options,
+    successCallback,
+    failCallback
+  );
+}
+function getChatRoomByRoomId(
+  roomId,
+  successCallback = DEFAULT_FUNCTION,
+  failCallback = DEFAULT_FUNCTION
+) {
+  let url = NODE_URL + TRADING_URL + `?room=${roomId}`;
+  let options = {
+    method: 'GET',
+    headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     }

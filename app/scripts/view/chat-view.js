@@ -1,8 +1,10 @@
+/* eslint-disable eqeqeq */
 /* eslint-disable no-use-before-define */
 
 const socket = io(NODE_URL);
-let roomName;
 const USER_ID = getUserId();
+
+let roomName;
 let urlSelectedItemId;
 let chatRooms;
 let currentChatRoom;
@@ -14,7 +16,7 @@ let myItems = [];
 let friendItems = [];
 let details = [];
 $(document).ready(() => {
-  initChatRoomFromUrl();
+  // initChatRoomFromUrl();
   initMessageForm();
   initRooms();
   socket.on('item-added', function (itemInfo) {
@@ -27,6 +29,7 @@ function initChatRoomFromUrl() {
   if (urlParams.has("userId")) {
     receiverId = urlParams.get("userId");
     socketConnectRoom();
+    initRooms();
     // initUserInfo(USER_ID, receiverId);
     initInventory(USER_ID, receiverId);
     if (urlParams.has("itemId")) {
@@ -38,18 +41,23 @@ function initChatRoomFromUrl() {
 function initMessageForm() {
   $('#messageForm').submit(function (e) {
     e.preventDefault(); // prevents page reloading
-    var message = {
-      room: roomName,
-      sender: USER_ID,
-      msg: $('#inputMessage').val()
-    };
+    let msg = $('#inputMessage').val();
+    if (msg.length !== 0) {
 
-    socket.emit('send-msg', message);
-    $('#inputMessage').val('');
+      let message = {
+        room: roomName,
+        sender: USER_ID,
+        msg: msg
+      };
+
+      socket.emit('send-msg', message);
+      $('#inputMessage').val('');
+    }
     return false;
   });
   socket.on('send-msg', function (data) {
     $('#chatContent').append(renderMessage(data));
+    scrollBottom(200);
   });
 }
 function initRooms() {
@@ -58,7 +66,6 @@ function initRooms() {
     (data) => {
       chatRooms = data;
       renderChatRooms();
-      initUserInfo(USER_ID, receiverId);
     }
   );
 }
@@ -80,6 +87,12 @@ function socketConnectRoom() { //create connect
 }
 
 // render
+function scrollBottom(time = 0) {
+  $('#chatContent').animate({
+    scrollTop: $('#chatContent').get(0).scrollHeight
+  }, time);
+}
+
 function renderChatRooms() {
   let chatRoomTag = $('#chatRoom');
   chatRoomTag.html('');
@@ -88,7 +101,6 @@ function renderChatRooms() {
   });
 }
 function renderChatContent() {
-  console.log(currentChatRoom.messages);
   let messages = currentChatRoom.messages;
   let chatContent = $('#chatContent');
 
@@ -96,16 +108,24 @@ function renderChatContent() {
   messages.forEach(message => {
     chatContent.append(renderMessage(message));
   });
+  scrollBottom();
 }
 
 // onclick function on view
 function selectChatRoom(selectedRoomName) {
   roomName = selectedRoomName;
   currentChatRoom = chatRooms.find(chatroom => chatroom.room === selectedRoomName);
-
-  $('#chatRoom').children().removeClass('selected');
-  $(`#chatRoom${selectedRoomName}`).addClass('selected');
-  renderChatContent();
+  if (currentChatRoom.users != undefined && currentChatRoom.users.length >= 2) {
+    receiverId = (currentChatRoom.users[0].userId !== USER_ID)
+      ? currentChatRoom.users[0].userId
+      : currentChatRoom.users[1].userId;
+    $('#chatRoom').children().removeClass('selected');
+    $(`#chatRoom${selectedRoomName}`).addClass('selected');
+    renderChatContent();
+    initInventory(USER_ID, receiverId);
+  } else {
+    console.log('currentChatRoom do not have user');
+  }
 }
 
 
@@ -120,11 +140,11 @@ function selectChatRoom(selectedRoomName) {
 //   };
 //   // roomName = `${myName}-${USER_ID}-${friendName}-${receiverId}-${new Date().getTime()}`;
 //   roomName = JSON.stringify(data);
-  // roomInfo = {
-  //   room: roomName,
-  //   userA: `${USER_ID}`,
-  //   userB: `${receiverId}`
-  // };
+// roomInfo = {
+//   room: roomName,
+//   userA: `${USER_ID}`,
+//   userB: `${receiverId}`
+// };
 //   console.log(checkRoomExist());
 //   if (checkRoomExist() === undefined) {
 //     socket.emit(
