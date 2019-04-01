@@ -1,3 +1,4 @@
+/* eslint-disable handle-callback-err */
 /* eslint-disable eqeqeq */
 /* eslint-disable no-use-before-define */
 
@@ -70,6 +71,21 @@ function initRooms() {
   );
 }
 
+function initInventory(myId, fridenId) {
+  getItemsByUserId(
+    fridenId,
+    ITEM_ENABLE,
+    getFriendInventory,
+    getFriendInventoryFalse
+  );
+  getItemsByUserId(
+    myId,
+    ITEM_ENABLE,
+    getMyInventory,
+    getMyInventoryFalse
+  );
+}
+
 // socket
 
 function socketConnectRoom() { //create connect
@@ -84,6 +100,15 @@ function socketConnectRoom() { //create connect
     "room",
     roomInfo
   );
+}
+
+function socketSendTradeInfo(userId, itemId, action = "add-item") {
+  let tradeInfo = {
+    'userId': userId,
+    'itemId': itemId,
+    'room': roomName
+  };
+  socket.emit(action, tradeInfo);
 }
 
 // render
@@ -163,14 +188,7 @@ function selectChatRoom(selectedRoomName) {
 //       || (users[1].id == USER_ID && users[0].id == receiverId);
 //   });
 // }
-// function socketSendTradeInfo(userId, itemId, action = "add-item") {
-//   let tradeInfo = {
-//     'userId': userId,
-//     'itemId': itemId,
-//     'room': roomName
-//   };
-//   socket.emit(action, tradeInfo);
-// }
+
 
 
 // function initCreateView(urlParams) {
@@ -230,20 +248,7 @@ function selectChatRoom(selectedRoomName) {
 //   }
 // }
 
-function initInventory(myId, fridenId) {
-  getItemsByUserId(
-    fridenId,
-    ITEM_ENABLE,
-    getFriendInventory,
-    getFriendInventoryFalse
-  );
-  getItemsByUserId(
-    myId,
-    ITEM_ENABLE,
-    getMyInventory,
-    getMyInventoryFalse
-  );
-}
+
 
 function getMyInventory(data) {
   myItems = data;
@@ -314,18 +319,16 @@ function deselectItem(itemId, userId) {
   deleteItem = details.find(detail => detail.itemId === itemId && detail.id !== undefined);
   delete deleteItem.transactionId;
 }
-function renderTradeOfferContent(details, isClickable = false) {
+function renderTradeOfferContent(selectedDetails, isClickable = false) {
   const myTradeOfferContentTag = $("#myTradeOffer");
   const friendTradeOfferContentTag = $("#friendTradeOffer");
   myTradeOfferContentTag.html("");
   friendTradeOfferContentTag.html("");
-  details.forEach(detail => {
+  selectedDetails.forEach(detail => {
     if (detail.userId == USER_ID) {
       myTradeOfferContentTag.append(createTradeOfferContentItem(detail.item, isClickable));
-      sendedItems.push(detail.item);
     } else {
       friendTradeOfferContentTag.append(createTradeOfferContentItem(detail.item, isClickable));
-      receivedItems.push(detail.item);
     }
   });
 }
