@@ -80,38 +80,11 @@
         <h3>Phòng chat</h3>
       </div>
       <div class="list" id="chatRoom">
-        <div class="list__item margin--none" id="user${user.id}">
-          <div class="list__item__image position--relative">
-            <div class="background" style="background-image: url(${image})"></div>
-          </div>
-          <div class="list__item__info">
-            <h5 class="ellipsis">${user.fullName}</h5>
-            <h2 class="ellipsis">${user.phoneNumber}</h2>
-          </div>
-        </div>
-        <div class="list__item margin--none" id="user${user.id}">
-          <div class="list__item__image position--relative">
-            <div class="background" style="background-image: url(${image})"></div>
-          </div>
-          <div class="list__item__info">
-            <h5 class="ellipsis">${user.fullName}</h5>
-            <h2 class="ellipsis">${user.phoneNumber}</h2>
-          </div>
-        </div>
-        <div class="list__item margin--none" id="user${user.id}">
-          <div class="list__item__image position--relative">
-            <div class="background" style="background-image: url(${image})"></div>
-          </div>
-          <div class="list__item__info">
-            <h5 class="ellipsis">${user.fullName}</h5>
-            <h2 class="ellipsis">${user.phoneNumber}</h2>
-          </div>
-        </div>
       </div>
     </div>
     <div class="chat__box">
       <div class="chat__content" id="chatContent">
-
+        
       </div>
       <div class="chat__form">
         <form action="#" id="messageForm">
@@ -170,180 +143,12 @@
   <script src="scripts/login.js"></script>
   <script src="scripts/register.js"></script>
   <script src="scripts/transaction.js"></script>
+  <script src="scripts/chat.js"></script>
+  <script src="scripts/user.js"></script>
   <!-- endbuild -->
-  <script>
-    const socket = io("http://35.247.191.68:3000");
-    let roomName;
-    $(document).ready(() => {
-      $('#messageForm').submit(function (e) {
-        e.preventDefault(); // prevents page reloading
-        socket.emit('send-msg', $('#inputMessage').val());
-        $('#inputMessage').val('');
-        return false;
-      });
-      socket.on('send-msg', function (msg) {
-        $('#chatContent').append($('<p>').text(msg));
-      });
-      // socket.on('item-added', function (itemInfo) {
-      //   console.log(itemInfo);
-      // });
-
-    });
-    // function socketConnect() {
-    //   roomName = `${USER_ID}${receiverId}${new Date().getTime()}`;
-    //   socket.emit(
-    //     "room",
-    //     roomName
-    //   );
-    // }
-    // function socketSendTradeInfo(userId, itemId, action = "add-item") {
-    //   let tradeInfo = {
-    //     'userId': userId,
-    //     'itemId': itemId,
-    //     'room': roomName
-    //   };
-    //   socket.emit(action, tradeInfo);
-    // }
-  </script>
-  <script>
-    const USER_ID = getUserId();
-    let urlSelectedItemId;
-    let transactionId;
-    let senderId;
-    let receiverId;
-    let myItems = [];
-    let friendItems = [];
-    let details = [];
-    $(document).ready(() => {
-      let urlParams = new URLSearchParams(window.location.search);
-      initCreateView(urlParams);
-    });
-    function initCreateView(urlParams) {
-      receiverId = 3;
-      getInventory(USER_ID, receiverId);
-      if (urlParams.has("itemId")) {
-        urlSelectedItemId = urlParams.get("itemId");
-      }
-      $("#btnRequestTradeOffer").show();
-      $("#btnRequestTradeOffer").click(() => {
-        addTradeOffer(
-          receiverId,
-          details,
-          sendRequestSuccess,
-          sendRequestFails
-        );
-      });
-    }
-    function sendRequestSuccess(data) {
-      alert("Đã gửi yêu cầu");
-      window.location.replace("/");
-    }
-    function sendRequestFails(err) {
-      alert("Có lỗi");
-      console.log(err);
-    }
-    function getInventory(myId, fridenId) {
-      getItemsByUserId(
-        fridenId,
-        ITEM_ENABLE,
-        getFriendInventory,
-        getFriendInventoryFalse
-      );
-      getItemsByUserId(
-        myId,
-        ITEM_ENABLE,
-        getMyInventory,
-        getMyInventoryFalse
-      );
-    }
-
-    function getMyInventory(data) {
-      myItems = data;
-      getItemsSuccess(data, "#myInventory");
-    }
-    function getMyInventoryFalse(err) {
-      getItemsFalse(err, "#myInventory");
-    }
-    function getFriendInventory(data) {
-      friendItems = data;
-      getItemsSuccess(data, "#friendInventory");
-      if (urlSelectedItemId !== undefined) {
-        selectItem(urlSelectedItemId, receiverId);
-      }
-    }
-    function getFriendInventoryFalse(err) {
-      getItemsFalse(err, "#friendInventory");
-    }
-    function getItemsSuccess(data, tagId) {
-      const inventoryTag = $(tagId);
-      inventoryTag.html("");
-      if (data.length === 0) {
-        inventoryTag.html("<h1>Không có đồ dùng nào.</h1>");
-      }
-      data.forEach(item => {
-        const listItem = createTradeOfferIventoryItem(item);
-        inventoryTag.append(listItem);
-      });
-    };
-    function getItemsFalse(err, tagId) {
-      const inventoryTag = $(tagId);
-      inventoryTag.html("<h1>Không có đồ dùng nào.</h1>");
-    };
-    function show(tagId) {
-      const hideTagId = tagId === "#myInventory" ? "#friendInventory" : "#myInventory";
-
-      $(tagId).show();
-      $(tagId + "Tab").addClass("selected");
-      $(hideTagId).hide();
-      $(hideTagId + "Tab").removeClass("selected");
-    }
-    function selectItem(itemId, userId) {
-      let tradeOfferContentTag;
-      const itemTag = $("#item" + itemId);
-      let item;
-      if (userId == USER_ID) {
-        tradeOfferContentTag = $("#myTradeOffer");
-        item = myItems.find((value) => value.id == itemId);
-      } else {
-        tradeOfferContentTag = $("#friendTradeOffer");
-        item = friendItems.find((value) => value.id == itemId);
-      }
-      details.push({
-        'itemId': item.id,
-        'userId': item.user.id
-      });
-      itemTag.hide();
-      tradeOfferContentTag.append(createTradeOfferContentItem(item, true));
-    }
-    function deselectItem(itemId, userId) {
-      const itemTag = $("#item" + itemId);
-      const selectItemTag = $("#selectItem" + itemId);
-      itemTag.show();
-      selectItemTag.remove();
-      if (userId == USER_ID) {
-        sendedItems = sendedItems.filter(item => item.id != itemId);
-      } else {
-        receivedItems = receivedItems.filter(item => item.id != itemId);
-      }
-      deleteItem = details.find(detail => detail.itemId === itemId && detail.id !== undefined);
-      delete deleteItem.transactionId;
-    }
-    function renderTradeOfferContent(details, isClickable = false) {
-      const myTradeOfferContentTag = $("#myTradeOffer");
-      const friendTradeOfferContentTag = $("#friendTradeOffer");
-      myTradeOfferContentTag.html("");
-      friendTradeOfferContentTag.html("");
-      details.forEach(detail => {
-        if (detail.userId == USER_ID) {
-          myTradeOfferContentTag.append(createTradeOfferContentItem(detail.item, isClickable));
-          sendedItems.push(detail.item);
-        } else {
-          friendTradeOfferContentTag.append(createTradeOfferContentItem(detail.item, isClickable));
-          receivedItems.push(detail.item);
-        }
-      });
-    }
-  </script>
+  <!-- build:js scripts/view/chat-view.js-->
+  <script src="scripts/view/chat-view.js"></script>
+  <!-- endbuild -->
 </body>
 
 </html>

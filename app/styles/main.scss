@@ -38,8 +38,11 @@ $card-padding: 10px;
 //list
 @import 'listitem';
 
-//user profile, list_user
+//user profile, list_card_avatar, 
 @import 'userprofile';
+
+//chat
+@import 'chat';
 
 //index
 .index__action{
@@ -295,53 +298,7 @@ $profile-container-padding: 8px;
     overflow: hidden;
   }
 }
-// chat
-.chat__container{
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-  align-items: stretch;
-  height: 100vh;
-  overflow: auto;
-  & > div{
-    height: 100%;
-    overflow: auto;
-    box-sizing: border-box;
-  }
-}
-//chat room
-.chat__room {
-  width: 384px;
-}
 
-// chat box
-.chat__box{
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  border: 1px solid $default-color;
-}
-.chat__content{
-  flex-grow: 1;
-}
-.chat__form{
-  position: relative;
-  input{
-    padding-right: 56px;
-    border-color: #0c8ae8;
-  }
-  #btnSearch{
-    height: 100%;
-    position: absolute;
-    top: 0;
-    right: 0;
-  }
-}
-
-// chat inventory
-.chat__inventory{
-  width: 384px;
-}
 
 // default
 .hero-unit {

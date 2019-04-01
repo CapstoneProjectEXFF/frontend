@@ -1,20 +1,29 @@
-$user-avatar-size: 84px;
+$selected-card-color: #eee;
+
+$user-avatar-size: 64px;
 $list-user-padding: 10px;
-.list__user{
+
+
+.list__card__avatar{
   position: relative;
   cursor: pointer;
   width: 100%;
-  min-height: 104px;
-  border: 1px solid #ccc;
+  min-height: $user-avatar-size + $list-user-padding*2;
   margin: 10px 0px;
   overflow: hidden;
   box-sizing: border-box;
   &.margin--none{
     margin: 0px;
   }
+  &.border{
+    border: 1px solid #ccc;
+  }
+  &.selected{
+    background-color: $selected-card-color;
+  }
 }
 
-.list__user__image{
+.list__card__avatar__image{
   position: absolute;
   width: $user-avatar-size;
   height: $user-avatar-size;
@@ -27,7 +36,7 @@ $list-user-padding: 10px;
   background-repeat: no-repeat;
   background-size: contain;
 }
-.list__user__info{
+.list__card__avatar__info{
   padding: 10px 10px;
   padding-left: $user-avatar-size + $list-user-padding + 10px;
   overflow: auto;
@@ -42,6 +51,27 @@ $list-user-padding: 10px;
     margin-bottom: 5px;
   }
   p {
+    font-weight: lighter;
+  }
+}
+.list__card__avatar__chat__info{
+  position: relative;
+  height: $user-avatar-size;
+  padding: 10px 10px;
+  padding-left: $user-avatar-size + $list-user-padding + 10px;
+  overflow: auto;
+  h3, h5, p {
+    margin: 0px;
+    // width: 100%;
+  }
+  h3{
+    color: $primary-color;
+  }
+  h5 {
+    margin-bottom: 5px;
+  }
+  p {
+    color: $default-color;
     font-weight: lighter;
   }
 }
