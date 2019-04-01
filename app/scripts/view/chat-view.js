@@ -31,6 +31,7 @@ $(document).ready(() => {
 });
 
 function initDateTime() {
+  // library jquery datetime picker https://xdsoft.net/jqplugins/datetimepicker/
   $('#datetimepicker').datetimepicker({
     format: 'd/m/Y, H:i'
   });
@@ -77,8 +78,15 @@ function initRooms() {
   getChatRooms(
     getUserId(),
     (data) => {
-      chatRooms = data;
+      chatRooms = data.sort(function (a, b) {
+        let aTime = new Date(a.activeTime);
+        let bTime = new Date(b.activeTime);
+        return aTime > bTime ? -1 : aTime < bTime ? 1 : 0;
+      });
       renderChatRooms();
+      if (chatRooms.length > 0) {
+        selectChatRoom(chatRooms[0].room);
+      }
     }
   );
 }
@@ -166,6 +174,88 @@ function selectChatRoom(selectedRoomName) {
   }
 }
 
+function getMyInventory(data) {
+  myItems = data;
+  getItemsSuccess(data, "#myInventory");
+}
+function getMyInventoryFalse(err) {
+  getItemsFalse(err, "#myInventory");
+}
+function getFriendInventory(data) {
+  friendItems = data;
+  getItemsSuccess(data, "#friendInventory");
+  if (urlSelectedItemId !== undefined) {
+    selectItem(urlSelectedItemId, receiverId);
+  }
+}
+function getFriendInventoryFalse(err) {
+  getItemsFalse(err, "#friendInventory");
+}
+function getItemsSuccess(data, tagId) {
+  const inventoryTag = $(tagId);
+  inventoryTag.html("");
+  if (data.length === 0) {
+    inventoryTag.html("<h1>Không có đồ dùng nào.</h1>");
+  }
+  data.forEach(item => {
+    const listItem = createTradeOfferIventoryItem(item);
+    inventoryTag.append(listItem);
+  });
+}
+
+function getItemsFalse(err, tagId) {
+  const inventoryTag = $(tagId);
+  inventoryTag.html("<h1>Không có đồ dùng nào.</h1>");
+}
+function show(tagId) {
+  const hideTagId = tagId === "#myInventory" ? "#friendInventory" : "#myInventory";
+
+  $(tagId).show();
+  $(tagId + "Tab").addClass("selected");
+  $(hideTagId).hide();
+  $(hideTagId + "Tab").removeClass("selected");
+}
+function selectItem(itemId, userId) {
+  let tradeOfferContentTag;
+  const itemTag = $("#item" + itemId);
+  let item;
+  if (userId == USER_ID) {
+    tradeOfferContentTag = $("#myTradeOffer");
+    item = myItems.find((value) => value.id == itemId);
+  } else {
+    tradeOfferContentTag = $("#friendTradeOffer");
+    item = friendItems.find((value) => value.id == itemId);
+  }
+  details.push({
+    'itemId': item.id,
+    'userId': item.user.id
+  });
+  socketSendTradeInfo(item.user.id, item.id, "add-item");
+  itemTag.hide();
+  tradeOfferContentTag.append(createTradeOfferContentItem(item, true));
+}
+function deselectItem(itemId, userId) {
+  const itemTag = $("#item" + itemId);
+  const selectItemTag = $("#selectItem" + itemId);
+  itemTag.show();
+  selectItemTag.remove();
+  socketSendTradeInfo(userId, itemId, "remove-item");
+  deleteItem = details.find(detail => detail.itemId === itemId && detail.id !== undefined);
+  delete deleteItem.transactionId;
+}
+function renderTradeOfferContent(selectedDetails, isClickable = false) {
+  const myTradeOfferContentTag = $("#myTradeOffer");
+  const friendTradeOfferContentTag = $("#friendTradeOffer");
+  myTradeOfferContentTag.html("");
+  friendTradeOfferContentTag.html("");
+  selectedDetails.forEach(detail => {
+    if (detail.userId == USER_ID) {
+      myTradeOfferContentTag.append(createTradeOfferContentItem(detail.item, isClickable));
+    } else {
+      friendTradeOfferContentTag.append(createTradeOfferContentItem(detail.item, isClickable));
+    }
+  });
+}
 
 
 // function socketCreateRoom() {
@@ -263,85 +353,3 @@ function selectChatRoom(selectedRoomName) {
 
 
 
-function getMyInventory(data) {
-  myItems = data;
-  getItemsSuccess(data, "#myInventory");
-}
-function getMyInventoryFalse(err) {
-  getItemsFalse(err, "#myInventory");
-}
-function getFriendInventory(data) {
-  friendItems = data;
-  getItemsSuccess(data, "#friendInventory");
-  if (urlSelectedItemId !== undefined) {
-    selectItem(urlSelectedItemId, receiverId);
-  }
-}
-function getFriendInventoryFalse(err) {
-  getItemsFalse(err, "#friendInventory");
-}
-function getItemsSuccess(data, tagId) {
-  const inventoryTag = $(tagId);
-  inventoryTag.html("");
-  if (data.length === 0) {
-    inventoryTag.html("<h1>Không có đồ dùng nào.</h1>");
-  }
-  data.forEach(item => {
-    const listItem = createTradeOfferIventoryItem(item);
-    inventoryTag.append(listItem);
-  });
-}
-
-function getItemsFalse(err, tagId) {
-  const inventoryTag = $(tagId);
-  inventoryTag.html("<h1>Không có đồ dùng nào.</h1>");
-}
-function show(tagId) {
-  const hideTagId = tagId === "#myInventory" ? "#friendInventory" : "#myInventory";
-
-  $(tagId).show();
-  $(tagId + "Tab").addClass("selected");
-  $(hideTagId).hide();
-  $(hideTagId + "Tab").removeClass("selected");
-}
-function selectItem(itemId, userId) {
-  let tradeOfferContentTag;
-  const itemTag = $("#item" + itemId);
-  let item;
-  if (userId == USER_ID) {
-    tradeOfferContentTag = $("#myTradeOffer");
-    item = myItems.find((value) => value.id == itemId);
-  } else {
-    tradeOfferContentTag = $("#friendTradeOffer");
-    item = friendItems.find((value) => value.id == itemId);
-  }
-  details.push({
-    'itemId': item.id,
-    'userId': item.user.id
-  });
-  socketSendTradeInfo(item.user.id, item.id, "add-item");
-  itemTag.hide();
-  tradeOfferContentTag.append(createTradeOfferContentItem(item, true));
-}
-function deselectItem(itemId, userId) {
-  const itemTag = $("#item" + itemId);
-  const selectItemTag = $("#selectItem" + itemId);
-  itemTag.show();
-  selectItemTag.remove();
-  socketSendTradeInfo(userId, itemId, "remove-item");
-  deleteItem = details.find(detail => detail.itemId === itemId && detail.id !== undefined);
-  delete deleteItem.transactionId;
-}
-function renderTradeOfferContent(selectedDetails, isClickable = false) {
-  const myTradeOfferContentTag = $("#myTradeOffer");
-  const friendTradeOfferContentTag = $("#friendTradeOffer");
-  myTradeOfferContentTag.html("");
-  friendTradeOfferContentTag.html("");
-  selectedDetails.forEach(detail => {
-    if (detail.userId == USER_ID) {
-      myTradeOfferContentTag.append(createTradeOfferContentItem(detail.item, isClickable));
-    } else {
-      friendTradeOfferContentTag.append(createTradeOfferContentItem(detail.item, isClickable));
-    }
-  });
-}
