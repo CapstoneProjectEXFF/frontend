@@ -1,4 +1,5 @@
 const TRADING_URL = '/trading';
+const ROOM_URL = '/room';
 
 function getChatRooms(
   userId,
@@ -25,7 +26,7 @@ function getChatRoomByRoomId(
   successCallback = DEFAULT_FUNCTION,
   failCallback = DEFAULT_FUNCTION
 ) {
-  let url = NODE_URL + TRADING_URL + `?room=${roomId}`;
+  let url = NODE_URL + ROOM_URL + `?room=${roomId}`;
   let options = {
     method: 'GET',
     headers: {

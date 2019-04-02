@@ -61,9 +61,6 @@ function initChatRoomFromUrl() {
    if (urlParams.has("userId")) {
       receiverId = urlParams.get("userId");
       socketConnectRoom();
-      // initRooms();
-      // initUserInfo(USER_ID, receiverId);
-      // initInventory(USER_ID, receiverId);
       if (urlParams.has("itemId")) {
          urlSelectedItemId = urlParams.get("itemId");
       }
@@ -110,18 +107,40 @@ function initRooms() {
 }
 
 function initInventory(myId, fridenId) {
-   getItemsByUserId(
-      fridenId,
-      ITEM_ENABLE,
-      getFriendInventory,
-      getFriendInventoryFalse
-   );
-   getItemsByUserId(
-      myId,
-      ITEM_ENABLE,
-      getMyInventory,
-      getMyInventoryFalse
-   );
+   let p1 = new Promise((resolve, reject) => {
+      getItemsByUserId(
+         fridenId,
+         ITEM_ENABLE,
+         (data) => {
+            getFriendInventory(data);
+            resolve(true);
+         },
+         getFriendInventoryFalse
+      );
+   });
+   let p2 = new Promise((resolve, reject) => {
+      getItemsByUserId(
+         myId,
+         ITEM_ENABLE,
+         (data) => {
+            getMyInventory(data);
+            resolve(true);
+         },
+         getMyInventoryFalse
+      );
+   });
+   Promise.all([p1, p2]).then((value) => initTradeOfferContent());
+}
+
+function initTradeOfferContent() {
+   renderTradeOfferContent(currentChatRoom.users);
+   if (urlSelectedItemId !== undefined) {
+      let tmpUser = currentChatRoom.users.find(user => user.userId == receiverId);
+      let tmpItemId = tmpUser.item.find(itemId => urlSelectedItemId == itemId);
+      if (tmpItemId == undefined) {
+         selectItem(tmpItemId, receiverId);
+      }
+   }
 }
 
 // socket
@@ -151,6 +170,15 @@ function socketSendTradeInfo(userId, itemId, action = "add-item") {
 }
 
 // render
+
+function show(tagId) {
+   const hideTagId = tagId === "#myInventory" ? "#friendInventory" : "#myInventory";
+   $(tagId).show();
+   $(tagId + "Tab").addClass("selected");
+   $(hideTagId).hide();
+   $(hideTagId + "Tab").removeClass("selected");
+}
+
 function scrollBottom(time = 0) {
    $('#chatContent').animate({
       scrollTop: $('#chatContent').get(0).scrollHeight
@@ -175,63 +203,34 @@ function renderChatContent() {
    scrollBottom();
 }
 
-// onclick function on view
-function selectChatRoom(selectedRoomName) {
-   roomName = selectedRoomName;
-   currentChatRoom = chatRooms.find(chatroom => chatroom.room === selectedRoomName);
-   if (currentChatRoom.users != undefined && currentChatRoom.users.length >= 2) {
-      receiverId = (currentChatRoom.users[0].userId !== USER_ID)
-         ? currentChatRoom.users[0].userId
-         : currentChatRoom.users[1].userId;
-      $('#chatRoom').children().removeClass('selected');
-      $(`#chatRoom${selectedRoomName}`).addClass('selected');
-      renderChatContent();
-      initInventory(USER_ID, receiverId);
-   } else {
-      console.log('currentChatRoom do not have user');
-   }
-}
-
-function getMyInventory(data) {
-   myItems = data;
-   getItemsSuccess(data, "#myInventory");
-}
-function getMyInventoryFalse(err) {
-   getItemsFalse(err, "#myInventory");
-}
-function getFriendInventory(data) {
-   friendItems = data;
-   getItemsSuccess(data, "#friendInventory");
-   if (urlSelectedItemId !== undefined) {
-      selectItem(urlSelectedItemId, receiverId);
-   }
-}
-function getFriendInventoryFalse(err) {
-   getItemsFalse(err, "#friendInventory");
-}
-function getItemsSuccess(data, tagId) {
-   const inventoryTag = $(tagId);
-   inventoryTag.html("");
-   if (data.length === 0) {
-      inventoryTag.html("<h1>Không có đồ dùng nào.</h1>");
-   }
-   data.forEach(item => {
-      const listItem = createTradeOfferIventoryItem(item);
-      inventoryTag.append(listItem);
+function renderTradeOfferContent(users, isClickable = true) {
+   users.forEach(user => {
+      user.item.forEach(itemId => {
+         selectItem(itemId, user.userId);
+      });
    });
 }
 
-function getItemsFalse(err, tagId) {
-   const inventoryTag = $(tagId);
-   inventoryTag.html("<h1>Không có đồ dùng nào.</h1>");
-}
-function show(tagId) {
-   const hideTagId = tagId === "#myInventory" ? "#friendInventory" : "#myInventory";
-
-   $(tagId).show();
-   $(tagId + "Tab").addClass("selected");
-   $(hideTagId).hide();
-   $(hideTagId + "Tab").removeClass("selected");
+// onclick function on view
+function selectChatRoom(selectedRoomName) {
+   roomName = selectedRoomName;
+   getChatRoomByRoomId(
+      roomName,
+      (data) => {
+         currentChatRoom = data;
+         if (currentChatRoom.users != undefined && currentChatRoom.users.length >= 2) {
+            receiverId = (currentChatRoom.users[0].userId !== USER_ID)
+               ? currentChatRoom.users[0].userId
+               : currentChatRoom.users[1].userId;
+            $('#chatRoom').children().removeClass('selected');
+            $(`#chatRoom${selectedRoomName}`).addClass('selected');
+            initInventory(USER_ID, receiverId);
+            renderChatContent();
+         } else {
+            console.log('currentChatRoom do not have user');
+         }
+      }
+   );
 }
 function selectItem(itemId, userId) {
    let tradeOfferContentTag;
@@ -261,113 +260,41 @@ function deselectItem(itemId, userId) {
    deleteItem = details.find(detail => detail.itemId === itemId && detail.id !== undefined);
    delete deleteItem.transactionId;
 }
-function renderTradeOfferContent(selectedDetails, isClickable = false) {
-   const myTradeOfferContentTag = $("#myTradeOffer");
-   const friendTradeOfferContentTag = $("#friendTradeOffer");
-   myTradeOfferContentTag.html("");
-   friendTradeOfferContentTag.html("");
-   selectedDetails.forEach(detail => {
-      if (detail.userId == USER_ID) {
-         myTradeOfferContentTag.append(createTradeOfferContentItem(detail.item, isClickable));
-      } else {
-         friendTradeOfferContentTag.append(createTradeOfferContentItem(detail.item, isClickable));
-      }
+
+// callback
+function getMyInventory(data) {
+   myItems = data;
+   getItemsSuccess(data, "#myInventory");
+}
+function getMyInventoryFalse(err) {
+   getItemsFalse(err, "#myInventory");
+}
+function getFriendInventory(data) {
+   friendItems = data;
+   getItemsSuccess(data, "#friendInventory");
+}
+function getFriendInventoryFalse(err) {
+   getItemsFalse(err, "#friendInventory");
+}
+function getItemsSuccess(data, tagId) {
+   const inventoryTag = $(tagId);
+   inventoryTag.html("");
+   if (data.length === 0) {
+      inventoryTag.html("<h1>Không có đồ dùng nào.</h1>");
+   }
+   data.forEach(item => {
+      const listItem = createTradeOfferIventoryItem(item);
+      inventoryTag.append(listItem);
    });
 }
 
-
-// function socketCreateRoom() {
-//   let data = {
-//     userId1: USER_ID,
-//     userName1: myName,
-//     userId2: receiverId,
-//     userName2: friendName,
-//     time: new Date().getTime()
-//   };
-//   // roomName = `${myName}-${USER_ID}-${friendName}-${receiverId}-${new Date().getTime()}`;
-//   roomName = JSON.stringify(data);
-// roomInfo = {
-//   room: roomName,
-//   userA: `${USER_ID}`,
-//   userB: `${receiverId}`
-// };
-//   console.log(checkRoomExist());
-//   if (checkRoomExist() === undefined) {
-//     socket.emit(
-//       "room",
-//       roomInfo
-//     );
-//     console.log('a' + roomName);
-//   } else {
-
-//   }
-// }
-// function checkRoomExist() {
-//   return chatRooms.find((chatRoom) => {
-//     let users = chatRoom.users;
-//     return (users[0].id == USER_ID && users[1].id == receiverId)
-//       || (users[1].id == USER_ID && users[0].id == receiverId);
-//   });
-// }
+function getItemsFalse(err, tagId) {
+   const inventoryTag = $(tagId);
+   inventoryTag.html("<h1>Không có đồ dùng nào.</h1>");
+}
 
 
 
-// function initCreateView(urlParams) {
-//   if (urlParams.has("userId")) {
-//     receiverId = urlParams.get("userId");
-//     // socketConnect();
-//     // initUserInfo(USER_ID, receiverId);
-//     initInventory(USER_ID, receiverId);
-//     if (urlParams.has("itemId")) {
-//       urlSelectedItemId = urlParams.get("itemId");
-//     }
-//   } else {
-//     // window.location.replace("./error404.html");
-//   }
-//   // $("#btnRequestTradeOffer").show();
-//   // $("#btnRequestTradeOffer").click(() => {
-//   //   addTradeOffer(
-//   //     receiverId,
-//   //     details,
-//   //     sendRequestSuccess,
-//   //     sendRequestFails
-//   //   );
-//   // });
-// }
-// function sendRequestSuccess(data) {
-//   alert("Đã gửi yêu cầu");
-//   window.location.replace("/");
-// }
-// function sendRequestFails(err) {
-//   alert("Có lỗi");
-//   console.log(err);
-// }
-// function initUserInfo(myId, fridenId) {
-//   getUser(
-//     initMyUserName
-//   );
-//   getUserById(
-//     fridenId,
-//     initFriendUserName
-//   )
-// }
-// function initMyUserName(data) {
-//   myName = data.fullName;
-//   initRoomName();
-// }
-// function initFriendUserName(data) {
-//   friendName = data.fullName;
-//   initRoomName();
-// }
-// function initRoomName() {
-//   if (friendName === undefined || friendName === null) {
-//     setTimeout(initRoomName, 100);
-//   } else if (myName === undefined || myName === null) {
-//     setTimeout(initRoomName, 100);
-//   } else {
-//     socketConnect();
-//   }
-   // }
 
 
 
