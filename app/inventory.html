@@ -80,8 +80,8 @@
       <!-- <p class="profile__address" id="userAddress">địa chỉ</p> -->
       <p class="profile__item"><b id="userItemNum"></b> đồ vật</p>
     </div>
-    <div class="profile__action">
-      <a href="./profile.html" class="primary">
+    <div id="btnProfileEdit" class="profile__action">
+      <a href="./profile.html" class="primary" style="display: none;">
         <i class="fas fa-edit"></i>
         Chỉnh sửa thông tin
       </a>
@@ -119,12 +119,25 @@
   <script src="scripts/item.js"></script>
   <script src="scripts/login.js"></script>
   <script src="scripts/register.js"></script>
+  <script src="scripts/user.js"></script>
   <!-- endbuild -->
   <script>
+    let userId;
     $(document).ready(() => {
-      renderUserInfo(getUserInfo());
+      let urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has("userId")) {
+        userId = urlParams.get("userId");
+        getUserById(
+          userId,
+          renderUserInfo,
+          redirectTo404
+        )
+      } else {
+        userId = getUserId();
+        renderUserInfo(getUserInfo());
+      }
       getItemsByUserId(
-        getUserId(),
+        userId,
         ITEM_ENABLE,
         getItemsSuccess,
         getItemsFalse
@@ -150,9 +163,15 @@
     function renderUserInfo(user) {
       $('#userName').text(user.fullName);
       $('#userPhoneNum').text(user.phoneNumber);
+      console.log(user.id + '-' + getUserById() + '-' + user.id == getUserId());
+      
+      if (user.id == getUserId()) {
+        $('#btnProfileEdit').show();
+      }
       if (user.avatar !== undefined && user.avatar !== null) {
         $('#avatar').css('background-image', `url('${user.avatar}'`);
       }
+
     }
   </script>
 </body>
