@@ -13,7 +13,7 @@ function renderNotification(notif) {
     `<b>${notif.receiver.fullName}</b> đề xuất một yêu trao đổi` :
     `Bạn nhận được một yêu cầu trao đổi từ <b>${notif.sender.fullName}</b>`;
   return `
-    <a class="reset" href="/tradeoffer-confirm.html?id=${notif.id}">
+    <a class="reset" href="/chat.html?userId=${data.sender.id}">
       <div class="notification">
         <p class="notification__content">${message}</p>
         <p class="notification__time">${moment(notif.modifyTime).format('hh:mm DD/MM/YYYY')}</p>
