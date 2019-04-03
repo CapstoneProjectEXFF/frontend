@@ -120,6 +120,13 @@ function confirmAddFriend(id) {
   );
 }
 
+function rejectAddFriend(id) {
+  removeFriend(
+    id,
+    confirmAddFriendSuccess
+  );
+}
+
 // TODO better click
 $(document).ready(() => {
   const btnFriend = $('#btnFriend');

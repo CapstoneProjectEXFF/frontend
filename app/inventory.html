@@ -136,12 +136,16 @@
       let urlParams = new URLSearchParams(window.location.search);
       if (urlParams.has("userId")) {
         userId = urlParams.get("userId");
-
-        getUserById(
-          userId,
-          getUserSuccess,
-          redirectTo404
-        )
+        if (userId != getUserId()) {
+          getUserById(
+            userId,
+            getUserSuccess,
+            redirectTo404
+          )
+        } else {
+          userId = getUserId();
+          renderUserInfo(getUserInfo());
+        }
       } else {
         userId = getUserId();
         renderUserInfo(getUserInfo());
@@ -156,20 +160,25 @@
     function initFriendButon(data) {
       $('#btnAddFriend').show();
       $('#btnCancelAddFriend').hide();
+      $('#btnAddFriend').off("click");
       $('#btnAddFriend').click(() => {
         sendAddFriendRequest(
           userId,
           initCancleAddFriendButon
         )
-      })
-
+      });
     }
     function initCancleAddFriendButon(data) {
-      console.log(data);
       $('#btnAddFriend').hide();
       $('#btnCancelAddFriend').show();
+      $('#btnCancelAddFriend').off("click");
       $('#btnCancelAddFriend').click(() => {
-        
+        removeFriend(
+          data.id,
+          (data) => {
+            initFriendButon({});
+          }
+        )
       });
     }
     function getUserSuccess(data) {

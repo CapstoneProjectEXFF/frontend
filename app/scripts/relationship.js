@@ -126,10 +126,10 @@ function removeFriend(
 ) {
   let url = API_URL + RELATIONSHIP_URL;
   let data = {
-    "id": userId
+    "id": id
   };
   let options = {
-    method: 'POST',
+    method: 'DELETE',
     body: JSON.stringify(data),
     headers: {
       'Accept': 'application/json',
@@ -137,10 +137,19 @@ function removeFriend(
       'Authorization': getAuthentoken()
     }
   };
-  fetchApi(
-    url,
-    options,
-    successCallback,
-    failCallback
-  );
+  fetch(url, options)
+    .then((response) => {
+      if (!response.ok) {
+        var error = new Error(response.statusText);
+        error.response = response;
+        throw error;
+      }
+      return response.json();
+    })
+    .then((responseJson) => {
+      successCallback(responseJson, id = -1);
+    })
+    .catch(err => {
+      failCallback(err);
+    });
 }
