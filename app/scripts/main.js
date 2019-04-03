@@ -24,6 +24,7 @@ const ITEM_PRIVACY_FRIENDS = '1';
 const ITEM_TYPE = '0';
 const DONATION_TYPE = '1';
 
+// get
 function getAuthentoken() {
   return localStorage.getItem('EXFF_TOKEN');
 }
@@ -34,6 +35,7 @@ function getUserInfo() {
   return JSON.parse(localStorage.getItem('USER_INFO'));
 }
 
+// fetch
 function fetchApi(
   url,
   options,
@@ -54,4 +56,10 @@ function fetchApi(
     .catch(err => {
       failCallback(err);
     });
+}
+
+// redirect
+
+function redirectTo404(data) {
+  window.location.href = './error404.html';
 }

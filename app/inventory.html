@@ -80,22 +80,28 @@
       <!-- <p class="profile__address" id="userAddress">địa chỉ</p> -->
       <p class="profile__item"><b id="userItemNum"></b> đồ vật</p>
     </div>
-    <div class="profile__action">
+    <div id="btnProfileEdit" class="profile__action" style="display: none;">
       <a href="./profile.html" class="primary">
         <i class="fas fa-edit"></i>
         Chỉnh sửa thông tin
       </a>
     </div>
+    <div id="btnAddFriend" class="profile__action" style="display: none;">
+      <button class="primary">Thêm bạn bè</button>
+    </div>
+    <div id="btnCancelAddFriend" class="profile__action" style="display: none;">
+      <button class="primary--o">Hủy kết bạn</button>
+    </div>
   </div>
 
-  <div class="inventory">
+  <div class="inventory" id="inventoryActionBar" style="display: none;">
     <div class="field__container clearfix">
       <div class="float-right">
         <a class="reset" href="./form-item.html">
           <button class="primary" id="btnAddItem">Thêm đồ dùng</button>
         </a>
         <a class="reset" href="./form-donation-post.html">
-          <button class="primary" id="btnAddDonationPost">Tạo từ thiện</button>
+          <button class="primary--o" id="btnAddDonationPost">Tạo từ thiện</button>
         </a>
       </div>
     </div>
@@ -114,21 +120,75 @@
   <!-- build:js scripts/main.js -->
   <script src="scripts/main.js"></script>
   <script src="scripts/menubar.js"></script>
+  <script src="scripts/relationship.js"></script>
   <script src="scripts/validation.js"></script>
   <script src="scripts/item.js"></script>
   <script src="scripts/login.js"></script>
   <script src="scripts/register.js"></script>
+  <script src="scripts/user.js"></script>
   <!-- endbuild -->
   <script>
+    let userId;
     $(document).ready(() => {
-      renderUserInfo(getUserInfo());
+      initInventoryView();
+    });
+    function initInventoryView() {
+      let urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has("userId")) {
+        userId = urlParams.get("userId");
+        if (userId != getUserId()) {
+          getUserById(
+            userId,
+            getUserSuccess,
+            redirectTo404
+          )
+        } else {
+          userId = getUserId();
+          renderUserInfo(getUserInfo());
+        }
+      } else {
+        userId = getUserId();
+        renderUserInfo(getUserInfo());
+      }
       getItemsByUserId(
-        getUserId(),
+        userId,
         ITEM_ENABLE,
         getItemsSuccess,
         getItemsFalse
       );
-    });
+    }
+    function initFriendButon(data) {
+      $('#btnAddFriend').show();
+      $('#btnCancelAddFriend').hide();
+      $('#btnAddFriend').off("click");
+      $('#btnAddFriend').click(() => {
+        sendAddFriendRequest(
+          userId,
+          initCancleAddFriendButon
+        )
+      });
+    }
+    function initCancleAddFriendButon(data) {
+      $('#btnAddFriend').hide();
+      $('#btnCancelAddFriend').show();
+      $('#btnCancelAddFriend').off("click");
+      $('#btnCancelAddFriend').click(() => {
+        removeFriend(
+          data.id,
+          (data) => {
+            initFriendButon({});
+          }
+        )
+      });
+    }
+    function getUserSuccess(data) {
+      renderUserInfo(data);
+      checkFriendStatus(
+        data.id,
+        initCancleAddFriendButon,
+        initFriendButon
+      )
+    }
     function getItemsSuccess(data) {
       const inventoryTag = $("#inventory");
       const itemNumTag = $("#userItemNum");
@@ -149,9 +209,15 @@
     function renderUserInfo(user) {
       $('#userName').text(user.fullName);
       $('#userPhoneNum').text(user.phoneNumber);
+
+      if (user.id == getUserId()) {
+        $('#btnProfileEdit').show();
+        $('#inventoryActionBar').show();
+      }
       if (user.avatar !== undefined && user.avatar !== null) {
         $('#avatar').css('background-image', `url('${user.avatar}'`);
       }
+
     }
   </script>
 </body>

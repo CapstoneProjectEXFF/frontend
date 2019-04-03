@@ -133,22 +133,21 @@ function createUserCard(user) {
   const image = (user.avatar !== null && user.avatar !== undefined)
     ? (user.avatar)
     : ('./images/no-image-icon-13.png');
-  const addFriendButton = (user.id + '' !== getUserId())
-    ? `<div><button class="primary size--mini">Thêm bạn</button></div>`
-    : '';
+  // const addFriendButton = (user.id + '' !== getUserId())
+  //   ? `<div><button class="primary size--mini">Thêm bạn</button></div>`
+  //   : '';
   return (
     `<div class="list__card__avatar background--color-white" id="user${user.id}">
       <div class="list__card__avatar__image position--relative">
         <div class="background" style="background-image: url(${image})"></div>
       </div>
       <div class="list__card__avatar__info">
-        <div class="flex flex_no_wrap">
+        <a class="reset" href="./inventory.html?userId=${user.id}">
           <div class="flex flex_vertical flex_grow__1">
             <h3 class="ellipsis">${user.fullName}</h3>
             <h5 class="ellipsis">${user.phoneNumber}</h5>
           </div>
-          ${addFriendButton}
-        </div>
+        </a>
       </div>
     </div>`
   );
