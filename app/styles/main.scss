@@ -285,6 +285,7 @@ $profile-container-padding: 8px;
 }
 
 .profile__form__container{
+  max-width: 680px;
   padding: 10px;
   background-color: #fff;
   border: 1px solid $boder-color;
