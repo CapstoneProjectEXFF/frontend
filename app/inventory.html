@@ -89,6 +89,9 @@
     <div id="btnAddFriend" class="profile__action" style="display: none;">
       <button class="primary">Thêm bạn bè</button>
     </div>
+    <div id="btnConfirmAddFriend" class="profile__action" style="display: none;">
+      <button class="primary">Đồng ý kết bạn</button>
+    </div>
     <div id="btnCancelAddFriend" class="profile__action" style="display: none;">
       <button class="primary--o">Hủy kết bạn</button>
     </div>
@@ -157,36 +160,71 @@
         getItemsFalse
       );
     }
-    function initFriendButon(data) {
+    function initFriendButton(data = {}) {
       $('#btnAddFriend').show();
       $('#btnCancelAddFriend').hide();
+      $('#btnConfirmAddFriend').hide();
       $('#btnAddFriend').off("click");
       $('#btnAddFriend').click(() => {
         sendAddFriendRequest(
           userId,
-          initCancleAddFriendButon
+          initCancleAddFriendButton
         )
       });
     }
-    function initCancleAddFriendButon(data) {
+    function initCancleAddFriendButton(data) {
       $('#btnAddFriend').hide();
       $('#btnCancelAddFriend').show();
+      $('#btnConfirmAddFriend').hide();
+      $('#btnConfirmAddFriend').off("click");
       $('#btnCancelAddFriend').off("click");
       $('#btnCancelAddFriend').click(() => {
         removeFriend(
           data.id,
           (data) => {
-            initFriendButon({});
+            initFriendButton();
           }
         )
       });
+    }
+    function initConfirmAddFriendButton(data) {
+      $('#btnAddFriend').hide();
+      $('#btnConfirmAddFriend').show();
+      $('#btnCancelAddFriend').show();
+      $('#btnConfirmAddFriend').off("click");
+      $('#btnCancelAddFriend').off("click");
+      $('#btnConfirmAddFriend').click(() => {
+        confirmAddFriendRequest(
+          data.id,
+          (data, id) => {
+            confirmAddFriendSuccess(data);
+            initCancleAddFriendButton({id: id}); 
+          }
+        );
+      });
+      $('#btnCancelAddFriend').click(() => {
+        removeFriend(
+          data.id,
+          (data) => {
+            confirmAddFriendSuccess(data);
+            initFriendButton();
+          }
+        );
+      });
+    }
+    function initAddFriendAction(data) {
+      if (data.status === RELATIONSHIP_SEND && data.receiverId == getUserId()) {
+        initConfirmAddFriendButton(data);
+      } else {
+        initCancleAddFriendButton(data);
+      }
     }
     function getUserSuccess(data) {
       renderUserInfo(data);
       checkFriendStatus(
         data.id,
-        initCancleAddFriendButon,
-        initFriendButon
+        initAddFriendAction,
+        initFriendButton
       )
     }
     function getItemsSuccess(data) {

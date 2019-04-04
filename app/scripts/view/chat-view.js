@@ -133,12 +133,14 @@ function initInventory(myId, fridenId) {
 }
 
 function initTradeOfferContent() {
+   console.log(myItems);
+   console.log(friendItems);
    renderTradeOfferContent(currentChatRoom.users);
    if (urlSelectedItemId !== undefined) {
       let tmpUser = currentChatRoom.users.find(user => user.userId == receiverId);
       let tmpItemId = tmpUser.item.find(itemId => urlSelectedItemId == itemId);
       if (tmpItemId == undefined) {
-         selectItem(tmpItemId, receiverId);
+         selectItem(urlSelectedItemId, receiverId);
       }
    }
 }
