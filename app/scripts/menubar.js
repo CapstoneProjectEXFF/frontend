@@ -79,7 +79,7 @@ function renderRelationshipNotif(notif) {
   return `
     <div class="notification" id="relationship${notif.id}">
       <p class="notification__content">
-        <a class="primary" href="/tradeoffer.html?userId=${notif.sender.id}">
+        <a class="primary" href="/inventory.html?userId=${notif.sender.id}">
           <b>${notif.sender.fullName}</b>
         </a>
         yêu cầu kết bạn
@@ -113,17 +113,22 @@ function confirmAddFriendSuccess(data, id) {
   relationshipNotif = relationshipNotif.filter(item => item.id !== id);
 }
 
-function confirmAddFriend(id) {
+function confirmAddFriend(notifId) {
   confirmAddFriendRequest(
-    id,
-    confirmAddFriendSuccess
+    notifId,
+    (data, id) => {
+      confirmAddFriendSuccess(data, id);
+      initCancleAddFriendButton({id: id});
+    }
   );
 }
 
 function rejectAddFriend(id) {
   removeFriend(
     id,
-    confirmAddFriendSuccess
+    (data) => {
+      initFriendButton();
+    }
   );
 }
 

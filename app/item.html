@@ -5,6 +5,12 @@
   <meta charset="utf-8">
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta property="fb:app_id" content="293758374637458" />
+  <meta property="og:url" id="ogUrl" content="https://exff.ml/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" id="ogTitle" content="Đồ dùng cần trao đổi" />
+  <meta property="og:description" id="ogDescription" content="Trao đổi đồ dùng giữa người thân và bạn bè tại Exff" />
+  <meta property="og:image" id="ogImgae" content="" />
   <title>Exff | Item</title>
 
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -34,43 +40,62 @@
   <!--[if lt IE 10]>
       <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
-    <div class="menu_bar__container">
-      <div class="menu_bar">
-        <div class="icon">
-          <a class="reset" href="/">
-            <img class="icon" src="./images/Logo-64px.png" alt="">
-          </a>
-        </div>
-        <div class="logo">
-          <a class="reset" href="/">
-            <span>Exff</span>
-          </a>
-        </div>
-        <div class="search_bar">
+  <div id="fb-root"></div>
+  <script>
+    window.fbAsyncInit = function () {
+      FB.init({
+        appId: '293758374637458',
+        xfbml: true,
+        version: 'v3.2'
+      });
+      FB.AppEvents.logPageView();
+    };
+
+    (function (d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) { return; }
+      js = d.createElement(s); js.id = id;
+      js.src = "https://connect.facebook.net/en_US/sdk.js";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+  </script>
+
+  <div class="menu_bar__container">
+    <div class="menu_bar">
+      <div class="icon">
+        <a class="reset" href="/">
+          <img class="icon" src="./images/Logo-64px.png" alt="">
+        </a>
+      </div>
+      <div class="logo">
+        <a class="reset" href="/">
+          <span>Exff</span>
+        </a>
+      </div>
+      <div class="search_bar">
         <form action="#" id="searchForm">
           <input type="text" name="searchItem" id="inputSearch" placeholder="Search..." />
           <button id="btnSearch" class="primary"><i class="fas fa-search"></i></button>
         </form>
       </div>
-        <div class="menu_bar__icon" id="btnBell">
-          <i class="fas fa-bell"></i>
-        </div>
-        <div class="menu_bar__icon">
-          <i class="fas fa-user-plus"></i>
-        </div>
-        <div class="menu_bar__icon">
-          <a class="reset" href="./inventory.html">
-            <i class="fas fa-boxes"></i>
-          </a>
-        </div>
-        <div class="user_icon" id="userInfoIcon">
-          <a class="reset" href="./login.html">
-            <i class="fas fa-user-circle"></i>
-          </a>
-        </div>
+      <div class="menu_bar__icon" id="btnBell">
+        <i class="fas fa-bell"></i>
+      </div>
+      <div class="menu_bar__icon">
+        <i class="fas fa-user-plus"></i>
+      </div>
+      <div class="menu_bar__icon">
+        <a class="reset" href="./inventory.html">
+          <i class="fas fa-boxes"></i>
+        </a>
+      </div>
+      <div class="user_icon" id="userInfoIcon">
+        <a class="reset" href="./login.html">
+          <i class="fas fa-user-circle"></i>
+        </a>
       </div>
     </div>
-
+  </div>
   <br>
   <br>
 
@@ -92,6 +117,9 @@
           <span id="itemAddress"></span>
         </p>
         <br>
+        <button onclick="share()" class="primary size--mini">
+          <i class="fab fa-facebook"></i> Chia sẻ
+        </button>
         <p><b>Thông tin:</b></p>
         <p id="itemDescription"></p>
         <hr />
@@ -106,16 +134,8 @@
       <img id="image">
     </div>
   </div>
-  <!-- <div class="hero-unit">
-      <h1>Exff</h1>
-      <p>Exchange between friend and family</p>
-      <ul>
-        <li><a href="./login.html">Login</a></li>
-        <li><a href="./register.html">Register</a></li>
-        <li></li>
-        <li></li>
-      </ul>
-    </div> -->
+
+
 
   <!-- build:js scripts/vendor/jquery.js -->
   <!-- bower:js -->
@@ -134,6 +154,40 @@
   <script src="scripts/register.js"></script>
   <!-- endbuild -->
   <script>
+    let overrideLink;
+    let overrideTitle;
+    let overrideDescription;
+    let overrideImage;
+    function share() {
+      shareOverrideOGMeta(
+        overrideLink,
+        overrideTitle,
+        overrideDescription,
+        overrideImage);
+    }
+    function shareOverrideOGMeta(
+      overrideLink = 'https://exff.ml/', 
+      overrideTitle = 'Đồ dùng cần trao đổi', 
+      overrideDescription = 'Trao đổi đồ dùng giữa người thân và bạn bè tại Exff', 
+      overrideImage = ''
+      ) {
+      FB.ui({
+        method: 'share_open_graph',
+        action_type: 'og.likes',
+        action_properties: JSON.stringify({
+          object: {
+            'og:url': overrideLink,
+            'og:title': overrideTitle,
+            'og:description': overrideDescription,
+            'og:image': overrideImage
+          }
+        })
+      },
+        function (response) {
+        });
+    }
+  </script>
+  <script>
     $(document).ready(() => {
       let urlParams = new URLSearchParams(window.location.search);
       if (urlParams.has("id")) {
@@ -147,7 +201,7 @@
         window.location.replace("./error404.html");
       }
     });
-    function getItemSuccess(data) {
+    function initView(data) {
       const user = $("#user");
       const date = $("#date");
       const category = $("#itemCategory");
@@ -168,8 +222,28 @@
         tradeOfferLink.attr("href", `./chat.html?userId=${data.user.id}&itemId=${data.id}`)
       }
       if (data.images != null && data.images.length > 0) {
-        image.attr('src',data.images[0].url);
+        image.attr('src', data.images[0].url);
       }
+    }
+    function initShareButton(data) {
+      overrideLink = `https://exff.ml/item.html?id=${data.id}`;
+      overrideTitle = data.name;
+      overrideDescription = data.description;
+      if (data.images != null && data.images.length > 0) {
+        overrideImage = data.images[0].url;
+      }
+      $('#ogUrl').attr('content', `https://exff.ml/item.html?id=${data.id}`);
+      $('#ogTitle').attr('content', data.name);
+      $('#ogDescription').attr('content', data.description);
+      $('#shareUrl').attr('data-href', `https://exff.ml/item.html?id=${data.id}`);
+      if (data.images != null && data.images.length > 0) {
+        $('#ogImgae').attr('content', data.images[0].url);
+      }
+
+    }
+    function getItemSuccess(data) {
+      initShareButton(data);
+      initView(data);
     };
     function getItemFalse(err) {
       // console.log(err);

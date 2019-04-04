@@ -112,6 +112,7 @@
   <div class="inventory card__container" id="inventory">
   </div>
 
+  
 
   <!-- build:js scripts/vendor/jquery.js -->
   <!-- bower:js -->
@@ -197,7 +198,7 @@
         confirmAddFriendRequest(
           data.id,
           (data, id) => {
-            confirmAddFriendSuccess(data);
+            confirmAddFriendSuccess(data, id);
             initCancleAddFriendButton({id: id}); 
           }
         );
@@ -205,8 +206,8 @@
       $('#btnCancelAddFriend').click(() => {
         removeFriend(
           data.id,
-          (data) => {
-            confirmAddFriendSuccess(data);
+          (data, id) => {
+            confirmAddFriendSuccess(data, id);
             initFriendButton();
           }
         );

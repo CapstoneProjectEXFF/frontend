@@ -5,6 +5,13 @@
   <meta charset="utf-8">
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta property="fb:app_id" content="293758374637458" />
+  <meta property="og:url" id="ogUrl" content="https://exff.ml/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" id="ogTitle" content="Quyên góp đồ dùng" />
+  <meta property="og:description" id="ogDescription"
+    content="Quyên góp đồ dùng cho các tổ chức từ thiện tại tại Exff" />
+  <meta property="og:image" id="ogImgae" content="" />
   <title>Exff | Donation post</title>
 
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -34,42 +41,61 @@
   <!--[if lt IE 10]>
       <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
-    <div class="menu_bar__container">
-      <div class="menu_bar">
-        <div class="icon">
-          <a class="reset" href="/">
-            <img class="icon" src="./images/Logo-64px.png" alt="">
-          </a>
-        </div>
-        <div class="logo">
-          <a class="reset" href="/">
-            <span>Exff</span>
-          </a>
-        </div>
-        <div class="search_bar">
+  <div id="fb-root"></div>
+  <script>
+    window.fbAsyncInit = function () {
+      FB.init({
+        appId: '293758374637458',
+        xfbml: true,
+        version: 'v3.2'
+      });
+      FB.AppEvents.logPageView();
+    };
+
+    (function (d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) { return; }
+      js = d.createElement(s); js.id = id;
+      js.src = "https://connect.facebook.net/en_US/sdk.js";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+  </script>
+  <div class="menu_bar__container">
+    <div class="menu_bar">
+      <div class="icon">
+        <a class="reset" href="/">
+          <img class="icon" src="./images/Logo-64px.png" alt="">
+        </a>
+      </div>
+      <div class="logo">
+        <a class="reset" href="/">
+          <span>Exff</span>
+        </a>
+      </div>
+      <div class="search_bar">
         <form action="#" id="searchForm">
           <input type="text" name="searchItem" id="inputSearch" placeholder="Search..." />
           <button id="btnSearch" class="primary"><i class="fas fa-search"></i></button>
         </form>
       </div>
-        <div class="menu_bar__icon" id="btnBell">
-          <i class="fas fa-bell"></i>
-        </div>
-        <div class="menu_bar__icon">
-          <i class="fas fa-user-plus"></i>
-        </div>
-        <div class="menu_bar__icon">
-          <a class="reset" href="./inventory.html">
-            <i class="fas fa-boxes"></i>
-          </a>
-        </div>
-        <div class="user_icon" id="userInfoIcon">
-          <a class="reset" href="./login.html">
-            <i class="fas fa-user-circle"></i>
-          </a>
-        </div>
+      <div class="menu_bar__icon" id="btnBell">
+        <i class="fas fa-bell"></i>
+      </div>
+      <div class="menu_bar__icon">
+        <i class="fas fa-user-plus"></i>
+      </div>
+      <div class="menu_bar__icon">
+        <a class="reset" href="./inventory.html">
+          <i class="fas fa-boxes"></i>
+        </a>
+      </div>
+      <div class="user_icon" id="userInfoIcon">
+        <a class="reset" href="./login.html">
+          <i class="fas fa-user-circle"></i>
+        </a>
       </div>
     </div>
+  </div>
 
   <br>
   <br>
@@ -83,14 +109,13 @@
 
         <h1>Quyên góp</h1>
         <br />
-        <!-- <p>
-          <i class="fas fa-box"></i>
-          <span id="itemCategory"></span>
-        </p> -->
         <p>
           <i class="fas fa-map-marker"></i>
           <span id="address"></span>
         </p>
+        <button onclick="share()" class="primary size--mini">
+          <i class="fab fa-facebook"></i> Chia sẻ
+        </button>
         <br>
         <p id="postContent"></p>
         <hr />
@@ -133,6 +158,43 @@
   <script src="scripts/register.js"></script>
   <!-- endbuild -->
   <script>
+    let overrideLink;
+    let overrideTitle;
+    let overrideDescription;
+    let overrideImage;
+    function share() {
+      shareOverrideOGMeta(
+        overrideLink,
+        overrideTitle,
+        overrideDescription,
+        overrideImage);
+    }
+    function shareOverrideOGMeta(
+      overrideLink = 'https://exff.ml/',
+      overrideTitle = 'Quyên góp đồ dùng',
+      overrideDescription = 'Quyên góp đồ dùng cho các tổ chức từ thiện tại tại Exff',
+      overrideImage = ''
+    ) {
+      if (overrideTitle == null) {
+        overrideTitle = 'Quyên góp đồ dùng';
+      }
+      FB.ui({
+        method: 'share_open_graph',
+        action_type: 'og.likes',
+        action_properties: JSON.stringify({
+          object: {
+            'og:url': overrideLink,
+            'og:title': overrideTitle,
+            'og:description': overrideDescription,
+            'og:image': overrideImage
+          }
+        })
+      },
+        function (response) {
+        });
+    }
+  </script>
+  <script>
     $(document).ready(() => {
       let urlParams = new URLSearchParams(window.location.search);
       if (urlParams.has("id")) {
@@ -146,7 +208,7 @@
         window.location.replace("./error404.html");
       }
     });
-    function getDonationPostSuccess(data) {
+    function initDonationPostView(data) {
       const user = $("#user");
       const date = $("#date");
       const address = $("#address");
@@ -163,8 +225,28 @@
         tradeOfferLink.attr("href", `./donation-send.html?donationPostId=${data.id}`)
       }
       if (data.images != null && data.images.length > 0) {
-        image.attr('src',data.images[0].url);
+        image.attr('src', data.images[0].url);
       }
+    }
+    function initShareButton(data) {
+      overrideLink = `https://exff.ml/donation-post.html?id=${data.id}`;
+      overrideTitle = data.title;
+      overrideDescription = data.content;
+      if (data.images != null && data.images.length > 0) {
+        overrideImage = data.images[0].url;
+      }
+      $('#ogUrl').attr('content', `https://exff.ml/donation-post.html?id=${data.id}`);
+      $('#ogTitle').attr('content', data.title);
+      $('#ogDescription').attr('content', data.content);
+      $('#shareUrl').attr('data-href', `https://exff.ml/donation-post.html?id=${data.id}`);
+      if (data.images != null && data.images.length > 0) {
+        $('#ogImgae').attr('content', data.images[0].url);
+      }
+
+    }
+    function getDonationPostSuccess(data) {
+      initDonationPostView(data);
+      initShareButton(data);
     };
     function getDonationPostFalse(err) {
       // console.log(err);
