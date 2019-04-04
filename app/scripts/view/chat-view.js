@@ -35,7 +35,8 @@ function initTradeOfferButton() {
    $('#btnConfirm').click(() => {
       let data = {
          room: roomName,
-         userId: USER_ID
+         userId: USER_ID,
+         token: getAuthentoken()
       };
       console.log('hello');
       socket.emit('confirm-trade', data);
