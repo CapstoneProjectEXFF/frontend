@@ -93,6 +93,26 @@ function getTransaction(
     failCallback
   );
 }
+function getTransactionHistory(
+  successCallback = DEFAULT_FUNCTION,
+  failCallback = DEFAULT_FUNCTION
+) {
+  let url = API_URL + TRANSACTION_URL + `/history`;
+  let options = {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': getAuthentoken()
+    }
+  };
+  fetchApi(
+    url,
+    options,
+    successCallback,
+    failCallback
+  );
+}
 
 function confirmTransaction(
   id,

@@ -105,6 +105,8 @@
       </div>
     </div>
   </div>
+  <div class="" id="transactionHistory">
+    </div>
   <div class="inventory card__container" id="inventory">
   </div>
 
@@ -126,6 +128,7 @@
   <script src="scripts/login.js"></script>
   <script src="scripts/register.js"></script>
   <script src="scripts/user.js"></script>
+  <script src="scripts/transaction.js"></script>
   <!-- endbuild -->
   <script>
     let userId;
@@ -155,6 +158,9 @@
         ITEM_ENABLE,
         getItemsSuccess,
         getItemsFalse
+      );
+      getTransactionHistory(
+        initTransactionHistory
       );
     }
     function initFriendButton(data = {}) {
@@ -216,6 +222,21 @@
         initCancleAddFriendButton(data);
       }
     }
+function initTransactionHistory(data) {
+  console.log(data);
+  const transactionHistoryTag = $('#transactionHistory');
+  data.forEach(transaction => {
+    transactionHistoryTag.append(
+      `
+      <div>
+        <p>${transaction.sender.fullName}</p>
+        <p>${transaction.receiver.fullName}</p>
+        </div>
+      `
+      );
+  });
+}
+
     function getUserSuccess(data) {
       renderUserInfo(data);
       checkFriendStatus(

@@ -5,6 +5,7 @@
     "jquery": "~2.1.1",
     "modernizr": "~2.8.1",
     "moment": "^2.24.0",
-    "Font-Awesome": "^5.7.2"
+    "Font-Awesome": "^5.7.2",
+    "socket.io-client": "^2.2.0"
   }
 }
