@@ -44,7 +44,7 @@
         </a>
       </div>
       <div class="search_bar">
-        <form action="#" id="searchFormInSearch">
+        <form action="" id="searchFormInSearch">
           <input type="text" name="searchItem" id="inputSearch" placeholder="Search..." />
           <button id="btnSearch" class="primary"><i class="fas fa-search"></i></button>
         </form>
@@ -65,20 +65,36 @@
   </div>
   <br>
   <br>
-  <div class="div--center">
-    <div>
-      <h3>Người dùng</h3>
-      <div class="div--center card__container" id="users"></div>
+  <div class="flex flex_no_wrap div--center">
+    <div class="filter">
+      <h3>Lọc kết quả</h3>
+      <h4>Người dùng</h4>
+      <div>
+        <input type="radio" name="relationship" value="public" checked> Bất kì ai
+      </div>
+      <div>
+        <input type="radio" name="relationship" value="friend"> Bạn bè
+      </div>
+      <h4>Loại đồ dùng</h4>
+      <select name="category" id="category">
+        
+      </select>
+
     </div>
-    <div>
-      <h3>Đồ dùng dùng</h3>
-      <div class="div--center card__container" id="items"></div>
+    <div class="flex_grow__1">
+      <div>
+        <h3>Người dùng</h3>
+        <div class="card__container" id="users"></div>
+      </div>
+      <div>
+        <h3>Đồ dùng dùng</h3>
+        <div class="card__container" id="items"></div>
+      </div>
+      <div>
+        <h3>Quyên góp</h3>
+        <div class="post__container" id="donationPosts"></div>
+      </div>
     </div>
-    <div>
-      <h3>Quyên góp</h3>
-      <div class="div--center post__container" id="donationPosts"></div>
-    </div>
-  </div>
   </div>
 
   <!-- build:js scripts/vendor/jquery.js -->
@@ -99,6 +115,7 @@
   <script src="scripts/login.js"></script>
   <script src="scripts/register.js"></script>
   <script src="scripts/user.js"></script>
+  <script src="scripts/category.js"></script>
   <!-- endbuild -->
   <script>
     let searchValue;
@@ -116,7 +133,7 @@
           getUserFalse
         );
       }
-      $('#searchFormInSearch');
+      getCategory(getCategorySuccess);
       getItemsByStatus(
         ITEM_ENABLE,
         getItemsSuccess,
@@ -128,9 +145,14 @@
         getDonationPostsSuccess,
         getDonationPostsFalse,
       );
+
+      $('#searchFormInSearch').submit((event) => {
+        event.preventDefault();
+      });
       // $("#itemsContainer").show();
       // $("#postsContainer").hide();
     });
+    
     function getUserSuccess(data) {
       const usersTag = $("#users");
       usersTag.html("");
@@ -175,7 +197,28 @@
       const donationPostsTag = $("#donationPosts");
       donationPostsTag.html("<h1>Không có bài viết nào.</h1>");
     };
-
+    function getCategorySuccess(data) {
+      // console.log(data);
+      let options = "";
+      let groupOption = "";
+      const selectTag = $("#category");
+      selectTag.html('<option value="-1">Tất cả</option>');
+      let superCate = data.filter(category => category.supercategoryId === null);
+      superCate.forEach(superCategory => {
+        groupOption = $("<optgroup/>", {
+          label: superCategory.name
+        })
+        let subCate = data.filter(category => category.supercategoryId === superCategory.id);
+        subCate.forEach(subCategory => {
+          option = $("<option/>")
+          option.text(subCategory.name);
+          option.val(subCategory.id);
+          groupOption.append(option);
+        });
+        selectTag.append(groupOption);
+      });
+      categoryLoaded = true;
+    }
     // function show(tagId) {
     //   const hideTagId = tagId === "#itemsContainer" ? "#postsContainer" : "#itemsContainer";
     //   $(tagId).show();
