@@ -47,6 +47,7 @@
     }
   }
   .user_icon{
+    position: relative;
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
@@ -69,21 +70,27 @@ $distance: 32px;
 }
 .user__popup {
   position: absolute;
-  min-width: 100px;
-  top: $distance * 2;
+  min-width: 120px;
+  top: $distance * 1.8;
   right: 0;
+  padding: 0px;
   background-color: #fff;
-  border: 1px solid #ccc;
+  // border: 1px solid #ccc;
+  outline: 1px solid #ccc;
   border-radius: 5px;
   overflow: visible;
+  box-sizing: border-box;
   z-index: 10;
   a>p{
+    width: 100%;
     margin: 0px;
     padding: 5px;
     text-align: left;
     user-select: none;
+    box-sizing: border-box;
   }
   a>p:hover{
+    position: relative;
     color: $primary-color;
     background-color: #cfcfcf;
   }

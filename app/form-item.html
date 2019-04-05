@@ -249,12 +249,12 @@
       let groupOption = "";
       const selectTag = $("#category");
       selectTag.html('<option hidden disabled selected>Chọn loại đồ dùng</option>');
-      let superCate = data.filter(category => category.suppercategoryId === null);
+      let superCate = data.filter(category => category.supercategoryId === null);
       superCate.forEach(superCategory => {
         groupOption = $("<optgroup/>", {
           label: superCategory.name
         })
-        let subCate = data.filter(category => category.suppercategoryId === superCategory.id);
+        let subCate = data.filter(category => category.supercategoryId === superCategory.id);
         subCate.forEach(subCategory => {
           option = $("<option/>")
           option.text(subCategory.name);

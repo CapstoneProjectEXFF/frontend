@@ -193,7 +193,7 @@ function renderUserAvatar(avatar) {
     : ('./images/no-image-icon-13.png');
   return `
     <div class="avatar">
-      <div class="background" style="background-image: url(${image});"></div>
+      <div class="background" id="menubarAvatar" style="background-image: url(${image});"></div>
     </div>
     <div class="popup user__popup" id="userPopup" style="display:none">
       <a class="reset" href="./inventory.html">
