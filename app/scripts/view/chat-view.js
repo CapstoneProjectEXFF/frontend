@@ -25,7 +25,7 @@ $(document).ready(() => {
    }
    initMessageForm();
    socket.on('item-added', function (itemInfo) {
-      // console.log(itemInfo);
+      console.log(itemInfo);
    });
    initDateTime();
    initTradeOfferButton();
@@ -134,8 +134,6 @@ function initInventory(myId, fridenId) {
 }
 
 function initTradeOfferContent() {
-   console.log(myItems);
-   console.log(friendItems);
    renderTradeOfferContent(currentChatRoom.users);
    if (urlSelectedItemId !== undefined) {
       let tmpUser = currentChatRoom.users.find(user => user.userId == receiverId);
@@ -207,9 +205,11 @@ function renderChatContent() {
 }
 
 function renderTradeOfferContent(users, isClickable = true) {
+   $('#myTradeOffer').html('');
+   $('#friendTradeOffer').html('');
    users.forEach(user => {
       user.item.forEach(itemId => {
-         selectItem(itemId, user.userId);
+         selectItem(itemId, user.userId, false);
       });
    });
 }
@@ -235,7 +235,7 @@ function selectChatRoom(selectedRoomName) {
       }
    );
 }
-function selectItem(itemId, userId) {
+function selectItem(itemId, userId, isEmit = true) {
    let tradeOfferContentTag;
    const itemTag = $("#item" + itemId);
    let item;
@@ -246,11 +246,13 @@ function selectItem(itemId, userId) {
       tradeOfferContentTag = $("#friendTradeOffer");
       item = friendItems.find((value) => value.id == itemId);
    }
-   details.push({
-      'itemId': item.id,
-      'userId': item.user.id
-   });
-   socketSendTradeInfo(item.user.id, item.id, "add-item");
+   // details.push({
+   //    'itemId': item.id,
+   //    'userId': item.user.id
+   // });
+   if (isEmit) {
+      socketSendTradeInfo(item.user.id, item.id, "add-item");
+   }
    itemTag.hide();
    tradeOfferContentTag.append(createTradeOfferContentItem(item, true));
 }
@@ -260,8 +262,8 @@ function deselectItem(itemId, userId) {
    itemTag.show();
    selectItemTag.remove();
    socketSendTradeInfo(userId, itemId, "remove-item");
-   deleteItem = details.find(detail => detail.itemId === itemId && detail.id !== undefined);
-   delete deleteItem.transactionId;
+   // deleteItem = details.find(detail => detail.itemId === itemId && detail.id !== undefined);
+   // delete deleteItem.transactionId;
 }
 
 // callback

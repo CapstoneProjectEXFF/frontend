@@ -12,6 +12,7 @@
 
   <!-- build:css styles/vendor.css -->
   <!-- bower:css -->
+  <link rel="stylesheet" href="/bower_components/datetimepicker/jquery.datetimepicker.css" />
   <!-- endbower -->
   <!-- endbuild -->
 
@@ -58,11 +59,7 @@
       <div class="menu_bar__icon" id="btnFriend">
         <i class="fas fa-user-plus"></i>
       </div>
-      <div class="menu_bar__icon">
-        <a class="reset" href="./inventory.html">
-          <i class="fas fa-boxes"></i>
-        </a>
-      </div>
+
       <div class="user_icon" id="userInfoIcon">
         <a class="reset" href="./login.html">
           <i class="fas fa-user-circle"></i>
@@ -124,6 +121,9 @@
   <!-- bower:js -->
   <script src="/bower_components/jquery/dist/jquery.js"></script>
   <script src="/bower_components/moment/moment.js"></script>
+  <script src="/bower_components/jquery-mousewheel/jquery.mousewheel.js"></script>
+  <script src="/bower_components/php-date-formatter/js/php-date-formatter.js"></script>
+  <script src="/bower_components/datetimepicker/build/jquery.datetimepicker.full.min.js"></script>
   <!-- endbower -->
   <!-- endbuild -->
 
@@ -253,12 +253,12 @@
       let groupOption = "";
       const selectTag = $("#category");
       selectTag.html('<option hidden disabled selected>Chọn loại đồ dùng</option>');
-      let superCate = data.filter(category => category.suppercategoryId === null);
+      let superCate = data.filter(category => category.supercategoryId === null);
       superCate.forEach(superCategory => {
         groupOption = $("<optgroup/>", {
           label: superCategory.name
         })
-        let subCate = data.filter(category => category.suppercategoryId === superCategory.id);
+        let subCate = data.filter(category => category.supercategoryId === superCategory.id);
         subCate.forEach(subCategory => {
           option = $("<option/>")
           option.text(subCategory.name);

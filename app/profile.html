@@ -12,6 +12,7 @@
 
   <!-- build:css styles/vendor.css -->
   <!-- bower:css -->
+  <link rel="stylesheet" href="/bower_components/datetimepicker/jquery.datetimepicker.css" />
   <!-- endbower -->
   <!-- endbuild -->
 
@@ -57,11 +58,7 @@
       <div class="menu_bar__icon" id="btnFriend">
         <i class="fas fa-user-plus"></i>
       </div>
-      <div class="menu_bar__icon">
-        <a class="reset" href="./inventory.html">
-          <i class="fas fa-boxes"></i>
-        </a>
-      </div>
+
       <div class="user_icon" id="userInfoIcon">
         <a class="reset" href="./login.html">
           <i class="fas fa-user-circle"></i>
@@ -139,6 +136,9 @@
   <!-- bower:js -->
   <script src="/bower_components/jquery/dist/jquery.js"></script>
   <script src="/bower_components/moment/moment.js"></script>
+  <script src="/bower_components/jquery-mousewheel/jquery.mousewheel.js"></script>
+  <script src="/bower_components/php-date-formatter/js/php-date-formatter.js"></script>
+  <script src="/bower_components/datetimepicker/build/jquery.datetimepicker.full.min.js"></script>
   <!-- endbower -->
   <!-- endbuild -->
 
@@ -212,6 +212,12 @@
         checkMatch('#confirmPassword', $("#password").val());
     }
     function updateSuccess(data) {
+      localStorage.setItem('USER_INFO', JSON.stringify(data.User));
+      const avatar = data.User.avatar;
+      const image = (avatar !== null && avatar !== undefined)
+        ? (avatar)
+        : ('./images/no-image-icon-13.png');
+      $("#menubarAvatar").css("background-image", `url(${image})`);
       $("#successNotif").show();
       $("#errorNotif").hide();
     }

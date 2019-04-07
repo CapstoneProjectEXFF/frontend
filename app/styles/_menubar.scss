@@ -17,7 +17,7 @@
     width: 48px;
     height: 48px;
   }
-  .logo, .user_icon{
+  .logo{
     font-size: 1.5em;
     color: $primary-color;
   }
@@ -25,6 +25,8 @@
     font-weight: bolder;
   }
   .menu_bar__icon {
+    cursor: pointer;
+    user-select: none;
     position: relative;
     font-size: 1em;
     min-width: 48px;
@@ -45,6 +47,7 @@
     }
   }
   .user_icon{
+    position: relative;
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
@@ -62,6 +65,47 @@
 }
 
 $distance: 32px;
+.popup{
+
+}
+.user__popup {
+  position: absolute;
+  min-width: 120px;
+  top: $distance * 1.8;
+  right: 0;
+  padding: 0px;
+  background-color: #fff;
+  // border: 1px solid #ccc;
+  outline: 1px solid #ccc;
+  border-radius: 5px;
+  overflow: visible;
+  box-sizing: border-box;
+  z-index: 10;
+  a>p{
+    width: 100%;
+    margin: 0px;
+    padding: 5px;
+    text-align: left;
+    user-select: none;
+    box-sizing: border-box;
+  }
+  a>p:hover{
+    position: relative;
+    color: $primary-color;
+    background-color: #cfcfcf;
+  }
+  &::before{
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    border: ($distance / 2) solid #fff0;
+    border-top-width: 0px;
+    border-bottom-color: #ccc;
+    top: -$distance / 2;
+    right: $distance / 2;
+  }
+}
 .notification__popup {
   position: absolute;
   width: 300px;

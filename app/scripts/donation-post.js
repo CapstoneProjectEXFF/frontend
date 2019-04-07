@@ -1,6 +1,7 @@
 const DONATION_POST_URL = '/donationPost';
 
 function addDonationPost(
+  title,
   content,
   address,
   urls = [],
@@ -9,6 +10,7 @@ function addDonationPost(
 ) {
   let url = API_URL + DONATION_POST_URL;
   let data = {
+    'title': title,
     'content': content,
     'address': address,
     'urls': urls
@@ -32,6 +34,7 @@ function addDonationPost(
 
 function updateDonationPost(
   id,
+  title,
   content,
   address,
   urls = [],
@@ -41,6 +44,7 @@ function updateDonationPost(
   let url = API_URL + DONATION_POST_URL + `/${id}`;
   let data = {
     'id': id,
+    'title': title,
     'content': content,
     'address': address,
     'urls': urls
@@ -90,6 +94,28 @@ function getDonationPosts(
   failCallback = DEFAULT_FUNCTION
 ) {
   let url = API_URL + DONATION_POST_URL + `?page=${page}&size=${size}`;
+  let options = {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    }
+  };
+  fetchApi(
+    url,
+    options,
+    successCallback,
+    failCallback
+  );
+}
+function searchDonationPosts(
+  searchValue = '',
+  page = 0,
+  size = 10,
+  successCallback = DEFAULT_FUNCTION,
+  failCallback = DEFAULT_FUNCTION
+) {
+  let url = API_URL + DONATION_POST_URL + `/search?searchValue=${searchValue}&page=${page}&size=${size}`;
   let options = {
     method: 'GET',
     headers: {

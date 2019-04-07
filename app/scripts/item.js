@@ -156,6 +156,39 @@ function getItemsByUserId(
     failCallback
   );
 }
+
+function searchItems(
+  name,
+  categoryId = 0,
+  successCallback = DEFAULT_FUNCTION,
+  failCallback = DEFAULT_FUNCTION
+) {
+  let categoryQuery = (categoryId != null) ? `&categoryId=${categoryId}` : '';
+  let url = API_URL + ITEM_URL + `/search?name=${name}${categoryQuery}`;
+  let options = (getAuthentoken() === undefined || getAuthentoken() === null)
+    ? {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    }
+    : {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': getAuthentoken()
+      }
+    };
+  fetchApi(
+    url,
+    options,
+    successCallback,
+    failCallback
+  );
+}
+
 function createTradeOfferIventoryItem(item, isSelected = false) {
   const image = (item.images[0] !== null && item.images[0] !== undefined)
     ? (item.images[0].url)

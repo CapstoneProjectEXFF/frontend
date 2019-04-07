@@ -12,6 +12,7 @@
 
   <!-- build:css styles/vendor.css -->
   <!-- bower:css -->
+  <link rel="stylesheet" href="/bower_components/datetimepicker/jquery.datetimepicker.css" />
   <!-- endbower -->
   <!-- endbuild -->
 
@@ -55,11 +56,7 @@
       <div class="menu_bar__icon" id="btnFriend">
         <i class="fas fa-user-plus"></i>
       </div>
-      <div class="menu_bar__icon">
-        <a class="reset" href="./inventory.html">
-          <i class="fas fa-boxes"></i>
-        </a>
-      </div>
+
       <div class="user_icon" id="userInfoIcon">
         <a class="reset" href="./login.html">
           <i class="fas fa-user-circle"></i>
@@ -109,6 +106,8 @@
       </div>
     </div>
   </div>
+  <div class="" id="transactionHistory">
+    </div>
   <div class="inventory card__container" id="inventory">
   </div>
 
@@ -118,6 +117,9 @@
   <!-- bower:js -->
   <script src="/bower_components/jquery/dist/jquery.js"></script>
   <script src="/bower_components/moment/moment.js"></script>
+  <script src="/bower_components/jquery-mousewheel/jquery.mousewheel.js"></script>
+  <script src="/bower_components/php-date-formatter/js/php-date-formatter.js"></script>
+  <script src="/bower_components/datetimepicker/build/jquery.datetimepicker.full.min.js"></script>
   <!-- endbower -->
   <!-- endbuild -->
 
@@ -130,6 +132,7 @@
   <script src="scripts/login.js"></script>
   <script src="scripts/register.js"></script>
   <script src="scripts/user.js"></script>
+  <script src="scripts/transaction.js"></script>
   <!-- endbuild -->
   <script>
     let userId;
@@ -159,6 +162,9 @@
         ITEM_ENABLE,
         getItemsSuccess,
         getItemsFalse
+      );
+      getTransactionHistory(
+        initTransactionHistory
       );
     }
     function initFriendButton(data = {}) {
@@ -220,6 +226,21 @@
         initCancleAddFriendButton(data);
       }
     }
+function initTransactionHistory(data) {
+  console.log(data);
+  const transactionHistoryTag = $('#transactionHistory');
+  data.forEach(transaction => {
+    transactionHistoryTag.append(
+      `
+      <div>
+        <p>${transaction.sender.fullName}</p>
+        <p>${transaction.receiver.fullName}</p>
+        </div>
+      `
+      );
+  });
+}
+
     function getUserSuccess(data) {
       renderUserInfo(data);
       checkFriendStatus(

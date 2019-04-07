@@ -108,6 +108,27 @@ function findUserByPhone(
   );
 }
 
+function findUserByName(
+  name,
+  successCallback = DEFAULT_FUNCTION,
+  failCallback = DEFAULT_FUNCTION
+) {
+  let url = API_URL + `/name?name=${name}`;
+  let options = {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    }
+  };
+  fetchApi(
+    url,
+    options,
+    successCallback,
+    failCallback
+  );
+}
+
 function getChatRoom(
   userID,
   successCallback = DEFAULT_FUNCTION,

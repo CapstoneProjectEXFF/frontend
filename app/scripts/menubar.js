@@ -6,6 +6,12 @@ const relationshipNotifContainerTagId = 'relationshipNotifContainer';
 let notification = [];
 let relationshipNotif = [];
 
+// hide menu popup
+
+function hideAllMenuPopupExcept(tagId) {
+  $('.popup').not(`#${tagId}`).hide();
+}
+
 // notification -----------------------------
 
 function renderNotification(notif) {
@@ -24,7 +30,7 @@ function renderNotification(notif) {
 
 function renderNotificationContainer(popupId, containerId) {
   return `
-    <div class="notification__popup" id="${popupId}" style="display:none">
+    <div class="popup notification__popup " id="${popupId}" style="display:none">
       <div class="notification__container" id="${containerId}"></div>
     </div>
     `;
@@ -52,6 +58,7 @@ $(document).ready(() => {
   );
   btnBell.click(() => {
     const notificationPopup = $(`#${notificationPopupTagId}`);
+    hideAllMenuPopupExcept(notificationPopupTagId);
     notificationPopup.toggle();
     if (notification.length <= 0) {
       getReceivedTransaction((data) => {
@@ -66,7 +73,7 @@ $(document).ready(() => {
 // friend relationship -----------------------------
 function renderRelationshipNotifContainer(popupId, containerId) {
   return `
-    <div class="notification__popup" id="${popupId}" style="display:none">
+    <div class="popup notification__popup " id="${popupId}" style="display:none">
       <div>
         <a class="primary" href="./chat.html">Chat</a>
       </div>
@@ -118,7 +125,7 @@ function confirmAddFriend(notifId) {
     notifId,
     (data, id) => {
       confirmAddFriendSuccess(data, id);
-      initCancleAddFriendButton({id: id});
+      initCancleAddFriendButton({ id: id });
     }
   );
 }
@@ -143,6 +150,7 @@ $(document).ready(() => {
   );
   btnFriend.click(() => {
     const relationshipNotifContainer = $(`#${relationshipNotifPopupTagId}`);
+    hideAllMenuPopupExcept(relationshipNotifPopupTagId);
     relationshipNotifContainer.toggle();
     if (relationshipNotif.length <= 0) {
       getAddFriendRequest(
@@ -162,6 +170,11 @@ $(document).ready(() => {
   const userInfo = getUserInfo();
   if (userInfo != null) {
     userInforIcon.html(renderUserAvatar(userInfo.avatar));
+    userInforIcon.click(() => {
+      const userPopup = $('#userPopup');
+      hideAllMenuPopupExcept('userPopup');
+      userPopup.toggle();
+    });
   } else {
     userInforIcon.html(renderLogin());
   }
@@ -180,12 +193,20 @@ function renderUserAvatar(avatar) {
     : ('./images/no-image-icon-13.png');
   return `
     <div class="avatar">
-      <div class="background" style="background-image: url(${image});"></div>
+      <div class="background" id="menubarAvatar" style="background-image: url(${image});"></div>
     </div>
-    <span>&nbsp;</span>
-    <a class="reset" href="./login.html" onclick="logout()">
-      <i class="fas fa-sign-out-alt"></i>
-    </a>
+    <div class="popup user__popup" id="userPopup" style="display:none">
+      <a class="reset" href="./inventory.html">
+        <p>
+          <i class="fas fa-boxes"></i> Kho
+        </p>
+      </a>
+      <a class="reset" href="./login.html" onclick="logout()">
+        <p>
+          <i class="fas fa-sign-out-alt"></i> Đăng xuất
+        </p>
+      </a>
+    </div>
   `;
 }
 
@@ -205,7 +226,7 @@ $(document).ready(() => {
   searchForm.submit((event) => {
     event.preventDefault();
     const inputSearch = $('#inputSearch').val();
-    if (/^[0-9]{1,10}$/.test(inputSearch)){
+    if (/^[0-9]{1,10}$/.test(inputSearch)) {
       window.location.replace(`./search.html?phone=${inputSearch}`);
     } else {
       window.location.replace(`./search.html?search=${inputSearch}`);
