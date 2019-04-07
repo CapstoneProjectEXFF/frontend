@@ -201,6 +201,12 @@ function renderUserAvatar(avatar) {
           <i class="fas fa-boxes"></i> Kho
         </p>
       </a>
+      <a class="reset" href="./profile.html">
+        <p>
+          <i class="fas fa-user"></i> Tài khoản
+        </p>
+      </a>
+      <hr style="margin:0;"/>
       <a class="reset" href="./login.html" onclick="logout()">
         <p>
           <i class="fas fa-sign-out-alt"></i> Đăng xuất
