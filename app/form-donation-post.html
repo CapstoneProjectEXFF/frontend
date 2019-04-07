@@ -12,6 +12,7 @@
 
   <!-- build:css styles/vendor.css -->
   <!-- bower:css -->
+  <link rel="stylesheet" href="/bower_components/datetimepicker/jquery.datetimepicker.css" />
   <!-- endbower -->
   <!-- endbuild -->
 
@@ -78,6 +79,11 @@
         </div>
         <input type="text" name="id" id="id" value="" disabled hidden />
         <div class="field__container">
+          <label for="title">Tiêu đề</label>
+          <input type="text" name="title" id="title" />
+          <p class="error hidden">Tiêu đề không được để trống.</p>
+        </div>
+        <div class="field__container">
           <label for="content">Nội dung</label>
           <textarea name="content" id="content"></textarea>
           <p class="error hidden">Nội dung không được để trống.</p>
@@ -102,6 +108,9 @@
   <!-- bower:js -->
   <script src="/bower_components/jquery/dist/jquery.js"></script>
   <script src="/bower_components/moment/moment.js"></script>
+  <script src="/bower_components/jquery-mousewheel/jquery.mousewheel.js"></script>
+  <script src="/bower_components/php-date-formatter/js/php-date-formatter.js"></script>
+  <script src="/bower_components/datetimepicker/build/jquery.datetimepicker.full.min.js"></script>
   <!-- endbower -->
   <!-- endbuild -->
 
@@ -132,8 +141,11 @@
     });
     function getDonationPostSuccess(data) {
       const id = $("#id");
+      const title = $("#title");
       const content = $("#content");
+      const address = $("#address");
       id.val(data.id);
+      title.val(data.title);
       content.val(data.content);
       images = data.images;
       if (images != null && images.length > 0) {
@@ -149,10 +161,12 @@
       $("#btnEditDonationPost").click(() => {
         if (validate()) {
           let id = $("#id").val();
+          let title = $("#title").val();
           let content = $("#content").val();
           let address = $("#address").val();
           if (id == null || id == undefined || id == "") {
             addDonationPost(
+              title,
               content,
               address,
               urls,
@@ -162,6 +176,7 @@
           } else {
             updateDonationPost(
               id,
+              title,
               content,
               address,
               urls,
@@ -171,17 +186,20 @@
           }
         }
       });
-      $("#content").change(() => {
+      $("#title").focusout(() => {
+        checkRequire("#title");
+      });
+      $("#content").focusout(() => {
         checkRequire("#content");
       });
-      $("#address").change(() => {
+      $("#address").focusout(() => {
         checkRequire("#address");
       });
       $("#image").change(uploadImage);
     }
 
     function validate() {
-      return checkRequire("#content") && checkRequire("#address");
+      return checkRequire("#title") && checkRequire("#content") && checkRequire("#address");
     }
 
     function addDonationPostSuccess(data) {

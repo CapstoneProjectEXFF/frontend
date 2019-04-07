@@ -12,6 +12,7 @@
 
   <!-- build:css styles/vendor.css -->
   <!-- bower:css -->
+  <link rel="stylesheet" href="/bower_components/datetimepicker/jquery.datetimepicker.css" />
   <!-- endbower -->
   <!-- endbuild -->
 
@@ -65,33 +66,42 @@
   </div>
   <br>
   <br>
+  <div>
+    <div class="div--center index__action">
+      <div onclick="show('allContainer')" class="tab selected" id="allContainerTab">Tất cả</div>
+      <div onclick="show('usersContainer')" class="tab" id="usersContainerTab">Người dùng</div>
+      <div onclick="show('itemsContainer')" class="tab" id="itemsContainerTab">Đồ dùng</div>
+      <div onclick="show('postsContainer')" class="tab" id="postsContainerTab">Từ thiện</div>
+    </div>
+  </div>
   <div class="flex flex_no_wrap div--center">
-    <div class="filter">
-      <h3>Lọc kết quả</h3>
-      <h4>Người dùng</h4>
-      <div>
-        <input type="radio" name="relationship" value="public" checked> Bất kì ai
+    <div class="filter filter__feild allContainer itemsContainer">
+      <h3 class="">Lọc kết quả</h3>
+      <!-- <div class="filter__feild allContainer usersContainer">
+        <h4>Người dùng</h4>
+        <div>
+          <input type="radio" name="relationship" value="public" checked> Bất kì ai
+        </div>
+        <div>
+          <input type="radio" name="relationship" value="friend"> Bạn bè
+        </div>
+      </div> -->
+      <div class="filter__feild allContainer itemsContainer">
+        <h4>Loại đồ dùng</h4>
+        <select name="category" id="category"></select>
       </div>
-      <div>
-        <input type="radio" name="relationship" value="friend"> Bạn bè
-      </div>
-      <h4>Loại đồ dùng</h4>
-      <select name="category" id="category">
-        
-      </select>
-
     </div>
     <div class="flex_grow__1">
-      <div>
+      <div class="allContainer usersContainer">
         <h3>Người dùng</h3>
         <div class="card__container" id="users"></div>
       </div>
-      <div>
-        <h3>Đồ dùng dùng</h3>
+      <div class="allContainer itemsContainer">
+        <h3>Đồ dùng</h3>
         <div class="card__container" id="items"></div>
       </div>
-      <div>
-        <h3>Quyên góp</h3>
+      <div class="allContainer postsContainer">
+        <h3>Từ thiện</h3>
         <div class="post__container" id="donationPosts"></div>
       </div>
     </div>
@@ -101,6 +111,9 @@
   <!-- bower:js -->
   <script src="/bower_components/jquery/dist/jquery.js"></script>
   <script src="/bower_components/moment/moment.js"></script>
+  <script src="/bower_components/jquery-mousewheel/jquery.mousewheel.js"></script>
+  <script src="/bower_components/php-date-formatter/js/php-date-formatter.js"></script>
+  <script src="/bower_components/datetimepicker/build/jquery.datetimepicker.full.min.js"></script>
   <!-- endbower -->
   <!-- endbuild -->
 
@@ -119,58 +132,113 @@
   <!-- endbuild -->
   <script>
     let searchValue;
+    let categoryValue;
     $(document).ready(() => {
+      initSearchValueFromUrl();
+      initSearchView();
+      // $("#itemsContainer").show();
+      // $("#postsContainer").hide();
+    });
+    function initSearchValueFromUrl(params) {
       let urlParams = new URLSearchParams(window.location.search);
       if (urlParams.has("search")) {
         searchValue = urlParams.get("search");
         $('#inputSearch').val(searchValue);
+        searchUserByNameInView();
+        searchItemInView();
+        searchDonationInView(0, 10);
       } else if (urlParams.has("phone")) {
         searchValue = urlParams.get("phone");
         $('#inputSearch').val(searchValue);
-        findUserByPhone(
-          searchValue,
-          getUserSuccess,
-          getUserFalse
-        );
+        searchUserByPhoneInView();
+      } else {
+        searchValue = '';
+        searchUserByNameInView();
+        searchItemInView();
+        searchDonationInView(0, 10);
       }
+    }
+    function initSearchView() {
+      categoryValue = 0;
+      $("#category").html('<option value="0">Tất cả</option>');
+      $("#category").val(categoryValue);
       getCategory(getCategorySuccess);
-      getItemsByStatus(
-        ITEM_ENABLE,
+      $('#searchFormInSearch').submit((event) => {
+        event.preventDefault();
+        searchValue = $('#inputSearch').val();
+        if (/^[0-9]{1,10}$/.test(searchValue)) {
+          $('#usersContainerTab').click();
+          searchUserByPhoneInView();
+        } else {
+          searchUserByNameInView();
+          searchItemInView();
+          searchDonationInView(0, 10);
+        }
+
+      });
+    }
+    function searchUserByPhoneInView() {
+      findUserByPhone(
+        searchValue,
+        getUserSuccess,
+        getUserFalse
+      );
+    }
+    function searchUserByNameInView() {
+      findUserByName(
+        searchValue,
+        getUsersSuccess,
+        getUserFalse
+      );
+    }
+    function searchItemInView() {
+      searchItems(
+        searchValue,
+        categoryValue,
         getItemsSuccess,
         getItemsFalse
-      );
-      getDonationPosts(
-        0,
-        10,
+      )
+    }
+    function searchDonationInView(page, site) {
+      searchDonationPosts(
+        searchValue,
+        page,
+        site,
         getDonationPostsSuccess,
         getDonationPostsFalse,
       );
+    }
 
-      $('#searchFormInSearch').submit((event) => {
-        event.preventDefault();
-      });
-      // $("#itemsContainer").show();
-      // $("#postsContainer").hide();
-    });
-    
     function getUserSuccess(data) {
       const usersTag = $("#users");
       usersTag.html("");
       if (data === null) {
-        usersTag.html("<h1>Không tìm thấy người nào.</h1>");
+        usersTag.html("<p>Không tìm thấy người nào.</p>");
+      } else {
+        const card = createUserCard(data);
+        usersTag.append(card);
       }
-      const card = createUserCard(data);
-      usersTag.append(card);
+    };
+    function getUsersSuccess(data) {
+      const usersTag = $("#users");
+      usersTag.html("");
+      if (data === null) {
+        usersTag.html("<p>Không tìm thấy người nào.</p>");
+      }
+      data.forEach(user => {
+        const card = createUserCard(user);
+        usersTag.append(card);
+      });
     };
     function getUserFalse(err) {
       const usersTag = $("#users");
-      usersTag.html("<h1>Không tìm thấy người nào.</h1>");
+      usersTag.html("<p>Không tìm thấy người nào.</p>");
     };
     function getItemsSuccess(data) {
       const itemsTag = $("#items");
       itemsTag.html("");
       if (data.length === 0) {
-        itemsTag.html("<h1>Không có đồ dùng nào.</h1>");
+        itemsTag.html("<p>Không có đồ dùng nào.</p>");
       }
       data.forEach(item => {
         const card = createItemCard(item);
@@ -179,14 +247,14 @@
     };
     function getItemsFalse(err) {
       const itemsTag = $("#items");
-      itemsTag.html("<h1>Không có đồ dùng nào.</h1>");
+      itemsTag.html("<p>Không có đồ dùng nào.</p>");
     };
 
     function getDonationPostsSuccess(data) {
       const donationPostsTag = $("#donationPosts");
       donationPostsTag.html("");
       if (data.length === 0) {
-        donationPostsTag.html("<h1>Không có bài viết nào.</h1>");
+        donationPostsTag.html("<p>Không có bài viết nào.</p>");
       }
       data.forEach(donationPost => {
         const card = createDonationPostCard(donationPost);
@@ -195,37 +263,32 @@
     };
     function getDonationPostsFalse(err) {
       const donationPostsTag = $("#donationPosts");
-      donationPostsTag.html("<h1>Không có bài viết nào.</h1>");
+      donationPostsTag.html("<p>Không có bài viết nào.</p>");
     };
     function getCategorySuccess(data) {
       // console.log(data);
       let options = "";
       let groupOption = "";
       const selectTag = $("#category");
-      selectTag.html('<option value="-1">Tất cả</option>');
-      let superCate = data.filter(category => category.supercategoryId === null);
-      superCate.forEach(superCategory => {
-        groupOption = $("<optgroup/>", {
-          label: superCategory.name
-        })
-        let subCate = data.filter(category => category.supercategoryId === superCategory.id);
-        subCate.forEach(subCategory => {
-          option = $("<option/>")
-          option.text(subCategory.name);
-          option.val(subCategory.id);
-          groupOption.append(option);
-        });
-        selectTag.append(groupOption);
+      selectTag.html('<option value="0" style="font-weight: bold;">Tất cả</option>');
+      
+      data.forEach(category => {
+          option = $("<option/>");
+          if (category.supercategoryId === null) {
+            option.css('font-weight','bold');
+          }
+          option.text(category.name);
+          option.val(category.id);
+        selectTag.append(option);
       });
-      categoryLoaded = true;
+      selectTag.change(() => categoryValue = $("#category").val());
     }
-    // function show(tagId) {
-    //   const hideTagId = tagId === "#itemsContainer" ? "#postsContainer" : "#itemsContainer";
-    //   $(tagId).show();
-    //   $(tagId + "Tab").addClass("selected");
-    //   $(hideTagId).hide();
-    //   $(hideTagId + "Tab").removeClass("selected");
-    // }
+    function show(tagId = 'allContainer') {
+      $(".tab").removeClass("selected");
+      $(".allContainer").hide();
+      $('#' + tagId + "Tab").addClass("selected");
+      $("." + tagId).show();
+    }
   </script>
 </body>
 
