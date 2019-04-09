@@ -1,5 +1,6 @@
 $default-message-color: #cfcfcf;
 $chat-form-height: 36px;
+$avatar-size: 64px;
 // chat
 .chat__container{
   display: flex;
@@ -15,15 +16,58 @@ $chat-form-height: 36px;
   }
 }
 //chat room
-.chat__room {
-  width: 384px;
+$chat-room-action-height: 42px;
+.chat__room__width__transition{
+  transition: width 0.5s;
 }
-
+.chat__room {
+  position: relative;
+  width: 384px;
+  overflow: hidden;
+}
+.chat__room__action{
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: $chat-room-action-height;
+  background-color: #efefef;
+}
+.chat__room__action__button{
+  cursor: pointer;
+  width: $chat-room-action-height;
+  text-align: center;
+  line-height: $chat-room-action-height;
+}
+#chatInventoryTab{
+  background-color: #fff;
+}
+#chatRoom{
+  position: relative;
+  height: 100%;
+  padding-top: $chat-room-action-height;
+  background-color: #efefef;
+  overflow-x: hidden;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+// chat inventory
+.chat__inventory{
+  width: 0px;
+  height: 100%;
+  background-color: #fff;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+.chat__inventory__container{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
 // chat box
 .chat__box{
   position: relative;
   flex-grow: 1;
-  border: 1px solid $default-color;
   padding-bottom: $chat-form-height;
   box-sizing: border-box;
 }
@@ -77,7 +121,9 @@ $chat-form-height: 36px;
   }
 }
 
-// chat inventory
-.chat__inventory{
+
+// chat info
+.chat__info{
   width: 384px;
+  background-color: #fff;
 }

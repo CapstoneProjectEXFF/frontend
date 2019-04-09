@@ -1,0 +1,210 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Exff | Trade offer</title>
+
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <!-- Place favicon.ico in the root directory -->
+
+  <!-- build:css styles/vendor.css -->
+  <!-- bower:css -->
+  <link rel="stylesheet" href="/bower_components/datetimepicker/jquery.datetimepicker.css" />
+  <!-- endbower -->
+  <!-- endbuild -->
+
+  <!-- build:css styles/main.css -->
+  <link rel="stylesheet" href="styles/main.css">
+  <!-- endbuild -->
+  <!-- build:css vendor/font-awesome/css/font-awesome.min.css -->
+  <link rel="stylesheet" href="/bower_components/Font-Awesome/css/all.min.css">
+  <!-- endbuild -->
+
+  <!-- build:js scripts/vendor/modernizr.js -->
+  <script src="/bower_components/modernizr/modernizr.js"></script>
+  <!-- endbuild -->
+  <!-- build:js scripts/vendor/moment.js -->
+  <script src="/bower_components/moment/min/moment.min.js"></script>
+  <!-- endbuild -->
+  <!-- build:js scripts/vendor/socket.js -->
+  <script src="/bower_components/socket.io-client/dist/socket.io.js"></script>
+  <!-- endbuild -->
+</head>
+
+<body>
+  <!--[if lt IE 10]>
+      <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+  <div class="menu_bar__container">
+    <div class="menu_bar">
+      <div class="icon">
+        <a class="reset" href="/">
+          <img class="icon" src="./images/Logo-64px.png" alt="">
+        </a>
+      </div>
+      <div class="logo">
+        <a class="reset" href="/">
+          <span>Exff</span>
+        </a>
+      </div>
+      <div class="search_bar">
+        <form action="#" id="searchForm">
+          <input type="text" name="searchItem" id="inputSearch" placeholder="Search..." />
+          <button id="btnSearch" class="primary"><i class="fas fa-search"></i></button>
+        </form>
+      </div>
+      <div class="menu_bar__icon" id="btnBell">
+        <i class="fas fa-bell"></i>
+      </div>
+      <div class="menu_bar__icon">
+        <i class="fas fa-user-plus"></i>
+      </div>
+
+      <div class="user_icon" id="userInfoIcon">
+        <a class="reset" href="./login.html">
+          <i class="fas fa-user-circle"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+  <br>
+  <br>
+  <div class="trade_offer__container">
+    <div class="trade_offer__content__container">
+      <div class="trade_offer__content bottomPadding">
+        <div>
+          <h4 id="myName">Trao</h4>
+          <div class="trade_offer__content__list" id="myTradeOffer"></div>
+        </div>
+      </div>
+      <div class="trade_offer__content topPadding">
+        <div>
+          <h4 id="friendName">Nhận</h4>
+          <div class="trade_offer__content__list" id="friendTradeOffer"></div>
+        </div>
+      </div>
+    </div>
+    <div class="trade_offer__content__container">
+      <div class="trasaction_confirm__info">
+        <h3>Thông tin trao đổi</h3>
+        <div>
+          <h4>Người trao đổi</h4>
+          <div class="transaction_confirm__userinfo clearfix" id="transactionUserInfo">
+            
+          </div>
+        </div>
+        <div>
+          <p><b>Ngày trao đổi: </b><span id="transactionCofirmDate"></span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- build:js scripts/vendor/jquery.js -->
+  <!-- bower:js -->
+  <script src="/bower_components/jquery/dist/jquery.js"></script>
+  <script src="/bower_components/moment/moment.js"></script>
+  <script src="/bower_components/jquery-mousewheel/jquery.mousewheel.js"></script>
+  <script src="/bower_components/php-date-formatter/js/php-date-formatter.js"></script>
+  <script src="/bower_components/datetimepicker/build/jquery.datetimepicker.full.min.js"></script>
+  <!-- endbower -->
+  <!-- endbuild -->
+
+  <!-- build:js scripts/main.js -->
+  <script src="scripts/main.js"></script>
+  <script src="scripts/menubar.js"></script>
+  <script src="scripts/relationship.js"></script>
+  <script src="scripts/validation.js"></script>
+  <script src="scripts/item.js"></script>
+  <script src="scripts/item.js"></script>
+  <script src="scripts/login.js"></script>
+  <script src="scripts/register.js"></script>
+  <script src="scripts/transaction.js"></script>
+  <!-- endbuild -->
+  <script>
+    const USER_ID = getUserId();
+    let transactionId;
+    let senderId;
+    let receiverId;
+    let myUserId;
+    let friendUserId;
+    let myUserInfo;
+    let friendUserInfo;
+    let sendedItems = []; // list item want to send
+    let receivedItems = []; // list item want to receive 
+    let details = [];
+    $(document).ready(() => {
+      let urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has("id")) {
+        initConfirmView(urlParams);
+      } else {
+        window.location.replace("./error404.html");
+      }
+    });
+    function initConfirmView(urlParams) {
+      transactionId = urlParams.get("id");
+      getTransaction(
+        transactionId,
+        getTransactionSuccess,
+        getTransactionFail
+      );
+    }
+    function initTransactionInfo(data) {
+      let transaction = data.transaction;
+      let info = `
+      <div class="float-left">
+        <p class="ellipsis">${transaction.sender.fullName}</p>
+        <p class="ellipsis">${transaction.sender.phoneNumber}</p>
+      </div>
+      <div class="split"></div>
+      <div class="float-right">
+        <p class="ellipsis">${transaction.receiver.fullName}</p>
+        <p class="ellipsis">${transaction.receiver.phoneNumber}</p>
+      </div>
+      `
+      $('#transactionUserInfo').html(info);
+      $('#transactionCofirmDate').text(moment(transaction.modifyDate).format('hh:mm DD/mm/YYYY'))
+    }
+    function getTransactionSuccess(data) {
+      myUserId = USER_ID;
+      $('#myName').text(getUserInfo().fullName);
+      senderId = data.transaction.senderId;
+      receiverId = data.transaction.receiverId;
+      if (receiverId == myUserId) {
+        friendUserId = senderId;
+        $('#friendName').text(data.transaction.sender.fullName);
+      } else {
+        friendUserId = receiverId;
+        $('#friendName').text(data.transaction.receiver.fullName);
+      }
+      details = data.details;
+      initTransactionInfo(data);
+      renderTradeOfferContent(details);
+    }
+    function getTransactionFail(err) {
+      window.location.replace("./error404.html");
+    }
+    function renderTradeOfferContent(details, isClickable = false) {
+      const myTradeOfferContentTag = $("#myTradeOffer");
+      const friendTradeOfferContentTag = $("#friendTradeOffer");
+      myTradeOfferContentTag.html("");
+      friendTradeOfferContentTag.html("");
+      details.forEach(detail => {
+        if (detail.userId == USER_ID) {
+          myTradeOfferContentTag.append(createTradeOfferContentItem(detail.item, isClickable));
+          sendedItems.push(detail.item);
+        } else {
+          friendTradeOfferContentTag.append(createTradeOfferContentItem(detail.item, isClickable));
+          receivedItems.push(detail.item);
+        }
+      });
+    }
+  </script>
+</body>
+
+</html>

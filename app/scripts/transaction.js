@@ -249,3 +249,19 @@ function updateTradeOffer(
   );
 }
 
+function renderTransactionHistory(transaction) {
+  return `
+    <a class="reset" href='./transaction-confirm.html?id=${transaction.id}'>
+      <div class="transaction__container clearfix">
+        <div class="float-left">
+          <p class="ellipsis">${transaction.sender.fullName}</p>
+          <p class="ellipsis">${transaction.sender.phoneNumber}</p>
+        </div>
+        <div class="float-right">
+          <p class="ellipsis">${transaction.receiver.fullName}</p>
+          <p class="ellipsis">${transaction.receiver.phoneNumber}</p>
+        </div>
+        <i class="fas fa-exchange-alt"></i>
+      </div>
+    </a>  `;
+}

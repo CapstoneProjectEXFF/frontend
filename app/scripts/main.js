@@ -64,3 +64,11 @@ function fetchApi(
 function redirectTo404(data) {
   window.location.href = './error404.html';
 }
+
+// animation
+
+function dropdown(tagId, tag) {
+  console.log(tag);
+  $(tag).find('i').toggle();
+  $(`#${tagId}`).slideToggle();
+}

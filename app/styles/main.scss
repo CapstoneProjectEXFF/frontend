@@ -137,6 +137,9 @@ $card-padding: 10px;
   padding: 5px;
   box-sizing: border-box;
 }
+.trade_offer__content__notif{
+  color: $sucsess-color;
+}
 .trade_offer__inventory__action{
   display: flex;
   justify-content: space-around;
@@ -165,9 +168,9 @@ $card-padding: 10px;
     left: 0px;
     padding: 5px;
     background-color: #fff;
-    border: 1px solid #ccc;
+    // border: 1px solid #ccc;
     border-top-color: $primary-color;
-    border-radius: 0px 0px 5px 5px;
+    // border-radius: 0px 0px 5px 5px;
     overflow: auto;
     box-sizing: border-box;
   }
@@ -203,6 +206,35 @@ $card-padding: 10px;
   }
   &.topPadding{
     padding-top: 5px;
+  }
+}
+
+.trasaction_confirm__info{
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 5px;
+  box-sizing: border-box;
+}
+.transaction_confirm__userinfo{
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  &>div{
+    display: inline-block;
+    width: 50%;
+    padding: 0px 10px;
+    box-sizing: border-box;
+  }
+  .split{
+    position: absolute;
+    width: 0px;
+    height: 100%;
+    padding: 0px;
+    border-left: 1px solid #888;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
   }
 }
 //form_item
@@ -312,6 +344,31 @@ $profile-container-padding: 8px;
   }
 }
 
+// transaction history
+
+.transaction__container {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  &>div{
+    display: inline-block;
+    width: 50%;
+    padding: 0px 15px;
+    box-sizing: border-box;
+    p {
+      width: 100%;
+    }
+  }
+  &>i{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+  }
+  &:hover{
+    background-color: #cfcfcf;
+  }
+}
 
 // default
 .hero-unit {

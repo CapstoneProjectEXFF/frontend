@@ -50,3 +50,14 @@ a {
     }
   }
 }
+
+// drop down
+.dropdown{
+  cursor: pointer;
+  padding: 0px 10px;
+  color: #333;
+  border-top: 1px solid #ccc;
+  &:hover{
+    background-color: #cfcfcf;
+  }
+}

@@ -53,16 +53,37 @@
       <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
   <div class="chat__container">
-    <div class="chat__room">
-      <div>
-        <h3>Phòng chat</h3>
-      </div>
+    <div class="chat__room chat__room__width__transition" id="chatRoomContainer">
+
       <div class="list" id="chatRoom">
+      </div>
+      <div class="chat__room__action clearfix">
+        <div class="chat__room__action__button float-left">
+          <a class="reset" href="/">
+            <i class="fas fa-home"></i>
+          </a>
+        </div>
+        <div class="chat__room__action__button float-right" id="chatInventoryTab">
+          <i class="fas fa-boxes"></i>
+        </div>
+      </div>
+    </div>
+    <div class="chat__inventory chat__room__width__transition" id="chatInventory">
+      <div class="chat__inventory__container" id="inventoryContainer">
+        <div class="trade_offer__inventory__action">
+          <div onclick="show('#myInventory')" class="selected" id="myInventoryTab">Kho của tôi</div>
+          <div onclick="show('#friendInventory')" id="friendInventoryTab">Kho của bạn bè</div>
+        </div>
+        <div class="trade_offer__inventory">
+          <div class="list" id="myInventory">
+          </div>
+          <div class="list" id="friendInventory" style="display: none;">
+          </div>
+        </div>
       </div>
     </div>
     <div class="chat__box">
       <div class="chat__content" id="chatContent">
-
       </div>
       <div class="chat__form">
         <form action="#" id="messageForm" autocomplete="off">
@@ -71,27 +92,18 @@
         </form>
       </div>
     </div>
-    <div class="chat__inventory">
+    <div class="chat__info">
       <div class="chat__inventory__action">
-        <input type="text" name="txtAddress" placeholder="Địa chỉ">
-        <input class="" type="text" name="txtDateTime" id="datetimepicker">
+        <!-- <input type="text" name="txtAddress" placeholder="Địa chỉ">
+        <input class="" type="text" name="txtDateTime" id="datetimepicker"> -->
         <button class="primary" id="btnConfirm">Xác nhận</button>
         <button class="primary" id="btnCancle">Hủy</button>
       </div>
       <div class="trade_offer__container">
-        <div class="trade_offer__inventory__container" id="inventoryContainer">
-          <div class="trade_offer__inventory__action">
-            <div onclick="show('#myInventory')" class="selected" id="myInventoryTab">Kho của tôi</div>
-            <div onclick="show('#friendInventory')" id="friendInventoryTab">Kho của bạn bè</div>
-          </div>
-          <div class="trade_offer__inventory">
-            <div class="list" id="myInventory">
-            </div>
-            <div class="list" id="friendInventory" style="display: none;">
-            </div>
-          </div>
-        </div>
         <div class="trade_offer__content__container">
+          <div class="trade_offer__content__notif" id="tradeOfferContentNotif" style="display: none;">
+            <h3>Giao địch đang đợi xác nhận</h3>
+          </div>
           <div class="trade_offer__content bottomPadding">
             <div>
               <h4>Trao</h4>
@@ -105,6 +117,14 @@
             </div>
           </div>
         </div>
+      </div>
+      <div class="transaction__history__container">
+        <div class="dropdown clearfix" onclick="dropdown('transactionHistory',this)">
+          <h3 class="float-left">Lịch sử giao dịch</h3>
+          <h3 class="float-right"><i id="dropdownHide" class="fas fa-angle-left"></i></h3>
+          <h3 class="float-right"><i id="dropdownShow" class="fas fa-angle-down" style="display: none;"></i></h3>
+        </div>
+        <div id="transactionHistory" style="display: none;"></div>
       </div>
     </div>
   </div>

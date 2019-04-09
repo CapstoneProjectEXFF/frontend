@@ -74,9 +74,11 @@ $(document).ready(() => {
 function renderRelationshipNotifContainer(popupId, containerId) {
   return `
     <div class="popup notification__popup " id="${popupId}" style="display:none">
-      <div>
-        <a class="primary" href="./chat.html">Chat</a>
-      </div>
+      <a class="primary" href="./chat.html">
+        <div>
+          Chat
+        </div>
+      </a>
       <hr>
       <div class="notification__container" id="${containerId}"></div>
     </div>

@@ -16,6 +16,10 @@ let receiverId;
 let myItems = [];
 let friendItems = [];
 let details = [];
+
+let isInventoryTabShow = false;
+let isConfirm = false;
+
 $(document).ready(() => {
    let urlParams = new URLSearchParams(window.location.search);
    if (urlParams.has("userId")) {
@@ -26,11 +30,43 @@ $(document).ready(() => {
    initMessageForm();
    socket.on('item-added', function (itemInfo) {
       console.log(itemInfo);
+      let user = currentChatRoom.users.find(u => u.userId == itemInfo.userId);
+      if (user != null && user != undefined) {
+         let item = user.item.find(i => i == itemInfo.itemId);
+         if (user == null || user == undefined) {
+            user.item.push(itemInfo.itemId + '');
+         }
+      }
    });
+   initInventoryButton();
    initDateTime();
    initTradeOfferButton();
+   getTransactionHistory(
+      initTransactionHistory
+   );
 });
-
+function initTransactionHistory(data) {
+   console.log(data);
+   const transactionHistoryTag = $('#transactionHistory');
+   data.forEach(transaction => {
+      transactionHistoryTag.append(
+         renderTransactionHistory(transaction)
+      );
+   });
+}
+function initInventoryButton() {
+   $('#chatInventoryTab').click(() => {
+      if (isInventoryTabShow) {
+         isInventoryTabShow = false;
+         $('#chatRoomContainer').css('width', '384px');
+         $('#chatInventory').css('width', '0px');
+      } else {
+         isInventoryTabShow = true;
+         $('#chatRoomContainer').css('width', '84px');
+         $('#chatInventory').css('width', '300px');
+      }
+   });
+}
 function initTradeOfferButton() {
    $('#btnConfirm').click(() => {
       let data = {
@@ -38,14 +74,22 @@ function initTradeOfferButton() {
          userId: USER_ID,
          token: getAuthentoken()
       };
-      console.log('hello');
       socket.emit('confirm-trade', data);
+      isConfirm = true;
+      $('#btnConfirm').hide();
+      $('#tradeOfferContentNotif').show();
    });
    $('#btnCancle').click(() => {
       let data = {
          room: roomName
       };
       socket.emit('cancel-trade', data);
+      isConfirm = false;
+      $('#btnConfirm').show();
+      $('#tradeOfferContentNotif').hide();
+   });
+   socket.on('trade-done', function (data) {
+      console.log(data);
    });
 }
 
@@ -130,7 +174,9 @@ function initInventory(myId, fridenId) {
          getMyInventoryFalse
       );
    });
-   Promise.all([p1, p2]).then((value) => initTradeOfferContent());
+   Promise.all([p1, p2]).then((value) => {
+      initTradeOfferContent();
+   });
 }
 
 function initTradeOfferContent() {
@@ -227,6 +273,9 @@ function selectChatRoom(selectedRoomName) {
                : currentChatRoom.users[1].userId;
             $('#chatRoom').children().removeClass('selected');
             $(`#chatRoom${selectedRoomName}`).addClass('selected');
+            isInventoryTabShow = true;
+            $('#chatRoomContainer').css('width', '84px');
+            $('#chatInventory').css('width', '300px');
             initInventory(USER_ID, receiverId);
             renderChatContent();
          } else {
@@ -236,6 +285,9 @@ function selectChatRoom(selectedRoomName) {
    );
 }
 function selectItem(itemId, userId, isEmit = true) {
+   if (isConfirm) {
+      return;
+   }
    let tradeOfferContentTag;
    const itemTag = $("#item" + itemId);
    let item;
@@ -246,10 +298,6 @@ function selectItem(itemId, userId, isEmit = true) {
       tradeOfferContentTag = $("#friendTradeOffer");
       item = friendItems.find((value) => value.id == itemId);
    }
-   // details.push({
-   //    'itemId': item.id,
-   //    'userId': item.user.id
-   // });
    if (isEmit) {
       socketSendTradeInfo(item.user.id, item.id, "add-item");
    }
@@ -257,6 +305,9 @@ function selectItem(itemId, userId, isEmit = true) {
    tradeOfferContentTag.append(createTradeOfferContentItem(item, true));
 }
 function deselectItem(itemId, userId) {
+   if (isConfirm) {
+      return;
+   }
    const itemTag = $("#item" + itemId);
    const selectItemTag = $("#selectItem" + itemId);
    itemTag.show();

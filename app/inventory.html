@@ -231,12 +231,7 @@ function initTransactionHistory(data) {
   const transactionHistoryTag = $('#transactionHistory');
   data.forEach(transaction => {
     transactionHistoryTag.append(
-      `
-      <div>
-        <p>${transaction.sender.fullName}</p>
-        <p>${transaction.receiver.fullName}</p>
-        </div>
-      `
+      renderTransactionHistory(transaction)
       );
   });
 }
