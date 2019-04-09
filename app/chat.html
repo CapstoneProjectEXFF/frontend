@@ -31,10 +31,7 @@
   <!-- endbuild -->
   <!-- build:js scripts/vendor/jquery.js -->
   <!-- bower:js -->
-  <script src="/bower_components/jquery/dist/jquery.js"></script>
-  <script src="/bower_components/moment/moment.js"></script>
-  <script src="/bower_components/jquery-mousewheel/jquery.mousewheel.js"></script>
-  <script src="/bower_components/php-date-formatter/js/php-date-formatter.js"></script>
+<script src="/bower_components/jquery/dist/jquery.js"></script>
   <!-- endbower -->
   <!-- endbuild -->
   <!-- build:js scripts/vendor/moment.js -->
@@ -70,14 +67,14 @@
     </div>
     <div class="chat__inventory chat__room__width__transition" id="chatInventory">
       <div class="chat__inventory__container" id="inventoryContainer">
-        <div class="trade_offer__inventory__action">
-          <div onclick="show('#myInventory')" class="selected" id="myInventoryTab">Kho của tôi</div>
-          <div onclick="show('#friendInventory')" id="friendInventoryTab">Kho của bạn bè</div>
+        <div class="trade_offer__inventory__action" style="border-bottom: 1px solid #ccc;">
+          <div onclick="show('#myInventory')" id="myInventoryTab">Kho của tôi</div>
+          <div onclick="show('#friendInventory')" class="selected" id="friendInventoryTab">Kho của bạn bè</div>
         </div>
         <div class="trade_offer__inventory">
-          <div class="list" id="myInventory">
+          <div class="list" id="myInventory" style="display: none;">
           </div>
-          <div class="list" id="friendInventory" style="display: none;">
+          <div class="list" id="friendInventory">
           </div>
         </div>
       </div>
@@ -94,10 +91,13 @@
     </div>
     <div class="chat__info">
       <div class="chat__inventory__action">
+          <h4>Trao đổi</h4>
         <!-- <input type="text" name="txtAddress" placeholder="Địa chỉ">
         <input class="" type="text" name="txtDateTime" id="datetimepicker"> -->
-        <button class="primary" id="btnConfirm">Xác nhận</button>
-        <button class="primary" id="btnCancle">Hủy</button>
+        <div class="clearfix">
+          <button class="primary float-right" id="btnConfirm">Chốt trao đổi</button>
+          <button class="primary--o float-right" id="btnCancle">Hủy</button>
+        </div>
       </div>
       <div class="trade_offer__container">
         <div class="trade_offer__content__container">

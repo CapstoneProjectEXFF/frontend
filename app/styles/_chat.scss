@@ -46,10 +46,11 @@ $chat-room-action-height: 42px;
   position: relative;
   height: 100%;
   padding-top: $chat-room-action-height;
-  background-color: #efefef;
+  background-color: #eee;
   overflow-x: hidden;
   overflow-y: auto;
   box-sizing: border-box;
+  // transition: background-color 0.5s, color 0.5s;
 }
 // chat inventory
 .chat__inventory{
@@ -69,6 +70,8 @@ $chat-room-action-height: 42px;
   position: relative;
   flex-grow: 1;
   padding-bottom: $chat-form-height;
+  border-left: 1px solid #ccc; 
+  border-right: 1px solid #ccc; 
   box-sizing: border-box;
 }
 .chat__content{
@@ -126,4 +129,10 @@ $chat-room-action-height: 42px;
 .chat__info{
   width: 384px;
   background-color: #fff;
+}
+.chat__inventory__action{
+  padding: 6px 10px;
+  button {
+    margin: 0px 4px;
+  }
 }

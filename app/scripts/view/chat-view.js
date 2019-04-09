@@ -29,7 +29,6 @@ $(document).ready(() => {
    }
    initMessageForm();
    socket.on('item-added', function (itemInfo) {
-      console.log(itemInfo);
       let user = currentChatRoom.users.find(u => u.userId == itemInfo.userId);
       if (user != null && user != undefined) {
          let item = user.item.find(i => i == itemInfo.itemId);
@@ -46,7 +45,6 @@ $(document).ready(() => {
    );
 });
 function initTransactionHistory(data) {
-   console.log(data);
    const transactionHistoryTag = $('#transactionHistory');
    data.forEach(transaction => {
       transactionHistoryTag.append(
@@ -88,7 +86,12 @@ function initTradeOfferButton() {
       $('#btnConfirm').show();
       $('#tradeOfferContentNotif').hide();
    });
-   socket.on('trade-done', function (data) {
+   socket.on('user-accept-trade', (data) => {
+      isConfirm = true;
+      $('#btnConfirm').hide();
+      $('#tradeOfferContentNotif').show();
+   });
+   socket.on('trade-done', (data) => {
       console.log(data);
    });
 }
@@ -130,8 +133,10 @@ function initMessageForm() {
       return false;
    });
    socket.on('send-msg', function (data) {
-      $('#chatContent').append(renderMessage(data));
-      scrollBottom(200);
+      if (data.room == currentChatRoom.room) {
+         $('#chatContent').append(renderMessage(data));
+         scrollBottom(200);
+      }
    });
 }
 function initRooms() {
@@ -268,16 +273,14 @@ function selectChatRoom(selectedRoomName) {
       (data) => {
          currentChatRoom = data;
          if (currentChatRoom.users != undefined && currentChatRoom.users.length >= 2) {
-            receiverId = (currentChatRoom.users[0].userId !== USER_ID)
-               ? currentChatRoom.users[0].userId
-               : currentChatRoom.users[1].userId;
+            receiverId = (currentChatRoom.users[0].userId !== USER_ID) ? currentChatRoom.users[0].userId : currentChatRoom.users[1].userId;
+            initInventory(USER_ID, receiverId);
+            renderChatContent();
             $('#chatRoom').children().removeClass('selected');
             $(`#chatRoom${selectedRoomName}`).addClass('selected');
             isInventoryTabShow = true;
             $('#chatRoomContainer').css('width', '84px');
             $('#chatInventory').css('width', '300px');
-            initInventory(USER_ID, receiverId);
-            renderChatContent();
          } else {
             console.log('currentChatRoom do not have user');
          }
