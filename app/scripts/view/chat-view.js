@@ -29,13 +29,10 @@ $(document).ready(() => {
    }
    initMessageForm();
    socket.on('item-added', function (itemInfo) {
-      let user = currentChatRoom.users.find(u => u.userId == itemInfo.userId);
-      if (user != null && user != undefined) {
-         let item = user.item.find(i => i == itemInfo.itemId);
-         if (user == null || user == undefined) {
-            user.item.push(itemInfo.itemId + '');
-         }
-      }
+      selectItem(itemInfo.itemId, itemInfo.userId, false);
+   });
+   socket.on('item-removed', function (itemInfo) {
+      deselectItem(itemInfo.itemId, itemInfo.userId, false);
    });
    initInventoryButton();
    initDateTime();
@@ -79,17 +76,23 @@ function initTradeOfferButton() {
    });
    $('#btnCancle').click(() => {
       let data = {
-         room: roomName
+         room: roomName,
+         userId: USER_ID
       };
-      socket.emit('cancel-trade', data);
+      socket.emit('reset-trade', data);
       isConfirm = false;
       $('#btnConfirm').show();
       $('#tradeOfferContentNotif').hide();
    });
-   socket.on('user-accept-trade', (data) => {
+   socket.on('user-accepted-trade', (data) => {
+      console.log(data);
       isConfirm = true;
-      $('#btnConfirm').hide();
+      // $('#btnConfirm').hide();
       $('#tradeOfferContentNotif').show();
+   });
+   socket.on('trade-reseted', (data) => {
+      console.log(data);
+      selectChatRoom(currentChatRoom.room);
    });
    socket.on('trade-done', (data) => {
       console.log(data);
@@ -272,6 +275,11 @@ function selectChatRoom(selectedRoomName) {
       roomName,
       (data) => {
          currentChatRoom = data;
+         if (currentChatRoom.status == 1 || currentChatRoom.status == 2) {
+            isConfirm = true;
+            $('#btnConfirm').hide();
+            $('#tradeOfferContentNotif').show();
+         }
          if (currentChatRoom.users != undefined && currentChatRoom.users.length >= 2) {
             receiverId = (currentChatRoom.users[0].userId !== USER_ID) ? currentChatRoom.users[0].userId : currentChatRoom.users[1].userId;
             initInventory(USER_ID, receiverId);
@@ -291,8 +299,8 @@ function selectItem(itemId, userId, isEmit = true) {
    if (isConfirm) {
       return;
    }
-   let tradeOfferContentTag;
    const itemTag = $("#item" + itemId);
+   let tradeOfferContentTag;
    let item;
    if (userId == USER_ID) {
       tradeOfferContentTag = $("#myTradeOffer");
@@ -301,13 +309,14 @@ function selectItem(itemId, userId, isEmit = true) {
       tradeOfferContentTag = $("#friendTradeOffer");
       item = friendItems.find((value) => value.id == itemId);
    }
+   itemTag.hide();
    if (isEmit) {
       socketSendTradeInfo(item.user.id, item.id, "add-item");
+   } else {
+      tradeOfferContentTag.append(createTradeOfferContentItem(item, true));
    }
-   itemTag.hide();
-   tradeOfferContentTag.append(createTradeOfferContentItem(item, true));
 }
-function deselectItem(itemId, userId) {
+function deselectItem(itemId, userId, isEmit = true) {
    if (isConfirm) {
       return;
    }
@@ -315,9 +324,9 @@ function deselectItem(itemId, userId) {
    const selectItemTag = $("#selectItem" + itemId);
    itemTag.show();
    selectItemTag.remove();
-   socketSendTradeInfo(userId, itemId, "remove-item");
-   // deleteItem = details.find(detail => detail.itemId === itemId && detail.id !== undefined);
-   // delete deleteItem.transactionId;
+   if (isEmit) {
+      socketSendTradeInfo(userId, itemId, "remove-item");
+   }
 }
 
 // callback

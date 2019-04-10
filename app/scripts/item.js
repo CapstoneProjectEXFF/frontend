@@ -208,6 +208,9 @@ function createTradeOfferIventoryItem(item, isSelected = false) {
   );
 }
 function createTradeOfferContentItem(item, isClickable = false) {
+  if (item === undefined || item === null) {
+    return '';
+  }
   const image = (item.images[0] !== null && item.images[0] !== undefined)
     ? (item.images[0].url)
     : ('./images/no-image-icon-13.png');
