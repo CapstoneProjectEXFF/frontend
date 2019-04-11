@@ -12,6 +12,9 @@ $card-heigh: 240px;
 $card-margin: 8px;
 $card-padding: 10px;
 
+// font
+@import 'font';
+
 // general
 @import 'general';
 
@@ -90,21 +93,7 @@ $card-padding: 10px;
 .login__form__background {
   background-color: #ffffffe0;
 }
-//item
-.item__info{
-  h1,p{
-    margin: 0;
-  }
-  p{
-    color: #333;
-  }
-  #user, #date{
-    font-size: 0.9em;
-  }
-  #user{
-    font-weight: bold;
-  }
-}
+
 //inventory
 .div--center{
   max-width: 1024px;
@@ -265,15 +254,76 @@ $card-padding: 10px;
 }
 .item__form__image{
   overflow: hidden;
-  img {
+  .image__form__uploaded{
+    display: flex;
+    flex-wrap: wrap;
     width: 100%;
-    max-width: 100%;
-    max-height: 100%;
+  }
+  .image {
+    width: 200px;
+    height: 200px;
+    margin: 5px;
   }
 }
 #itemDescription, #postContent{
   white-space: pre-wrap;
 }
+
+//item
+
+.item__container{
+  .item__image{
+    width: 50%;
+    margin: 10px 0px;
+    padding: 10px 5px;
+    background-color: #fff;
+    box-sizing: border-box;
+  }
+  .item__info{
+    width: 50%;
+    min-height: 364px;
+    padding: 8px 2px;
+    box-sizing: border-box;
+    &>div{
+      margin: 2px;
+      padding: 10px 5px;
+      background-color: #fff;
+      box-sizing: border-box;
+    }
+    .item__category{
+      padding: 5px 0px;
+    }
+    .item__name{
+      font-size: 2.5em;
+      font-weight: 100;
+    }
+    .item__user__info{
+      width: 100%;
+      .item__user__avatar{
+        flex: 0 0 48px;
+        height: 48px;
+        width: 48px;
+        border-radius: 100vh;
+        overflow: hidden;
+        background-color: #ccc;
+      }
+      p{
+        padding: 0px 10px;
+      }
+    }
+    p {
+      margin: 0px;
+      word-wrap: break-word;
+    }
+    #user, #date{
+      font-size: 0.9em;
+    }
+    #user{
+      font-weight: 600;
+    }
+  }
+}
+
 
 // profile
 $profile-height: 150px;

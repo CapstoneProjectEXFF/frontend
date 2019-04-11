@@ -107,15 +107,15 @@
     </div>
   </div>
   <div class="" id="transactionHistory">
-    </div>
+  </div>
   <div class="inventory card__container" id="inventory">
   </div>
 
-  
+
 
   <!-- build:js scripts/vendor/jquery.js -->
   <!-- bower:js -->
-<script src="/bower_components/jquery/dist/jquery.js"></script>
+  <script src="/bower_components/jquery/dist/jquery.js"></script>
   <script src="/bower_components/datetimepicker/build/jquery.datetimepicker.full.min.js"></script>
   <!-- endbower -->
   <!-- endbuild -->
@@ -133,6 +133,7 @@
   <!-- endbuild -->
   <script>
     let userId;
+    let isOwn = false;
     $(document).ready(() => {
       initInventoryView();
     });
@@ -148,10 +149,12 @@
           )
         } else {
           userId = getUserId();
+          isOwn = true;
           renderUserInfo(getUserInfo());
         }
       } else {
         userId = getUserId();
+        isOwn = true;
         renderUserInfo(getUserInfo());
       }
       getItemsByUserId(
@@ -202,7 +205,7 @@
           data.id,
           (data, id) => {
             confirmAddFriendSuccess(data, id);
-            initCancleAddFriendButton({id: id}); 
+            initCancleAddFriendButton({ id: id });
           }
         );
       });
@@ -223,15 +226,15 @@
         initCancleAddFriendButton(data);
       }
     }
-function initTransactionHistory(data) {
-  console.log(data);
-  const transactionHistoryTag = $('#transactionHistory');
-  data.forEach(transaction => {
-    transactionHistoryTag.append(
-      renderTransactionHistory(transaction)
-      );
-  });
-}
+    function initTransactionHistory(data) {
+      console.log(data);
+      const transactionHistoryTag = $('#transactionHistory');
+      data.forEach(transaction => {
+        transactionHistoryTag.append(
+          renderTransactionHistory(transaction)
+        );
+      });
+    }
 
     function getUserSuccess(data) {
       renderUserInfo(data);
@@ -250,7 +253,7 @@ function initTransactionHistory(data) {
         inventoryTag.html("<h1>Không có đồ dùng nào.</h1>");
       }
       data.forEach(item => {
-        const card = createItemCard(item, true);
+        const card = createItemCard(item, isOwn);
         inventoryTag.append(card);
       });
     };

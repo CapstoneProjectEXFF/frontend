@@ -112,14 +112,19 @@
       </div>
     </div>
     <div class="item__form__image">
-      <input type="file" name="image" id="image" accept="image/*">
-      <img id="imageUploaded" />
+      <div class="upload-btn-wrapper">
+        <button class="primary--o">
+          <i class="fas fa-images"></i> Đăng ảnh
+        </button>
+        <input type="file" name="image" id="image" accept="image/*" multiple>
+      </div>
+      <div class="image__form__uploaded" id="imageUploaded"></div>
     </div>
   </div>
 
   <!-- build:js scripts/vendor/jquery.js -->
   <!-- bower:js -->
-<script src="/bower_components/jquery/dist/jquery.js"></script>
+  <script src="/bower_components/jquery/dist/jquery.js"></script>
   <script src="/bower_components/datetimepicker/build/jquery.datetimepicker.full.min.js"></script>
   <!-- endbower -->
   <!-- endbuild -->
@@ -131,6 +136,7 @@
   <script src="scripts/validation.js"></script>
   <script src="scripts/item.js"></script>
   <script src="scripts/category.js"></script>
+  <script src="scripts/image.js"></script>
   <!-- endbuild -->
   <!-- build:js scripts/firebase-image.js -->
   <script src="scripts/firebase-image.js"></script>
@@ -267,12 +273,20 @@
       categoryLoaded = true;
     }
     function uploadImage(event) {
-      const file = event.target.files[0];
-      uploadImageToFirebase(file, showImage);
+      const files = event.target.files;
+      const imageUploaded = $('#imageUploaded');
+      urls = [];
+      imageUploaded.html('');
+      for (var i = 0; i < files.length; i++) {
+        let file = files[i];
+        uploadImageToFirebase(file, showImage);
+      }
+      // uploadImageToFirebase(file, showImage);
     }
     function showImage(url) {
+      const imageUploaded = $('#imageUploaded');
+      imageUploaded.append(renderImage(url));
       urls.push(url);
-      $("#imageUploaded").attr('src', url);
     }
   </script>
 </body>

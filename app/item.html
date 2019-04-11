@@ -96,39 +96,53 @@
   <br>
   <br>
 
-  <div class="item__form__container">
-    <div class="item__form">
-      <div class="item__info position--relative">
-        <p id="user"></p>
-        <p id="date"></p>
-        <hr />
-
-        <h1 id="itemName"></h1>
-        <br />
-        <p>
-          <i class="fas fa-box"></i>
-          <span id="itemCategory"></span>
-        </p>
-        <p>
-          <i class="fas fa-map-marker"></i>
-          <span id="itemAddress"></span>
-        </p>
-        <br>
-        <button onclick="share()" class="primary size--mini">
+  <div class="item__container div--center flex flex_justify__center">
+    <div class="item__image" id="imageContainer">
+    </div>
+    <div class="item__info position--relative">
+      <div class="clearfix">
+        <button onclick="share()" class="primary size--mini float-right">
           <i class="fab fa-facebook"></i> Chia sẻ
         </button>
-        <p><b>Thông tin:</b></p>
-        <p id="itemDescription"></p>
-        <hr />
-        <div class="clearfix">
-          <a class="reset" id="tradeOfferLink" style="display: none;">
-            <button class="primary float-right">Yêu cầu trao đổi</button>
-          </a>
+        <p class="item__category">
+          <b>Loại đồ dùng: </b>
+          <span id="itemCategory"></span>
+        </p>
+        <div class="item__name">
+          <p id="itemName"></p>
         </div>
       </div>
-    </div>
-    <div class="item__form__image">
-      <img id="image">
+
+      <div class="clearfix">
+        <a class="reset" id="tradeOfferLink" style="display: none;">
+          <button class="primary float-right">Yêu cầu trao đổi</button>
+        </a>
+        <p>
+          <b>Ngày đăng: </b>
+          <span id="date"></span>
+        </p>
+        <p>
+          <b>Địa chỉ: </b>
+          <span id="itemAddress"></span>
+        </p>
+        <p><b>Thông tin:</b></p>
+        <p id="itemDescription"></p>
+
+      </div>
+      <div>
+        <p><b>Liên hệ:</b></p>
+        <div class="item__user__info flex" id="userInfo">
+          <div class="item__user__avatar position--relative">
+            <div id="avatar" class="background" style="background-image: url('./images/no-image-icon-13.png')"></div>
+          </div>
+          <div class="flex flex_justify__center flex_vertical">
+            <a id="userLink" class="primary">
+              <p id="user"></p>
+            </a>
+            <p id="phoneNumber"></p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -136,7 +150,7 @@
 
   <!-- build:js scripts/vendor/jquery.js -->
   <!-- bower:js -->
-<script src="/bower_components/jquery/dist/jquery.js"></script>
+  <script src="/bower_components/jquery/dist/jquery.js"></script>
   <script src="/bower_components/datetimepicker/build/jquery.datetimepicker.full.min.js"></script>
   <!-- endbower -->
   <!-- endbuild -->
@@ -149,6 +163,7 @@
   <script src="scripts/item.js"></script>
   <script src="scripts/login.js"></script>
   <script src="scripts/register.js"></script>
+  <script src="scripts/image.js"></script>
   <!-- endbuild -->
   <script>
     let overrideLink;
@@ -163,11 +178,11 @@
         overrideImage);
     }
     function shareOverrideOGMeta(
-      overrideLink = 'https://exff.ml/', 
-      overrideTitle = 'Đồ dùng cần trao đổi', 
-      overrideDescription = 'Trao đổi đồ dùng giữa người thân và bạn bè tại Exff', 
+      overrideLink = 'https://exff.ml/',
+      overrideTitle = 'Đồ dùng cần trao đổi',
+      overrideDescription = 'Trao đổi đồ dùng giữa người thân và bạn bè tại Exff',
       overrideImage = ''
-      ) {
+    ) {
       FB.ui({
         method: 'share_open_graph',
         action_type: 'og.likes',
@@ -199,16 +214,16 @@
       }
     });
     function initView(data) {
-      const user = $("#user");
+
       const date = $("#date");
       const category = $("#itemCategory");
       const name = $("#itemName");
       const description = $("#itemDescription");
       const address = $("#itemAddress");
-      const image = $("#image");
+
       const tradeOfferLink = $("#tradeOfferLink");
       let time = moment(data.createTime).format("DD/MM/YYYY");
-      user.text(data.user.fullName);
+
       date.text(time);
       category.text(data.category.name);
       name.text(data.name);
@@ -218,9 +233,29 @@
         tradeOfferLink.show();
         tradeOfferLink.attr("href", `./chat.html?userId=${data.user.id}&itemId=${data.id}`)
       }
-      if (data.images != null && data.images.length > 0) {
-        image.attr('src', data.images[0].url);
+      initUserInfo(data.user);
+      initSlideShow(data.images);
+    }
+
+    function initUserInfo(data) {
+      const user = $("#user");
+      const phoneNumber = $("#phoneNumber");
+      const avatar = $('#avatar');
+      const link = $('#userLink');
+
+      let image = data.avatar;
+
+      user.text(data.fullName);
+      phoneNumber.text(data.phoneNumber);
+      link.attr('href', `./inventory.html?userId=${data.id}`);
+      if (image !== undefined) {
+        avatar.css('background-image', `url(${image})`);
       }
+    }
+
+    function initSlideShow(images) {
+      const imageContainer = $("#imageContainer");
+      imageContainer.append(renderSlideShow(images));
     }
     function initShareButton(data) {
       overrideLink = `https://exff.ml/item.html?id=${data.id}`;
@@ -244,7 +279,7 @@
     };
     function getItemFalse(err) {
       // console.log(err);
-      window.location.href("./error404.html");
+      // window.location.href = ("./error404.html");
     };
   </script>
 </body>

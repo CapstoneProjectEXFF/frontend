@@ -1,9 +1,10 @@
 body {
+  min-width: 800px;
   position: relative;
   margin: 0;
   padding: 0;
-  background: #fafafa;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background: #f4f4f4;
+  font-family: 'Source Sans Pro', sans-serif;
   color: #333;
 }
 hr{
@@ -59,5 +60,54 @@ a {
   border-top: 1px solid #ccc;
   &:hover{
     background-color: #cfcfcf;
+  }
+}
+
+// slide show
+
+.slide_show__image__container {
+  overflow-x: hidden;
+  overflow-y: auto;
+  .slide_show__image_list{
+    flex: 0 0 95px;
+    width: 95px;
+    height: 90px * 4;
+    overflow-x: hidden;
+    overflow-y: auto;
+    .slide_show__image_list__image{
+      cursor: pointer;
+      position: relative;
+      width: 80px;
+      height: 80px;
+      margin: 4px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      overflow: hidden;
+      &.selected{
+        border-color: $primary-color;
+      }
+      img {
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translate(0%,-50%);
+        width: 100%;
+        height: auto;
+      }
+    }
+  }
+  .slide_show__image{
+    position: relative;
+    max-height: 400px;
+    overflow: hidden;
+    img {
+      position: relative;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%,-50%);
+      max-width: 100%;
+      height: auto;
+      max-height: 100%;
+    }
   }
 }

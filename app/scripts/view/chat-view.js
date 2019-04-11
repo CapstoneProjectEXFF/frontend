@@ -91,7 +91,6 @@ function initTradeOfferButton() {
       $('#tradeOfferContentNotif').show();
    });
    socket.on('trade-reseted', (data) => {
-      console.log(data);
       selectChatRoom(currentChatRoom.room);
    });
    socket.on('trade-done', (data) => {
@@ -194,6 +193,7 @@ function initTradeOfferContent() {
       let tmpItemId = tmpUser.item.find(itemId => urlSelectedItemId == itemId);
       if (tmpItemId == undefined) {
          selectItem(urlSelectedItemId, receiverId);
+         urlSelectedItemId = undefined;
       }
    }
 }
