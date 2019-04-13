@@ -22,7 +22,7 @@ function renderNotification(notif) {
     <a class="reset" href="/chat.html?userId=${data.sender.id}">
       <div class="notification">
         <p class="notification__content">${message}</p>
-        <p class="notification__time">${moment(notif.modifyTime).format('hh:mm DD/MM/YYYY')}</p>
+        <p class="notification__time">${formatTime(notif.modifyTime)}</p>
       </div>
     </a>
   `;

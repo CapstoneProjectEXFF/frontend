@@ -33,9 +33,7 @@
   <!-- build:js scripts/vendor/modernizr.js -->
   <script src="/bower_components/modernizr/modernizr.js"></script>
   <!-- endbuild -->
-  <!-- build:js scripts/vendor/moment.js -->
-  <script src="/bower_components/moment/min/moment.min.js"></script>
-  <!-- endbuild -->
+
 </head>
 
 <body>
@@ -99,22 +97,21 @@
 
   <div class="donation_post__container div--center">
     <div class="cover position--relative">
-      <div class="background" id="image" style="background-image: url('./images/no-image-icon-13.png')"></div>
-    </div>
-    <div>
-      <div class="user__info flex" id="userInfo">
-        <div class="user__avatar position--relative">
-          <div id="avatar" class="background" style="background-image: url('./images/no-image-icon-13.png')"></div>
-        </div>
-        <div class="flex flex_justify__center flex_vertical">
-          <a id="userLink" class="primary">
-            <p id="user"></p>
-          </a>
-          <p id="date"></p>
+      <div class="background background--paralax" id="image" style="background-image: url('./images/default-donation-post.png')"></div>
+      <div class="cover__info">
+        <div class="user__info flex" id="userInfo">
+          <div class="user__avatar position--relative">
+            <div id="avatar" class="background" style="background-image: url('./images/no-image-icon-13.png')"></div>
+          </div>
+          <div class="flex flex_justify__center flex_vertical">
+            <a id="userLink" class="primary">
+              <p><b id="user"></b></p>
+            </a>
+            <p id="date"></p>
+          </div>
         </div>
       </div>
     </div>
-    <hr class="gray">
     <div class="donation_post__body">
       <div class="donation_post__title">
         <h1 id="postTitle"></h1>
@@ -123,7 +120,7 @@
         </button>
       </div>
       <br>
-      <div class="flex flex_justify__center">
+      <div class="flex flex_justify__center flex_align_items__start">
         <div class="donation_post__content">
           <p>
             <b>Địa điểm: </b>
@@ -132,12 +129,13 @@
           <p id="postContent"></p>
         </div>
         <div class="donation_post__donator__list">
-          <div class="clearfix">
+          <div class="donation_post__donator__action clearfix">
             <a class="reset float-right" id="tradeOfferLink" style="display: none;">
               <button class="primary">Quyên góp</button>
             </a>
-            <h3 class="float-left">Người quyên góp</h3>
+            <h3 class="float-left">Quyên góp: <span id="donatorNum"></span> lượt</h3>
           </div>
+          <hr class="gray no--margin">
           <div id="donatorList"></div>
         </div>
       </div>
@@ -145,10 +143,15 @@
     <div class="flex flex_justify__center flex_vertical" id="imageList"></div>
   </div>
 
-  <!-- build:js scripts/vendor/jquery.js -->
+  <!-- build:js scripts/vendor/vendor.js -->
   <!-- bower:js -->
   <script src="/bower_components/jquery/dist/jquery.js"></script>
+  <script src="/bower_components/moment/moment.js"></script>
+  <script src="/bower_components/moment/locale/vi.js"></script>
+  <script src="/bower_components/jquery-mousewheel/jquery.mousewheel.js"></script>
+  <script src="/bower_components/php-date-formatter/js/php-date-formatter.js"></script>
   <script src="/bower_components/datetimepicker/build/jquery.datetimepicker.full.min.js"></script>
+  <script src="/bower_components/numeral/numeral.js"></script>
   <!-- endbower -->
   <!-- endbuild -->
 
@@ -161,6 +164,7 @@
   <script src="scripts/login.js"></script>
   <script src="scripts/register.js"></script>
   <script src="scripts/image.js"></script>
+  <script src="scripts/transaction.js"></script>
   <!-- endbuild -->
   <script>
     let overrideLink;
@@ -209,41 +213,53 @@
           getDonationPostSuccess,
           getDonationPostFalse
         );
+        getDonatorOfDonationPost(
+          id,
+          getDonatorSuccess,
+          getDonatorSuccess
+        )
       } else {
         window.location.replace("./error404.html");
       }
     });
     function initDonationPostView(data) {
       const user = $("#user");
+      const avatar = $("#avatar");
       const date = $("#date");
       const address = $("#address");
       const postTitle = $("#postTitle");
       const postContent = $("#postContent");
       const image = $("#image");
+      const userLink = $('#userLink');
       const tradeOfferLink = $("#tradeOfferLink");
-      let time = moment(data.createTime).format("DD/MM/YYYY");
+
+      let time = formatTime(data.createTime);
+
       user.text(data.user.fullName);
       date.text(time);
       address.text(data.address);
       postTitle.text(data.title);
       postContent.text(data.content);
+      userLink.attr('href', `./inventory.html?userId=${data.user.id}`);
 
       if (data.user.id != getUserId()) {
         tradeOfferLink.show();
         tradeOfferLink.attr("href", `./donation-send.html?donationPostId=${data.id}`)
       }
+
       if (data.images != null && data.images.length > 0) {
         image.css("background-image", `url(${data.images[0].url})`);
         initImageList(data.images);
       }
+
+      if (data.user.avatar !== null && data.user.avatar !== undefined) {
+        avatar.css("background-image", `url(${data.user.avatar})`);
+      }
     }
     function initImageList(images) {
       let imageList = $('#imageList');
-      console.log(images);
       for (let i = 1; i < images.length; i++) {
         const image = images[i];
-        console.log(image);
-
         imageList.append(renderImage(image.url));
       }
     }
@@ -270,6 +286,23 @@
     function getDonationPostFalse(err) {
       // console.log(err);
       window.location.href = ("./error404.html");
+    };
+
+    function getDonatorSuccess(data) {
+      const donatorList = $('#donatorList');
+      const donatorNum = $('#donatorNum');
+      if (data.length > 0) {
+        data.forEach(elem => {
+          donatorList.append(renderDonatorCard(elem));
+        });
+      } else {
+        donatorList.html('<h3 style="text-align:center;">Bạn sẽ là người đầu tiên quyên góp.</h3>');
+      }
+      donatorNum.html(`${numeral(data.length).format('0,0')} người`);
+    };
+    function getDonatorFalse(err) {
+      console.log(data);
+      // window.location.href = ("./error404.html");
     };
 
   </script>

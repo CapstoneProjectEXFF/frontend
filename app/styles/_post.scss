@@ -12,7 +12,6 @@
 .post {
   width: 100%;
   background-color: #fff;
-  padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
   box-sizing: border-box;
@@ -28,6 +27,8 @@
 .post__info{
   width: 100%;
   color: #333;
+  padding: 0px 10px;
+  box-sizing: border-box;
   p{
     width: 100%;
     margin: 5px 0px;
@@ -35,10 +36,20 @@
 }
 .post__user__info{
   width: 100%;
+  padding: 10px 10px 0px 10px;
+  box-sizing: border-box;
   display: flex;
   justify-content: space-between;
+  .user__avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 100vh;
+    background-color: #ccc;
+    overflow: hidden;
+  }
   p{
     margin: 5px 0px;
+    padding-left: 5px;
   }
   button{
     white-space: nowrap;
@@ -72,3 +83,4 @@
     color: $error-color;
   }
 }
+

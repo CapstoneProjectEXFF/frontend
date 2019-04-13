@@ -162,9 +162,39 @@ function searchDonationPosts(
 //     });
 // }
 
-function createDonationPostCard(donationPost, isEdit = false) {
+function renderDonatorCard(data) {
+  const { transaction, details } = data;
+  const { sender, modifyTime } = transaction;
+
+  const avatar = (sender.avatar !== null && sender.avatar !== undefined)
+    ? (sender.avatar)
+    : ('./images/no-image-icon-13.png');
+  return `
+  <div class="user__info flex" id="userInfo">
+    <div class="user__avatar position--relative">
+      <div id="avatar" class="background" style="background-image: url(${avatar})">
+      </div>
+    </div>
+    <div class="flex flex_justify__center flex_vertical">
+      <a class="primary" href="./inventory.html?userId=${sender.id}">
+        <p><b>${sender.fullName}</b></p>
+      </a>
+      <p>Quyên góp <b>${details.length}</b> đồ dùng.</p>
+      <p class="datetime">- ${formatTime(modifyTime)}</p>
+    </div>
+  </div>
+  `;
+}
+
+function renderDonationPostCard(donationPost, isEdit = false) {
+  const {user} = donationPost;
   const image = (donationPost.images !== undefined && donationPost.images.length > 0)
     ? (donationPost.images[0].url)
+    : ('./images/default-donation-post.png');
+    console.log(donationPost);
+    
+  const avatar = (user.avatar !== null && user.avatar !== undefined)
+    ? (user.avatar)
     : ('./images/no-image-icon-13.png');
   const action = isEdit ? (
     `<hr>
@@ -174,8 +204,8 @@ function createDonationPostCard(donationPost, isEdit = false) {
       </a>
     </div>`
   ) : '';
-  const donateAction = (donationPost.user.id !== getUserId()) ? (
-    `<a class="reset" href="./donation-send.html?donationPostId=${donationPost.user.id}">
+  const donateAction = (user.id + '' !== getUserId()) ? (
+    `<a class="reset" href="./donation-send.html?donationPostId=${donationPost.id}">
       <button class="primary">Quyên góp</button>
     </a>`
   ) : '';
@@ -183,9 +213,15 @@ function createDonationPostCard(donationPost, isEdit = false) {
     `<div class="post__outline">
       <div class="post">
         <div class="post__user__info">
-          <div class="user__info">
-            <p class="info__name ellipsis">${donationPost.user.fullName}</p>
-            <p class="info__time ellipsis">${moment(donationPost.createTime).format("DD/MM/YYYY")}</p>
+          <div class="user__info clearfix">
+            <div class="user__avatar float-left position--relative">
+              <div id="avatar" class="background" style="background-image: url(${avatar})"></div>
+            </div>
+            <a class="reset" href="./inventory.html?userId=${user.id}">
+              <p class="info__name ellipsis">${user.fullName}</p>
+            </a>
+            <p class="info__time ellipsis">${formatTime(donationPost.createTime)}</p>
+            <p class="info__address ellipsis">- tại <b>${donationPost.address}</b></p>
           </div>
           ${donateAction}
         </div>
@@ -193,7 +229,6 @@ function createDonationPostCard(donationPost, isEdit = false) {
           <div class="post__info">
             <p class="info__content ellipsis">${donationPost.title}</p>
             <p class="info__content ellipsis">${donationPost.content}</p>
-            <p class="info__address ellipsis">${donationPost.address}</p>
           </div>
           <div class="post__image position--relative">
             <div class="background" style="background-image: url(${image})"></div>

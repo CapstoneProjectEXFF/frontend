@@ -32,9 +32,7 @@
   <!-- build:js scripts/vendor/modernizr.js -->
   <script src="/bower_components/modernizr/modernizr.js"></script>
   <!-- endbuild -->
-  <!-- build:js scripts/vendor/moment.js -->
-  <script src="/bower_components/moment/min/moment.min.js"></script>
-  <!-- endbuild -->
+
 </head>
 
 <body>
@@ -148,10 +146,15 @@
 
 
 
-  <!-- build:js scripts/vendor/jquery.js -->
+  <!-- build:js scripts/vendor/vendor.js -->
   <!-- bower:js -->
   <script src="/bower_components/jquery/dist/jquery.js"></script>
+   <script src="/bower_components/moment/moment.js"></script>
+  <script src="/bower_components/moment/locale/vi.js"></script>
+  <script src="/bower_components/jquery-mousewheel/jquery.mousewheel.js"></script>
+  <script src="/bower_components/php-date-formatter/js/php-date-formatter.js"></script>
   <script src="/bower_components/datetimepicker/build/jquery.datetimepicker.full.min.js"></script>
+  <script src="/bower_components/numeral/numeral.js"></script>
   <!-- endbower -->
   <!-- endbuild -->
 
@@ -222,7 +225,7 @@
       const address = $("#itemAddress");
 
       const tradeOfferLink = $("#tradeOfferLink");
-      let time = moment(data.createTime).format("DD/MM/YYYY");
+      let time = formatTime(data.createTime);
 
       date.text(time);
       category.text(data.category.name);
@@ -236,7 +239,6 @@
       initUserInfo(data.user);
       initSlideShow(data.images);
     }
-
     function initUserInfo(data) {
       const user = $("#user");
       const phoneNumber = $("#phoneNumber");
@@ -279,7 +281,7 @@
     };
     function getItemFalse(err) {
       // console.log(err);
-      // window.location.href = ("./error404.html");
+      window.location.href = ("./error404.html");
     };
   </script>
 </body>

@@ -7,6 +7,7 @@
     "moment": "^2.24.0",
     "Font-Awesome": "^5.7.2",
     "socket.io-client": "^2.2.0",
-    "datetimepicker": "^2.5.20"
+    "datetimepicker": "^2.5.20",
+    "numeral": "numeraljs#^2.0.6"
   }
 }

@@ -203,7 +203,7 @@ function createTradeOfferIventoryItem(item, isSelected = false) {
       <div class="list__item__info">
           <h5 class="ellipsis">${item.category.name}</h5>
           <h2 class="ellipsis">${item.name}</h2>
-          <p class="ellipsis"><i>${moment(item.createTime).format("DD/MM/YYYY")}</i></p>
+          <p class="ellipsis"><i>${formatTime(item.createTime)}</i></p>
         </div>
     </div>`
   );
@@ -224,7 +224,7 @@ function createTradeOfferContentItem(item, isClickable = false) {
       <div class="list__item__info">
           <h5 class="ellipsis">${item.category.name}</h5>
           <h2 class="ellipsis">${item.name}</h2>
-          <p class="ellipsis"><i>${moment(item.createTime).format("DD/MM/YYYY")}</i></p>
+          <p class="ellipsis"><i>${formatTime(item.createTime)}</i></p>
         </div>
     </div>`
   );

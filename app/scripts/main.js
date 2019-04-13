@@ -59,6 +59,17 @@ function fetchApi(
     });
 }
 
+// format time
+moment.locale('vi');
+
+function formatTime(time) {
+  let diff = moment() - moment(time);
+  if (diff < moment.duration(1, 'd')) {
+    return moment(time).fromNow();
+  }
+  return moment(time).format('DD/MM/YYYY') + ' lúc ' + moment(time).format('hh:mm');
+}
+
 // redirect
 
 function redirectTo404(data) {
