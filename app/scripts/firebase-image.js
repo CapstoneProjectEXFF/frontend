@@ -7,7 +7,7 @@ var config = {
 
 firebase.initializeApp(config);
 
-function uploadImageToFirebase(file, callback) {
+function uploadImageToFirebase(file, callback = DEFAULT_FUNCTION) {
   const storageService = firebase.storage();
   const storageRef = storageService.ref();
   storageRef.child(`images/${getUserId()}${new Date().getTime()}${file.name}`)
@@ -18,6 +18,16 @@ function uploadImageToFirebase(file, callback) {
           callback(url);
         });
     });
+}
+
+function deleteUploadedImageOnFirebase(url, callback = DEFAULT_FUNCTION) {
+  const storageService = firebase.storage();
+  const storageRef = storageService.refFromURL(url);
+  storageRef
+  .delete()
+  .then(() => {
+    callback();
+  });
 }
 
 

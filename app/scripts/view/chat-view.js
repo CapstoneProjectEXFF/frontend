@@ -72,9 +72,11 @@ function initTradeOfferButton() {
       socket.emit('confirm-trade', data);
       isConfirm = true;
       $('#btnConfirm').hide();
+      $('#btnReset').hide();
+      $('#btnCancle').show();
       $('#tradeOfferContentNotif').show();
    });
-   $('#btnCancle').click(() => {
+   $('#btnReset').click(() => {
       let data = {
          room: roomName,
          userId: USER_ID
@@ -85,16 +87,24 @@ function initTradeOfferButton() {
       $('#tradeOfferContentNotif').hide();
    });
    socket.on('user-accepted-trade', (data) => {
-      console.log(data);
+      if (data.room === undefined || data.room !== currentChatRoom.room) {
+         return;
+      }
       isConfirm = true;
       // $('#btnConfirm').hide();
       $('#tradeOfferContentNotif').show();
    });
    socket.on('trade-reseted', (data) => {
+      if (data.room === undefined || data.room !== currentChatRoom.room) {
+         return;
+      }
       selectChatRoom(currentChatRoom.room);
    });
    socket.on('trade-done', (data) => {
-      console.log(data);
+      if (data.room === undefined || data.room !== currentChatRoom.room) {
+         return;
+      }
+      selectChatRoom(currentChatRoom.room);
    });
 }
 
@@ -135,6 +145,7 @@ function initMessageForm() {
       return false;
    });
    socket.on('send-msg', function (data) {
+      console.log(data);
       if (data.room == currentChatRoom.room) {
          $('#chatContent').append(renderMessage(data));
          scrollBottom(200);
@@ -204,9 +215,7 @@ function socketConnectRoom() { //create connect
    roomName = `${USER_ID}-${receiverId}`;
    // roomName = JSON.stringify(data);
    let roomInfo = {
-      room: roomName,
-      userA: `${USER_ID}`,
-      userB: `${receiverId}`
+      room: roomName
    };
    socket.emit(
       "get-room",
@@ -277,6 +286,13 @@ function selectChatRoom(selectedRoomName) {
          currentChatRoom = data;
          if (currentChatRoom.status == 1 || currentChatRoom.status == 2) {
             isConfirm = true;
+            let roomInfo = {
+               room: roomName
+            };
+            socket.emit(
+               "get-room",
+               roomInfo
+            );
             $('#btnConfirm').hide();
             $('#tradeOfferContentNotif').show();
          }

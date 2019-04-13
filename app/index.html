@@ -26,6 +26,9 @@
   <!-- build:js scripts/vendor/modernizr.js -->
   <script src="/bower_components/modernizr/modernizr.js"></script>
   <!-- endbuild -->
+  <!-- build:js scripts/vendor/moment.js -->
+  <script src="/bower_components/moment/min/moment.min.js"></script>
+  <!-- endbuild -->
 </head>
 
 <body>
@@ -83,7 +86,7 @@
 
   <!-- build:js scripts/vendor/jquery.js -->
   <!-- bower:js -->
-<script src="/bower_components/jquery/dist/jquery.js"></script>
+  <script src="/bower_components/jquery/dist/jquery.js"></script>
   <script src="/bower_components/datetimepicker/build/jquery.datetimepicker.full.min.js"></script>
   <!-- endbower -->
   <!-- endbuild -->
@@ -110,7 +113,7 @@
         0,
         10,
         getDonationPostsSuccess,
-        getDonationPostsFalse,
+        getDonationPostsFalse
       );
       $("#itemsContainer").show();
       $("#postsContainer").hide();

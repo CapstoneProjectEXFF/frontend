@@ -1,4 +1,5 @@
 const TRANSACTION_URL = '/transaction';
+const DONATION_URL = '/donators';
 
 function createDetails(senderItems, receiverItems) {
   let details = [];
@@ -18,6 +19,7 @@ function createDetails(senderItems, receiverItems) {
 }
 
 function addTransaction(
+  senderId,
   receiverId,
   details = [],
   donationPostId = null,
@@ -31,6 +33,7 @@ function addTransaction(
   let url = API_URL + TRANSACTION_URL;
   let data = {
     'transaction': {
+      'senderId': senderId,
       'receiverId': receiverId,
       'donationPostId': donationPostId
     },
@@ -84,6 +87,26 @@ function getTransaction(
       'Accept': 'application/json',
       'Content-Type': 'application/json',
       'Authorization': getAuthentoken()
+    }
+  };
+  fetchApi(
+    url,
+    options,
+    successCallback,
+    failCallback
+  );
+}
+function getDonatorOfDonationPost(
+  id,
+  successCallback = DEFAULT_FUNCTION,
+  failCallback = DEFAULT_FUNCTION
+) {
+  let url = API_URL + DONATION_URL + `/${id}`;
+  let options = {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
     }
   };
   fetchApi(
@@ -210,6 +233,7 @@ function addTradeOffer(
   failCallback = DEFAULT_FUNCTION
 ) {
   addTransaction(
+    getUserId(),
     receiverId,
     details,
     null,
@@ -226,6 +250,7 @@ function addDonationTransaction(
   failCallback = DEFAULT_FUNCTION
 ) {
   addTransaction(
+    getUserId(),
     receiverId,
     details,
     donationPostId,

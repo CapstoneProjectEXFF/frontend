@@ -112,13 +112,14 @@
       </div>
     </div>
     <div class="item__form__image">
+      <div><p class="error hidden">Phải đăng ít nhất 1 hình.</p></div>
+      <div class="image__form__uploaded" id="imageUploaded"></div>
       <div class="upload-btn-wrapper">
         <button class="primary--o">
-          <i class="fas fa-images"></i> Đăng ảnh
+          <i class="fas fa-images"></i> Thêm hình ảnh
         </button>
         <input type="file" name="image" id="image" accept="image/*" multiple>
       </div>
-      <div class="image__form__uploaded" id="imageUploaded"></div>
     </div>
   </div>
 
@@ -144,6 +145,8 @@
   <script>
     let categoryLoaded = false;
     let urls = [];
+    let removedUrls = [];
+    let removedImageId = [];
     let images = [];
     $(document).ready(() => {
       let urlParams = new URLSearchParams(window.location.search);
@@ -180,7 +183,9 @@
       privacy.val(`${data.privacy}`);
       images = data.images;
       if (images != null && images.length > 0) {
-        showImage(images[0].url);
+        for (let i = 0; i < images.length; i++) {
+          showOldImage(images[i]);
+        }
       }
     };
     function getItemFalse(err) {
@@ -217,7 +222,8 @@
               address,
               privacy,
               urls,
-              addItemSuccess,
+              removedImageId,
+              updateItemSuccess,
               addItemFails
             );
           }
@@ -239,11 +245,32 @@
     }
 
     function validate() {
-      return checkRequire("#category") && checkRequire("#name") && checkRequire("#description") && checkRequire("#address");
+      return checkRequire("#category") 
+      && checkRequire("#name") 
+      && checkRequire("#description") 
+      && checkRequire("#address")
+      && checkImage();
+    }
+
+    function checkImage() {
+      let res = $('#imageUploaded .image .background').length > 0;
+      if (!res) {
+        $('.item__form__image .error').removeClass('hidden');
+      } else {
+        $('.item__form__image .error').addClass('hidden');
+      }
+      return res;
     }
 
     function addItemSuccess(data) {
       // console.log(data);
+      window.location.replace(`./item.html?id=${data.id}`);
+    }
+
+    function updateItemSuccess(data) {
+      removedUrls.forEach(url => {
+        deleteUploadedImageOnFirebase(url);
+      });
       window.location.replace(`./item.html?id=${data.id}`);
     }
 
@@ -275,8 +302,6 @@
     function uploadImage(event) {
       const files = event.target.files;
       const imageUploaded = $('#imageUploaded');
-      urls = [];
-      imageUploaded.html('');
       for (var i = 0; i < files.length; i++) {
         let file = files[i];
         uploadImageToFirebase(file, showImage);
@@ -285,8 +310,26 @@
     }
     function showImage(url) {
       const imageUploaded = $('#imageUploaded');
-      imageUploaded.append(renderImage(url));
       urls.push(url);
+      imageUploaded.append(renderInputImage(url, urls.indexOf(url)));
+    }
+    function showOldImage(image) {
+      const imageUploaded = $('#imageUploaded');
+      imageUploaded.append(renderInputOldImage(image.url, image.id));
+    }
+    function deleteImage(url, id) {
+      deleteUploadedImageOnFirebase(
+        url,
+        () => {
+          $(`#image${id}`).remove();
+          urls = urls.filter(u => u != url);
+        }
+      );
+    }
+    function deleteOldImage(url, id) {
+      removedImageId.push(id);
+      removedUrls.push(url);
+      $(`#oldImage${id}`).remove();
     }
   </script>
 </body>

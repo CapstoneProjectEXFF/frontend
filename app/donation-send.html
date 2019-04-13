@@ -178,16 +178,6 @@
     function getMyInventoryFalse(err) {
       getItemsFalse(err, "#myInventory");
     }
-    function getFriendInventory(data) {
-      friendItems = data;
-      getItemsSuccess(data, "#friendInventory");
-      if (urlSelectedItemId !== undefined) {
-        selectItem(urlSelectedItemId, receiverId);
-      }
-    }
-    function getFriendInventoryFalse(err) {
-      getItemsFalse(err, "#friendInventory");
-    }
     function getItemsSuccess(data, tagId) {
       const inventoryTag = $(tagId);
       inventoryTag.html("");
@@ -203,14 +193,6 @@
       const inventoryTag = $(tagId);
       inventoryTag.html("<h1>Không có đồ dùng nào.</h1>");
     };
-    function show(tagId) {
-      const hideTagId = tagId === "#myInventory" ? "#friendInventory" : "#myInventory";
-
-      $(tagId).show();
-      $(tagId + "Tab").addClass("selected");
-      $(hideTagId).hide();
-      $(hideTagId + "Tab").removeClass("selected");
-    }
     function selectItem(itemId, userId) {
       let tradeOfferContentTag;
       const itemTag = $("#item" + itemId);
@@ -234,26 +216,15 @@
       const selectItemTag = $("#selectItem" + itemId);
       itemTag.show();
       selectItemTag.remove();
-      if (userId == USER_ID) {
-        sendedItems = sendedItems.filter(item => item.id != itemId);
-      } else {
-        receivedItems = receivedItems.filter(item => item.id != itemId);
-      }
-      deleteItem = details.find(detail => detail.itemId === itemId && detail.id !== undefined);
-      delete deleteItem.transactionId;
+      details = details.filter(detail => detail.itemId !== itemId);
     }
     function renderTradeOfferContent(details, isClickable = false) {
       const myTradeOfferContentTag = $("#myTradeOffer");
-      const friendTradeOfferContentTag = $("#friendTradeOffer");
       myTradeOfferContentTag.html("");
-      friendTradeOfferContentTag.html("");
       details.forEach(detail => {
         if (detail.userId == USER_ID) {
           myTradeOfferContentTag.append(createTradeOfferContentItem(detail.item, isClickable));
           sendedItems.push(detail.item);
-        } else {
-          friendTradeOfferContentTag.append(createTradeOfferContentItem(detail.item, isClickable));
-          receivedItems.push(detail.item);
         }
       });
     }

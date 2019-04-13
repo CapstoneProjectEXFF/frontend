@@ -99,14 +99,22 @@
       </div>
     </div>
     <div class="item__form__image">
-      <input type="file" name="image" id="image" accept="image/*">
-      <img id="imageUploaded" />
+      <div>
+        <p class="error hidden">Phải đăng 1 hình.</p>
+      </div>
+      <div class="image__form__uploaded" id="imageUploaded"></div>
+      <div class="upload-btn-wrapper" id="btnUpload">
+        <button class="primary--o">
+          <i class="fas fa-images"></i> Thêm hình ảnh
+        </button>
+        <input type="file" name="image" id="image" accept="image/*" multiple>
+      </div>
     </div>
   </div>
 
   <!-- build:js scripts/vendor/jquery.js -->
   <!-- bower:js -->
-<script src="/bower_components/jquery/dist/jquery.js"></script>
+  <script src="/bower_components/jquery/dist/jquery.js"></script>
   <script src="/bower_components/datetimepicker/build/jquery.datetimepicker.full.min.js"></script>
   <!-- endbower -->
   <!-- endbuild -->
@@ -117,12 +125,15 @@
   <script src="scripts/validation.js"></script>
   <script src="scripts/donation-post.js"></script>
   <script src="scripts/category.js"></script>
+  <script src="scripts/image.js"></script>
   <!-- endbuild -->
   <!-- build:js scripts/firebase-image.js -->
   <script src="scripts/firebase-image.js"></script>
   <!-- endbuild -->
   <script>
     let urls = [];
+    let removedUrls = [];
+    let removedImageId = [];
     let images = [];
     $(document).ready(() => {
       let urlParams = new URLSearchParams(window.location.search);
@@ -144,9 +155,12 @@
       id.val(data.id);
       title.val(data.title);
       content.val(data.content);
+      address.val(data.address);
       images = data.images;
       if (images != null && images.length > 0) {
-        showImage(images[0].url);
+        for (let i = 0; i < images.length; i++) {
+          showOldImage(images[i]);
+        }
       }
     };
     function getDonationPostFalse(err) {
@@ -177,7 +191,8 @@
               content,
               address,
               urls,
-              addDonationPostSuccess,
+              removedImageId,
+              updateDonationPostSuccess,
               addDonationPostFails
             );
           }
@@ -196,7 +211,20 @@
     }
 
     function validate() {
-      return checkRequire("#title") && checkRequire("#content") && checkRequire("#address");
+      return checkRequire("#title")
+        && checkRequire("#content")
+        && checkRequire("#address")
+        && checkImage();
+    }
+
+    function checkImage() {
+      let res = $('#imageUploaded .image .background').length > 0;
+      if (!res) {
+        $('.item__form__image .error').removeClass('hidden');
+      } else {
+        $('.item__form__image .error').addClass('hidden');
+      }
+      return res;
     }
 
     function addDonationPostSuccess(data) {
@@ -204,16 +232,48 @@
       window.location.replace(`./donation-post.html?id=${data.id}`);
     }
 
+    function updateDonationPostSuccess(data) {
+      // console.log(data);
+      removedUrls.forEach(url => {
+        deleteUploadedImageOnFirebase(url);
+      });
+      window.location.replace(`./donation-post.html?id=${data.id}`);
+    }
+
     function addDonationPostFails(err) {
       $("#errorNotif").show();
     }
     function uploadImage(event) {
-      const file = event.target.files[0];
-      uploadImageToFirebase(file, showImage);
+      const files = event.target.files;
+      const imageUploaded = $('#imageUploaded');
+      for (var i = 0; i < files.length; i++) {
+        let file = files[i];
+        uploadImageToFirebase(file, showImage);
+      }
+      // uploadImageToFirebase(file, showImage);
     }
     function showImage(url) {
+      const imageUploaded = $('#imageUploaded');
       urls.push(url);
-      $("#imageUploaded").attr('src', url);
+      imageUploaded.append(renderInputImage(url, urls.indexOf(url)));
+    }
+    function showOldImage(image) {
+      const imageUploaded = $('#imageUploaded');
+      imageUploaded.append(renderInputOldImage(image.url, image.id));
+    }
+    function deleteImage(url, id) {
+      deleteUploadedImageOnFirebase(
+        url,
+        () => {
+          $(`#image${id}`).remove();
+          urls = urls.filter(u => u != url);
+        }
+      );
+    }
+    function deleteOldImage(url, id) {
+      removedImageId.push(id);
+      removedUrls.push(url);
+      $(`#oldImage${id}`).remove();
     }
   </script>
 </body>

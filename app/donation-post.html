@@ -97,50 +97,57 @@
   <br>
   <br>
 
-  <div class="item__form__container">
-    <div class="item__form">
-      <div class="item__info position--relative">
-        <p id="user"></p>
-        <p id="date"></p>
-        <hr />
-
-        <h1>Quyên góp</h1>
-        <br />
-        <p>
-          <i class="fas fa-map-marker"></i>
-          <span id="address"></span>
-        </p>
-        <button onclick="share()" class="primary size--mini">
-          <i class="fab fa-facebook"></i> Chia sẻ
-        </button>
-        <br>
-        <p id="postContent"></p>
-        <hr />
-        <div class="clearfix">
-          <a class="reset" id="tradeOfferLink" style="display: none;">
-            <button class="primary float-right">Quyên góp</button>
+  <div class="donation_post__container div--center">
+    <div class="cover position--relative">
+      <div class="background" id="image" style="background-image: url('./images/no-image-icon-13.png')"></div>
+    </div>
+    <div>
+      <div class="user__info flex" id="userInfo">
+        <div class="user__avatar position--relative">
+          <div id="avatar" class="background" style="background-image: url('./images/no-image-icon-13.png')"></div>
+        </div>
+        <div class="flex flex_justify__center flex_vertical">
+          <a id="userLink" class="primary">
+            <p id="user"></p>
           </a>
+          <p id="date"></p>
         </div>
       </div>
     </div>
-    <div class="item__form__image">
-      <img id="image">
+    <hr class="gray">
+    <div class="donation_post__body">
+      <div class="donation_post__title">
+        <h1 id="postTitle"></h1>
+        <button onclick="share()" class="primary size--mini">
+          <i class="fab fa-facebook"></i> Chia sẻ
+        </button>
+      </div>
+      <br>
+      <div class="flex flex_justify__center">
+        <div class="donation_post__content">
+          <p>
+            <b>Địa điểm: </b>
+            <span id="address"></span>
+          </p>
+          <p id="postContent"></p>
+        </div>
+        <div class="donation_post__donator__list">
+          <div class="clearfix">
+            <a class="reset float-right" id="tradeOfferLink" style="display: none;">
+              <button class="primary">Quyên góp</button>
+            </a>
+            <h3 class="float-left">Người quyên góp</h3>
+          </div>
+          <div id="donatorList"></div>
+        </div>
+      </div>
     </div>
+    <div class="flex flex_justify__center flex_vertical" id="imageList"></div>
   </div>
-  <!-- <div class="hero-unit">
-      <h1>Exff</h1>
-      <p>Exchange between friend and family</p>
-      <ul>
-        <li><a href="./login.html">Login</a></li>
-        <li><a href="./register.html">Register</a></li>
-        <li></li>
-        <li></li>
-      </ul>
-    </div> -->
 
   <!-- build:js scripts/vendor/jquery.js -->
   <!-- bower:js -->
-<script src="/bower_components/jquery/dist/jquery.js"></script>
+  <script src="/bower_components/jquery/dist/jquery.js"></script>
   <script src="/bower_components/datetimepicker/build/jquery.datetimepicker.full.min.js"></script>
   <!-- endbower -->
   <!-- endbuild -->
@@ -153,6 +160,7 @@
   <script src="scripts/donation-post.js"></script>
   <script src="scripts/login.js"></script>
   <script src="scripts/register.js"></script>
+  <script src="scripts/image.js"></script>
   <!-- endbuild -->
   <script>
     let overrideLink;
@@ -209,6 +217,7 @@
       const user = $("#user");
       const date = $("#date");
       const address = $("#address");
+      const postTitle = $("#postTitle");
       const postContent = $("#postContent");
       const image = $("#image");
       const tradeOfferLink = $("#tradeOfferLink");
@@ -216,13 +225,26 @@
       user.text(data.user.fullName);
       date.text(time);
       address.text(data.address);
+      postTitle.text(data.title);
       postContent.text(data.content);
+
       if (data.user.id != getUserId()) {
         tradeOfferLink.show();
         tradeOfferLink.attr("href", `./donation-send.html?donationPostId=${data.id}`)
       }
       if (data.images != null && data.images.length > 0) {
-        image.attr('src', data.images[0].url);
+        image.css("background-image", `url(${data.images[0].url})`);
+        initImageList(data.images);
+      }
+    }
+    function initImageList(images) {
+      let imageList = $('#imageList');
+      console.log(images);
+      for (let i = 1; i < images.length; i++) {
+        const image = images[i];
+        console.log(image);
+
+        imageList.append(renderImage(image.url));
       }
     }
     function initShareButton(data) {
@@ -247,8 +269,9 @@
     };
     function getDonationPostFalse(err) {
       // console.log(err);
-      window.location.href("./error404.html");
+      window.location.href = ("./error404.html");
     };
+
   </script>
 </body>
 

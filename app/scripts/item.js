@@ -44,6 +44,7 @@ function updateItem(
   address,
   privacy,
   urls = [],
+  removedUrls = [],
   successCallback = DEFAULT_FUNCTION,
   failCallback = DEFAULT_FUNCTION
 ) {
@@ -56,7 +57,7 @@ function updateItem(
     'address': address,
     'privacy': privacy,
     'newUrls': urls,
-    'removedUrlIds': []
+    'removedUrlIds': removedUrls
   };
   let options = {
     method: 'PUT',

@@ -1,7 +1,31 @@
-function renderImage(image) {
+function renderImage(url) {
   return `
   <div class="image position--relative">
-    <div class="background" style="background-image: url(${image})"></div>
+    <div class="background" style="background-image: url(${url})"></div>
+  </div>
+  `;
+}
+function renderInputImage(url, id) {
+  return `
+  <div class="image position--relative" id="image${id}">
+    <div class="background" style="background-image: url(${url})"></div>
+    <div class="image__action">
+      <div class="image__action__button" onclick="deleteImage('${url}', ${id})">
+        <i class="far fa-trash-alt"></i>
+      </div>
+    </div>
+  </div>
+  `;
+}
+function renderInputOldImage(url, id) {
+  return `
+  <div class="image position--relative" id="oldImage${id}">
+    <div class="background" style="background-image: url(${url})"></div>
+    <div class="image__action">
+      <div class="image__action__button" onclick="deleteOldImage('${url}', ${id})">
+        <i class="far fa-trash-alt"></i>
+      </div>
+    </div>
   </div>
   `;
 }

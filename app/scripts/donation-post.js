@@ -38,6 +38,7 @@ function updateDonationPost(
   content,
   address,
   urls = [],
+  removedUrlIds = [],
   successCallback = DEFAULT_FUNCTION,
   failCallback = DEFAULT_FUNCTION
 ) {
@@ -47,7 +48,8 @@ function updateDonationPost(
     'title': title,
     'content': content,
     'address': address,
-    'urls': urls
+    'urls': urls,
+    'removedUrlIds': removedUrlIds
   };
   let options = {
     method: 'PUT',
@@ -161,7 +163,7 @@ function searchDonationPosts(
 // }
 
 function createDonationPostCard(donationPost, isEdit = false) {
-  const image = (donationPost.images[0] !== null && donationPost.images[0] !== undefined)
+  const image = (donationPost.images !== undefined && donationPost.images.length > 0)
     ? (donationPost.images[0].url)
     : ('./images/no-image-icon-13.png');
   const action = isEdit ? (
@@ -189,6 +191,7 @@ function createDonationPostCard(donationPost, isEdit = false) {
         </div>
         <a class="reset" href="./donation-post.html?id=${donationPost.id}">
           <div class="post__info">
+            <p class="info__content ellipsis">${donationPost.title}</p>
             <p class="info__content ellipsis">${donationPost.content}</p>
             <p class="info__address ellipsis">${donationPost.address}</p>
           </div>
