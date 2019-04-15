@@ -31,9 +31,11 @@ $(document).ready(() => {
    }
    initMessageForm();
    socket.on('item-added', function (itemInfo) {
+      console.log(itemInfo);
       selectItem(itemInfo.itemId, itemInfo.userId, false);
    });
    socket.on('item-removed', function (itemInfo) {
+      console.log(itemInfo);
       deselectItem(itemInfo.itemId, itemInfo.userId, false);
    });
    initInventoryButton();
@@ -139,8 +141,9 @@ function initTradeOfferButton() {
       selectChatRoom(currentChatRoom.room);
    });
    socket.on('trade-done', (data) => {
-      console.log(data);
+      console.log("Done" + data);
       if (data.room === undefined || data.room !== currentChatRoom.room) {
+         // selectChatRoom(currentChatRoom.room);
          return;
       }
       // selectChatRoom(currentChatRoom.room);
@@ -169,7 +172,7 @@ function initChatRoomFromUrl() {
 
 function initMessageForm() {
    $('#messageForm').submit(function (e) {
-      e.preventDefault(); // prevents page reloading
+      e.preventDefault();
       let msg = $('#inputMessage').val();
       if (msg.length !== 0) {
          let message = {
@@ -183,6 +186,9 @@ function initMessageForm() {
       return false;
    });
    socket.on('send-msg', function (data) {
+      if (data.room == undefined || data.room != currentChatRoom.room) {
+         return;
+      }
       if (data.sender > 0) {
          let avatar = (data.sender === USER_ID) ? USER_INFO.avatar : friendInfo.avatar;
          $(`#chatRoom${currentChatRoom.room} .chatRoomLastMessage`).text(data.msg);
@@ -335,7 +341,7 @@ function selectChatRoom(selectedRoomName) {
             "rejoin-room",
             roomInfo
          );
-
+         $('#tradeOfferContentNotif').hide();
          if (currentChatRoom.users != undefined && currentChatRoom.users.length >= 2) {
             myInfo = (currentChatRoom.users[0].userId === USER_ID) ? currentChatRoom.users[0] : currentChatRoom.users[1];
             friendInfo = (currentChatRoom.users[0].userId !== USER_ID) ? currentChatRoom.users[0] : currentChatRoom.users[1];
@@ -347,6 +353,11 @@ function selectChatRoom(selectedRoomName) {
                $('#btnReset').hide();
                $('#btnCancle').show();
                $('#tradeOfferContentNotif').show();
+            } else {
+               $('#btnConfirm').show();
+               $('#btnReset').show();
+               $('#btnCancle').hide();
+               $('#tradeOfferContentNotif').hide();
             }
             $('#chatRoom').children().removeClass('selected');
             $(`#chatRoom${selectedRoomName}`).addClass('selected');
