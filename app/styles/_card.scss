@@ -7,9 +7,8 @@
   width: $card-width;
   background-color: #fff;
   margin: $card-margin;
-  padding: $card-padding;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  border: 0px solid #ccc;
+  border-radius: 4px;
   box-sizing: border-box;
   overflow: hidden;
 }
@@ -18,14 +17,19 @@
   height: $card-heigh;
   background-position: center;
   background-repeat: no-repeat;
-  background-size: contain;
+  background-size: cover;
 }
 .card__info{
   width: 100%;
   color: #333;
+  padding: 5px $card-padding;
+  box-sizing: border-box;
   *{
     width: 100%;
-    margin: 5px 0px;
+    margin: 4px 0px;
+  }
+  .address {
+    font-size: 0.9em;
   }
 }
 .card__action{
@@ -37,4 +41,23 @@
     cursor: pointer;
     color: $error-color;
   }
+}
+.card__user__info{
+  width: 100%;
+  color: #333;
+  padding: 5px $card-padding;
+  box-sizing: border-box;
+  .avatar{
+    flex: 0 0 36px;
+    width: 36px;
+    height: 36px;
+    background-color: #ccc;
+    border-radius: 100vh;
+    overflow: hidden;
+  }
+  p{
+    margin: 0px;
+    padding-left: 5px;
+  }
+
 }

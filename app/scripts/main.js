@@ -25,6 +25,13 @@ const ITEM_PRIVACY_FRIENDS = '1';
 const ITEM_TYPE = '0';
 const DONATION_TYPE = '1';
 
+const USER_ACCEPTED_TRADE_MESSAGE = -1;
+const USER_CANCELED_TRADE_CONFIRM_MESSAGE = -2;
+const USER_RESET_TRADE_MESSAGE = -3;
+const TRADE_DONE_MESSAGE = -4;
+const USER_ADDED_ITEM_MESSAGE = -5;
+const USER_REMOVED_ITEM_MESSAGE = -6;
+
 // get
 function getAuthentoken() {
   return localStorage.getItem('EXFF_TOKEN');

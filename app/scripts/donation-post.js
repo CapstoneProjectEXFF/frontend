@@ -133,34 +133,34 @@ function searchDonationPosts(
   );
 }
 
-// function getItemsByUserId(
-//   userId,
-//   successCallback = DEFAULT_FUNCTION,
-//   failCallback = DEFAULT_FUNCTION
-// ) {
-//   let url = API_URL + `/user/${userId}` + ITEM_URL;
-//   let options = {
-//     method: 'GET',
-//     headers: {
-//       'Accept': 'application/json',
-//       'Content-Type': 'application/json'
-//     }
-//   };
-//   fetch(url, options)
-//     .then((response) => {
-//       if (!response.ok) {
-//         var error = new Error(response.statusText);
-//         error.response = response;
-//         throw error;
-//       }
-//       return response.json();
-//     }).then((responseJson) => {
-//       successCallback(responseJson);
-//     })
-//     .catch(err => {
-//       failCallback(err);
-//     });
-// }
+function getDonationPostByUserId(
+  userId,
+  successCallback = DEFAULT_FUNCTION,
+  failCallback = DEFAULT_FUNCTION
+) {
+  let url = API_URL + `/user/${userId}` + DONATION_POST_URL;
+  let options = {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    }
+  };
+  fetch(url, options)
+    .then((response) => {
+      if (!response.ok) {
+        var error = new Error(response.statusText);
+        error.response = response;
+        throw error;
+      }
+      return response.json();
+    }).then((responseJson) => {
+      successCallback(responseJson);
+    })
+    .catch(err => {
+      failCallback(err);
+    });
+}
 
 function renderDonatorCard(data) {
   const { transaction, details } = data;
@@ -168,7 +168,7 @@ function renderDonatorCard(data) {
 
   const avatar = (sender.avatar !== null && sender.avatar !== undefined)
     ? (sender.avatar)
-    : ('./images/no-image-icon-13.png');
+    : ('./images/user.png');
   return `
   <div class="user__info flex" id="userInfo">
     <div class="user__avatar position--relative">
@@ -191,11 +191,9 @@ function renderDonationPostCard(donationPost, isEdit = false) {
   const image = (donationPost.images !== undefined && donationPost.images.length > 0)
     ? (donationPost.images[0].url)
     : ('./images/default-donation-post.png');
-    console.log(donationPost);
-    
   const avatar = (user.avatar !== null && user.avatar !== undefined)
     ? (user.avatar)
-    : ('./images/no-image-icon-13.png');
+    : ('./images/user.png');
   const action = isEdit ? (
     `<hr>
     <div class="post__action clearfix">

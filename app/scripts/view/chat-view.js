@@ -4,13 +4,14 @@
 
 const socket = io(NODE_URL);
 const USER_ID = getUserId();
+const USER_INFO = getUserInfo();
 
 let roomName;
 let urlSelectedItemId;
 let chatRooms;
 let currentChatRoom;
-let myName;
-let friendName;
+let myInfo;
+let friendInfo;
 let senderId;
 let receiverId;
 let myItems = [];
@@ -37,9 +38,9 @@ $(document).ready(() => {
    initInventoryButton();
    initDateTime();
    initTradeOfferButton();
-   getTransactionHistory(
-      initTransactionHistory
-   );
+   // getTransactionHistory(
+   //    initTransactionHistory
+   // );
 });
 function initTransactionHistory(data) {
    const transactionHistoryTag = $('#transactionHistory');
@@ -51,19 +52,26 @@ function initTransactionHistory(data) {
 }
 function initInventoryButton() {
    $('#chatInventoryTab').click(() => {
-      if (isInventoryTabShow) {
-         isInventoryTabShow = false;
-         $('#chatRoomContainer').css('width', '384px');
-         $('#chatInventory').css('width', '0px');
-      } else {
+      if (!isInventoryTabShow) {
          isInventoryTabShow = true;
-         $('#chatRoomContainer').css('width', '84px');
-         $('#chatInventory').css('width', '300px');
+         $('#chatRoomContainer').removeClass('expand');
+         $('#chatRoomContainer').addClass('collapse');
+         $('#chatInventory').removeClass('collapse');
+         $('#chatInventory').addClass('expand');
+      } else {
+         isInventoryTabShow = false;
+         $('#chatRoomContainer').removeClass('collapse');
+         $('#chatRoomContainer').addClass('expand');
+         $('#chatInventory').removeClass('expand');
+         $('#chatInventory').addClass('collapse');
       }
    });
 }
 function initTradeOfferButton() {
    $('#btnConfirm').click(() => {
+      if (!checkTradeContentIsEmpty()) {
+         return;
+      }
       let data = {
          room: roomName,
          userId: USER_ID,
@@ -86,7 +94,21 @@ function initTradeOfferButton() {
       $('#btnConfirm').show();
       $('#tradeOfferContentNotif').hide();
    });
+   $('#btnCancle').click(() => {
+      let data = {
+         room: roomName,
+         userId: USER_ID
+      };
+      socket.emit('unconfirm-trade', data);
+      isConfirm = false;
+      $('#btnConfirm').show();
+      $('#btnReset').show();
+      $('#btnCancle').hide();
+      $('#tradeOfferContentNotif').hide();
+   });
    socket.on('user-accepted-trade', (data) => {
+      console.log(data);
+
       if (data.room === undefined || data.room !== currentChatRoom.room) {
          return;
       }
@@ -94,17 +116,34 @@ function initTradeOfferButton() {
       // $('#btnConfirm').hide();
       $('#tradeOfferContentNotif').show();
    });
-   socket.on('trade-reseted', (data) => {
+   socket.on('trade-unconfirmed', (data) => {
+      console.log('unconfirm');
+      console.log(data);
+
       if (data.room === undefined || data.room !== currentChatRoom.room) {
+         return;
+      }
+      $('#btnConfirm').show();
+      $('#btnReset').show();
+      $('#btnCancle').hide();
+      $('#tradeOfferContentNotif').hide();
+      // selectChatRoom(currentChatRoom.room);
+   });
+   socket.on('trade-reseted', (data) => {
+      console.log("Reset: " + data);
+
+      if (data === undefined || data !== currentChatRoom.room) {
          return;
       }
       selectChatRoom(currentChatRoom.room);
    });
    socket.on('trade-done', (data) => {
+      console.log(data);
       if (data.room === undefined || data.room !== currentChatRoom.room) {
          return;
       }
-      selectChatRoom(currentChatRoom.room);
+      // selectChatRoom(currentChatRoom.room);
+      window.location.replace(`./transaction-confirm.html?id=${data.transactionId}`);
    });
 }
 
@@ -132,29 +171,33 @@ function initMessageForm() {
       e.preventDefault(); // prevents page reloading
       let msg = $('#inputMessage').val();
       if (msg.length !== 0) {
-
          let message = {
             room: roomName,
             sender: USER_ID,
             msg: msg
          };
-
          socket.emit('send-msg', message);
          $('#inputMessage').val('');
       }
       return false;
    });
    socket.on('send-msg', function (data) {
-      console.log(data);
-      if (data.room == currentChatRoom.room) {
-         $('#chatContent').append(renderMessage(data));
+      if (data.sender > 0) {
+         let avatar = (data.sender === USER_ID) ? USER_INFO.avatar : friendInfo.avatar;
+         $(`#chatRoom${currentChatRoom.room} .chatRoomLastMessage`).text(data.msg);
+         $('#chatContent').append(renderMessage(data, avatar));
+         scrollBottom(200);
+      } else {
+         let name = (data.msg === USER_ID) ? USER_INFO.fullName : friendInfo.fullName;
+         $('#chatContent').append(renderNotifMessage(data, name));
          scrollBottom(200);
       }
+
    });
 }
 function initRooms() {
    getChatRooms(
-      getUserId(),
+      USER_ID,
       (data) => {
          chatRooms = data.sort(function (a, b) {
             let aTime = new Date(a.activeTime);
@@ -262,7 +305,8 @@ function renderChatContent() {
 
    chatContent.html('');
    messages.forEach(message => {
-      chatContent.append(renderMessage(message));
+      let avatar = (message.sender === USER_ID) ? USER_INFO.avatar : friendInfo.avatar;
+      chatContent.append(renderMessage(message, avatar));
    });
    scrollBottom();
 }
@@ -284,37 +328,46 @@ function selectChatRoom(selectedRoomName) {
       roomName,
       (data) => {
          currentChatRoom = data;
-         if (currentChatRoom.status == 1 || currentChatRoom.status == 2) {
-            isConfirm = true;
-            let roomInfo = {
-               room: roomName
-            };
-            socket.emit(
-               "get-room",
-               roomInfo
-            );
-            $('#btnConfirm').hide();
-            $('#tradeOfferContentNotif').show();
-         }
+         let roomInfo = {
+            room: roomName
+         };
+         socket.emit(
+            "rejoin-room",
+            roomInfo
+         );
+
          if (currentChatRoom.users != undefined && currentChatRoom.users.length >= 2) {
-            receiverId = (currentChatRoom.users[0].userId !== USER_ID) ? currentChatRoom.users[0].userId : currentChatRoom.users[1].userId;
+            myInfo = (currentChatRoom.users[0].userId === USER_ID) ? currentChatRoom.users[0] : currentChatRoom.users[1];
+            friendInfo = (currentChatRoom.users[0].userId !== USER_ID) ? currentChatRoom.users[0] : currentChatRoom.users[1];
+            receiverId = friendInfo.userId;
             initInventory(USER_ID, receiverId);
             renderChatContent();
+            if (myInfo.status == 1) {
+               $('#btnConfirm').hide();
+               $('#btnReset').hide();
+               $('#btnCancle').show();
+               $('#tradeOfferContentNotif').show();
+            }
             $('#chatRoom').children().removeClass('selected');
             $(`#chatRoom${selectedRoomName}`).addClass('selected');
-            isInventoryTabShow = true;
-            $('#chatRoomContainer').css('width', '84px');
-            $('#chatInventory').css('width', '300px');
+            if (!isInventoryTabShow) {
+               $('#chatInventoryTab').click();
+            }
          } else {
             console.log('currentChatRoom do not have user');
+         }
+         if (currentChatRoom.status == 1) {
+            isConfirm = true;
+            $('#btnConfirm').hide();
+            $('#tradeOfferContentNotif').show();
          }
       }
    );
 }
 function selectItem(itemId, userId, isEmit = true) {
-   if (isConfirm) {
-      return;
-   }
+   // if (isConfirm) {
+   //    return;
+   // }
    const itemTag = $("#item" + itemId);
    let tradeOfferContentTag;
    let item;
@@ -333,9 +386,9 @@ function selectItem(itemId, userId, isEmit = true) {
    }
 }
 function deselectItem(itemId, userId, isEmit = true) {
-   if (isConfirm) {
-      return;
-   }
+   // if (isConfirm) {
+   //    return;
+   // }
    const itemTag = $("#item" + itemId);
    const selectItemTag = $("#selectItem" + itemId);
    itemTag.show();
@@ -378,7 +431,10 @@ function getItemsFalse(err, tagId) {
 }
 
 
-
+function checkTradeContentIsEmpty() {
+   const { users } = currentChatRoom;
+   return $('#myTradeOffer .list__item').length > 0 || $('#friendTradeOffer .list__item').length > 0;
+}
 
 
 

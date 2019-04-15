@@ -42,7 +42,7 @@ $card-padding: 10px;
 @import 'listitem';
 
 //user profile, list_card_avatar, 
-@import 'userprofile';
+@import 'cardavatar';
 
 //chat
 @import 'chat';
@@ -52,7 +52,7 @@ $card-padding: 10px;
   display: flex;
   justify-content: flex-start;
   flex-wrap: nowrap;
-  border-bottom: 1px solid $default-color;
+  border-bottom: 1px solid $primary-color;
   div {
     padding: 0px 20px;
     height: 36px;
@@ -95,11 +95,7 @@ $card-padding: 10px;
 }
 
 //inventory
-.div--center{
-  max-width: 1024px;
-  margin-left: auto;
-  margin-right: auto;
-}
+
 .inventory{
   max-width: 1024px;
   margin-left: auto;
@@ -359,28 +355,24 @@ $card-padding: 10px;
 $profile-height: 150px;
 $profile-container-padding: 8px;
 .profile__container {
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: flex-start;
-  height: $profile-height;
   background-color: #fff;
   padding: $profile-container-padding;
+  padding-bottom: 0px; 
   border: 1px solid $boder-color;
-  border-top-left-radius: $profile-height;
-  border-bottom-left-radius: $profile-height;
   overflow: hidden;
   box-sizing: border-box;
   .avatar {
     position: relative;
     width: $profile-height - 2 * $profile-container-padding;
     height: $profile-height - 2 * $profile-container-padding;
+    margin-left: auto;
+    margin-right: auto;
     background-color: #ccc;
     border-radius: $profile-height;
     overflow: hidden;
   }
   .profile__info{
-    max-width: 710px;
-    flex-grow: 1;
+    text-align: center;
   }
   p{
     width: 100%;
@@ -426,11 +418,23 @@ $profile-container-padding: 8px;
 }
 
 // transaction history
-
-.transaction__container {
+.transaction__container{
   position: relative;
   width: 100%;
   box-sizing: border-box;
+  background-color: #fff;
+  margin: 5px 0px;
+  padding: 10px 0px;
+  &:hover{
+    background-color: #cfcfcf;
+  }
+}
+.transaction__info{
+  width: 100%;
+  padding: 0px 10px;
+}
+.transaction__userinfo {
+  width: 100%;
   &>div{
     display: inline-block;
     width: 50%;
@@ -438,6 +442,7 @@ $profile-container-padding: 8px;
     box-sizing: border-box;
     p {
       width: 100%;
+      margin: 0px;
     }
   }
   &>i{
@@ -445,9 +450,6 @@ $profile-container-padding: 8px;
     top: 50%;
     left: 50%;
     transform: translate(-50%,-50%);
-  }
-  &:hover{
-    background-color: #cfcfcf;
   }
 }
 

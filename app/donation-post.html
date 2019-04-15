@@ -80,7 +80,7 @@
       <div class="menu_bar__icon" id="btnBell">
         <i class="fas fa-bell"></i>
       </div>
-      <div class="menu_bar__icon">
+      <div class="menu_bar__icon" id="btnFriend">
         <i class="fas fa-user-plus"></i>
       </div>
 
@@ -97,11 +97,11 @@
 
   <div class="donation_post__container div--center">
     <div class="cover position--relative">
-      <div class="background background--paralax" id="image" style="background-image: url('./images/default-donation-post.png')"></div>
+      <div class="background background--paralax" id="image" style="background-image: url('./images/default-donation-post.jpg')"></div>
       <div class="cover__info">
         <div class="user__info flex" id="userInfo">
           <div class="user__avatar position--relative">
-            <div id="avatar" class="background" style="background-image: url('./images/no-image-icon-13.png')"></div>
+            <div id="avatar" class="background" style="background-image: url('./images/user.png')"></div>
           </div>
           <div class="flex flex_justify__center flex_vertical">
             <a id="userLink" class="primary">
@@ -298,7 +298,7 @@
       } else {
         donatorList.html('<h3 style="text-align:center;">Bạn sẽ là người đầu tiên quyên góp.</h3>');
       }
-      donatorNum.html(`${numeral(data.length).format('0,0')} người`);
+      donatorNum.html(`${numeral(data.length).format('0,0')} `);
     };
     function getDonatorFalse(err) {
       console.log(data);

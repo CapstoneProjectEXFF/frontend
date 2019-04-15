@@ -80,7 +80,7 @@
       <div class="menu_bar__icon" id="btnBell">
         <i class="fas fa-bell"></i>
       </div>
-      <div class="menu_bar__icon">
+      <div class="menu_bar__icon" id="btnFriend">
         <i class="fas fa-user-plus"></i>
       </div>
 
@@ -131,9 +131,9 @@
         <p><b>Liên hệ:</b></p>
         <div class="item__user__info flex" id="userInfo">
           <div class="item__user__avatar position--relative">
-            <div id="avatar" class="background" style="background-image: url('./images/no-image-icon-13.png')"></div>
+            <div id="avatar" class="background" style="background-image: url('./images/user.png')"></div>
           </div>
-          <div class="flex flex_justify__center flex_vertical">
+          <div class="flex flex_grow__1 flex_justify__center flex_vertical">
             <a id="userLink" class="primary">
               <p id="user"></p>
             </a>
@@ -250,7 +250,7 @@
       user.text(data.fullName);
       phoneNumber.text(data.phoneNumber);
       link.attr('href', `./inventory.html?userId=${data.id}`);
-      if (image !== undefined) {
+      if (image !== undefined && image !== null) {
         avatar.css('background-image', `url(${image})`);
       }
     }

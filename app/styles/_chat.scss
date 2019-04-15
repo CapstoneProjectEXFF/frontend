@@ -1,6 +1,6 @@
 $default-message-color: #cfcfcf;
 $chat-form-height: 36px;
-$avatar-size: 64px;
+$avatar-size: 48px;
 // chat
 .chat__container{
   display: flex;
@@ -16,14 +16,22 @@ $avatar-size: 64px;
   }
 }
 //chat room
-$chat-room-action-height: 40px;
+$chat-room-action-height: 30px;
 .chat__room__width__transition{
   transition: width 0.5s;
 }
 .chat__room {
+  flex: 0 0;
   position: relative;
   width: 384px;
   overflow: hidden;
+  transition: flex-basis 0.5s;
+  &.collapse{
+    flex: 0 0 68px;
+  }
+  &.expand {
+    flex: 0 0 384px;
+  }
 }
 .chat__room__action{
   position: absolute;
@@ -59,6 +67,13 @@ $chat-room-action-height: 40px;
   background-color: #fff;
   box-sizing: border-box;
   overflow: hidden;
+  transition: flex-basis 0.5s;
+  &.collapse{
+    flex: 0 0 0px;
+  }
+  &.expand {
+    flex: 0 0 316px;
+  }
 }
 .chat__inventory__container{
   display: flex;
@@ -80,31 +95,53 @@ $chat-room-action-height: 40px;
   left: 0px;
   width: 100%;
   height: 100%;
-  padding: 0px 10px;
+  padding: 0px 10px 0px 48px;
   box-sizing: border-box;
   overflow: auto;
 }
+.chat__message__notif {
+  width: 100%;
+  text-align: center;
+}
+.chat__message__container{
+  position: relative;
+  max-width: 100%;
+  box-sizing: border-box;
+}
 .chat__message{
-  max-width: 500px;
+  max-width: 100%;
   margin-bottom: 5px;
   padding: 5px 10px;
+  word-wrap: break-word;
   background-color: $default-message-color;
   border-radius: 1em;
+  box-sizing: border-box;
   &.owner{
     background-color: $primary-color;
     color: #fff;
   }
   p{
+    max-width: 500px;
     margin: 0px;
     white-space: pre-line;
   }
 }
 .chat__message__owner {
-  margin: 0px 0px 5px;
-  font-weight: bold;
+  max-width: 100%;
+  margin: 2px 0px;
+  color: #888;
   &.owner{
     text-align: right;
   }
+}
+.chat__message__avatar{
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  border-radius: 100vh;
+  overflow: hidden;
+  top: 0px;
+  left: -38px;
 }
 .chat__form{
   position: absolute;

@@ -19,7 +19,7 @@ function renderNotification(notif) {
     `<b>${notif.receiver.fullName}</b> đề xuất một yêu trao đổi` :
     `Bạn nhận được một yêu cầu trao đổi từ <b>${notif.sender.fullName}</b>`;
   return `
-    <a class="reset" href="/chat.html?userId=${data.sender.id}">
+    <a class="reset" href="/chat.html?userId=${notif.sender.id}">
       <div class="notification">
         <p class="notification__content">${message}</p>
         <p class="notification__time">${formatTime(notif.modifyTime)}</p>
@@ -192,7 +192,7 @@ function renderLogin() {
 function renderUserAvatar(avatar) {
   const image = (avatar !== null && avatar !== undefined)
     ? (avatar)
-    : ('./images/no-image-icon-13.png');
+    : ('./images/user.png');
   return `
     <div class="avatar">
       <div class="background" id="menubarAvatar" style="background-image: url(${image});"></div>

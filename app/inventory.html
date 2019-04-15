@@ -69,28 +69,32 @@
 
   <div class="div--center profile__container">
     <div class="avatar">
-      <div class="background" id="avatar" style="background-image: url('./images/no-image-icon-13.png')"></div>
+      <div class="background" id="avatar" style="background-image: url('./images/user.png')"></div>
     </div>
     <div class="profile__info">
       <p class="profile__name" id="userName">tên</p>
       <p class="profile__phonenumber"><b>Số điện thoại: </b><span id="userPhoneNum"></span></p>
       <!-- <p class="profile__address" id="userAddress">địa chỉ</p> -->
       <p class="profile__item"><b id="userItemNum"></b> đồ vật</p>
+      <div id="btnAddFriend" class="profile__action" style="display: none;">
+        <button class="primary">Thêm bạn bè</button>
+      </div>
+      <div id="btnConfirmAddFriend" class="profile__action" style="display: none;">
+        <button class="primary">Đồng ý kết bạn</button>
+      </div>
+      <div id="btnCancelAddFriend" class="profile__action" style="display: none;">
+        <button class="primary--o">Hủy kết bạn</button>
+      </div>
+      <div id="btnProfileEdit" class="profile__action" style="display: none;">
+        <a href="./profile.html" class="primary">
+          <i class="fas fa-edit"></i>
+          Chỉnh sửa thông tin
+        </a>
+      </div>
     </div>
-    <div id="btnProfileEdit" class="profile__action" style="display: none;">
-      <a href="./profile.html" class="primary">
-        <i class="fas fa-edit"></i>
-        Chỉnh sửa thông tin
-      </a>
-    </div>
-    <div id="btnAddFriend" class="profile__action" style="display: none;">
-      <button class="primary">Thêm bạn bè</button>
-    </div>
-    <div id="btnConfirmAddFriend" class="profile__action" style="display: none;">
-      <button class="primary">Đồng ý kết bạn</button>
-    </div>
-    <div id="btnCancelAddFriend" class="profile__action" style="display: none;">
-      <button class="primary--o">Hủy kết bạn</button>
+    <div class="div--center index__action">
+      <div onclick="show('itemContainer')" class="tab selected" id="itemContainerTab">Đồ dùng</div>
+      <div onclick="show('tradeOfferContainer')" class="tab" id="tradeOfferContainerTab">Lịch sử trao đổi</div>
     </div>
   </div>
 
@@ -106,9 +110,8 @@
       </div>
     </div>
   </div>
-  <div class="" id="transactionHistory">
-  </div>
-  <div class="inventory card__container" id="inventory">
+  <div class="inventory card__container allContainer itemContainer" id="inventory"></div>
+  <div class="div--center allContainer tradeOfferContainer" id="transactionHistory" style="display: none;">
   </div>
 
 
@@ -116,7 +119,7 @@
   <!-- build:js scripts/vendor/vendor.js -->
   <!-- bower:js -->
   <script src="/bower_components/jquery/dist/jquery.js"></script>
-   <script src="/bower_components/moment/moment.js"></script>
+  <script src="/bower_components/moment/moment.js"></script>
   <script src="/bower_components/moment/locale/vi.js"></script>
   <script src="/bower_components/jquery-mousewheel/jquery.mousewheel.js"></script>
   <script src="/bower_components/php-date-formatter/js/php-date-formatter.js"></script>
@@ -278,6 +281,12 @@
         $('#avatar').css('background-image', `url('${user.avatar}'`);
       }
 
+    }
+    function show(tagId = 'allContainer') {
+      $(".tab").removeClass("selected");
+      $(".allContainer").hide();
+      $('#' + tagId + "Tab").addClass("selected");
+      $("." + tagId).show();
     }
   </script>
 </body>

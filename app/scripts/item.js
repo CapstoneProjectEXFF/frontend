@@ -136,18 +136,25 @@ function getItems(
     failCallback
   );
 }
+
 function getItemsByUserId(
   userId,
   status = ITEM_ENABLE,
   successCallback = DEFAULT_FUNCTION,
   failCallback = DEFAULT_FUNCTION
 ) {
-  let url = API_URL + `/user/${userId}` + ITEM_URL + `?status=${status}`;
+  let url;
+  if (userId + '' === getUserId()) {
+    url = API_URL + `/user/my` + ITEM_URL + `?status=${status}`;
+  } else {
+    url = API_URL + `/user/${userId}` + ITEM_URL + `?status=${status}`;
+  }
   let options = {
     method: 'GET',
     headers: {
       'Accept': 'application/json',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': getAuthentoken()
     }
   };
   fetchApi(
@@ -233,14 +240,27 @@ function createItemCard(item, isEdit = false) {
   const image = (item.images[0] !== null && item.images[0] !== undefined)
     ? (item.images[0].url)
     : ('./images/no-image-icon-13.png');
+  const avatar = (item.user.avatar !== null && item.user.avatar !== undefined)
+    ? (item.user.avatar)
+    : ('./images/user.png');
   const action = isEdit ? (
-    `<hr>
+    `
     <div class="card__action clearfix">
       <a class="primary float-right" href="./form-item.html?id=${item.id}">
         <i class="fas fa-edit"></i> Edit
       </a>
     </div>`
-  ) : '';
+  ) : `
+      <div class="card__user__info flex">
+        <div class="avatar position--relative">
+          <div class="background" style="background-image: url(${avatar})"></div>
+        </div>
+        <div class="flex flex_grow__1 flex_justify__center flex_vertical">
+          <a class="reset" href="./inventory.html?userId=${item.user.id}">
+            <p class="ellipsis">${item.user.fullName}</p>
+          </a>
+        </div>
+      </div>`;
   return (
     `<div class="card">
       <a class="reset" href="./item.html?id=${item.id}">
@@ -248,10 +268,12 @@ function createItemCard(item, isEdit = false) {
           <div class="background" style="background-image: url(${image})"></div>
         </div>
         <div class="card__info">
-          <h3 class="ellipsis">${item.name}</h3>
+          <p class="address ellipsis">${item.address}</p>
+          <h4 class="ellipsis">${item.name}</h4>
           <p class="ellipsis">${item.description}</p>
         </div>
       </a>
+      <hr class="gray no--margin"/>
       ${action}
     </div>`
   );

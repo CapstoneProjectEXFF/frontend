@@ -53,7 +53,7 @@
       <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
   <div class="chat__container">
-    <div class="chat__room chat__room__width__transition" id="chatRoomContainer">
+    <div class="chat__room expand chat__room__width__transition" id="chatRoomContainer">
 
       <div class="list" id="chatRoom">
       </div>
@@ -68,7 +68,7 @@
         </div>
       </div>
     </div>
-    <div class="chat__inventory chat__room__width__transition" id="chatInventory">
+    <div class="chat__inventory collapse chat__room__width__transition" id="chatInventory">
       <div class="chat__inventory__container" id="inventoryContainer">
         <div class="trade_offer__inventory__action" style="border-bottom: 1px solid #ccc;">
           <div onclick="show('#myInventory')" id="myInventoryTab">Kho của tôi</div>
@@ -87,7 +87,7 @@
       </div>
       <div class="chat__form">
         <form action="#" id="messageForm" autocomplete="off">
-          <input type="text" name="searchItem" id="inputMessage" placeholder="message" />
+          <input type="text" name="searchItem" class="reset" id="inputMessage" placeholder="message" />
           <button id="btnSearch" class="primary"><i class="fas fa-paper-plane"></i></button>
         </form>
       </div>
@@ -122,14 +122,14 @@
           </div>
         </div>
       </div>
-      <div class="transaction__history__container">
+      <!-- <div class="transaction__history__container">
         <div class="dropdown clearfix" onclick="dropdown('transactionHistory',this)">
           <h3 class="float-left">Lịch sử giao dịch</h3>
           <h3 class="float-right"><i id="dropdownHide" class="fas fa-angle-left"></i></h3>
           <h3 class="float-right"><i id="dropdownShow" class="fas fa-angle-down" style="display: none;"></i></h3>
         </div>
         <div id="transactionHistory" style="display: none;"></div>
-      </div>
+      </div> -->
     </div>
   </div>
 

@@ -153,7 +153,7 @@ function getChatRoom(
 function createUserCard(user) {
   const image = (user.avatar !== null && user.avatar !== undefined)
     ? (user.avatar)
-    : ('./images/no-image-icon-13.png');
+    : ('./images/user.png');
   // const addFriendButton = (user.id + '' !== getUserId())
   //   ? `<div><button class="primary size--mini">Thêm bạn</button></div>`
   //   : '';

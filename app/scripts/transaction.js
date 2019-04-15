@@ -277,16 +277,21 @@ function updateTradeOffer(
 function renderTransactionHistory(transaction) {
   return `
     <a class="reset" href='./transaction-confirm.html?id=${transaction.id}'>
-      <div class="transaction__container clearfix">
-        <div class="float-left">
-          <p class="ellipsis">${transaction.sender.fullName}</p>
-          <p class="ellipsis">${transaction.sender.phoneNumber}</p>
+      <div class="transaction__container">
+        <div class="transaction__info">
+          <p>Thời gian: ${formatTime(transaction.createTime)}</p>
         </div>
-        <div class="float-right">
-          <p class="ellipsis">${transaction.receiver.fullName}</p>
-          <p class="ellipsis">${transaction.receiver.phoneNumber}</p>
+        <div class="transaction__userinfo clearfix position--relative">
+          <div class="float-left">
+            <p class="ellipsis">${transaction.sender.fullName}</p>
+            <p class="ellipsis">${transaction.sender.phoneNumber}</p>
+          </div>
+          <div class="float-right">
+            <p class="ellipsis">${transaction.receiver.fullName}</p>
+            <p class="ellipsis">${transaction.receiver.phoneNumber}</p>
+          </div>
+          <i class="fas fa-exchange-alt"></i>
         </div>
-        <i class="fas fa-exchange-alt"></i>
       </div>
     </a>  `;
 }
