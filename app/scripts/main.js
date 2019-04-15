@@ -32,6 +32,7 @@ const TRADE_DONE_MESSAGE = -4;
 const USER_ADDED_ITEM_MESSAGE = -5;
 const USER_REMOVED_ITEM_MESSAGE = -6;
 
+
 // get
 function getAuthentoken() {
   return localStorage.getItem('EXFF_TOKEN');
@@ -42,7 +43,15 @@ function getUserId() {
 function getUserInfo() {
   return JSON.parse(localStorage.getItem('USER_INFO'));
 }
-
+// checkLogin
+function checkLogin() {
+  if (getUserId() === undefined || getUserId() === null || getAuthentoken() === null) {
+    window.location.replace("./login.html");
+  }
+}
+function isNotLogin() {
+  return (getUserId() === undefined || getUserId() === null || getAuthentoken() === null);
+}
 // fetch
 function fetchApi(
   url,

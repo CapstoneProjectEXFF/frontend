@@ -95,6 +95,11 @@
           <input type="text" name="fullname" id="fullname" />
           <p class="error hidden">Họ và tên không được để trống.</p>
         </div>
+        <div class="field__container">
+          <label for="address">Địa chỉ</label>
+          <input type="text" name="address" id="address" />
+          <p class="error hidden">Địa chỉ không được để trống.</p>
+        </div>
         <div class="field__container clearfix">
           <button class="primary float-right">Cập nhập</button>
         </div>
@@ -166,12 +171,14 @@
       );
       $("#formInfor").submit((event) => {
         event.preventDefault();
-        if (checkRequire('#fullname')) {
+        if (checkRequire('#fullname') && checkRequire('#address')) {
           let avatar = $("#avatar").val();
           let fullName = $("#fullname").val();
+          let address = $("#address").val();
           let data = {
             "avatar": avatar,
-            "fullName": fullName
+            "fullName": fullName,
+            "address": address
           }
           updateUser(data, updateSuccess, updateFails);
         }
@@ -200,12 +207,16 @@
       $("#fullname").focusout(() => {
         checkRequire('#fullname');
       });
+      $("#address").focusout(() => {
+        checkRequire('#address');
+      });
       $("#image").change(uploadImage);
     });
     function initForm(user) {
       $("#phoneNumber").val(user.phoneNumber);
       $("#avatar").val(user.avatar);
       $("#fullname").val(user.fullName);
+      $("#address").val(user.address);
       $("#imageUploaded").attr('src', user.avatar);
     }
     function validatePasswordForm() {

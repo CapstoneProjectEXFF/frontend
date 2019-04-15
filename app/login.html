@@ -99,7 +99,7 @@
         }
       });
       $("#phoneNumber").focusout(() => {
-        checkRegex('#phoneNumber', /^[a-z0-9]{6,12}$/);
+        checkRegex('#phoneNumber', /^[0-9]{9,11}$/);
       });
       $("#password").focusout(() => {
         checkRegex('#password', /^.{8,50}$/);
@@ -109,7 +109,7 @@
 
 
     function validate() {
-      return checkRegex('#phoneNumber', /^[a-z0-9]{6,12}$/) && checkRegex('#password', /^.{8,50}$/);
+      return checkRegex('#phoneNumber', /^[a-z0-9]{9,11}$/) && checkRegex('#password', /^.{8,50}$/);
     }
 
     function loginSuccess(data) {

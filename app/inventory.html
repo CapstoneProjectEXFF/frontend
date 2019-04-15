@@ -76,6 +76,7 @@
       <p class="profile__phonenumber"><b>Số điện thoại: </b><span id="userPhoneNum"></span></p>
       <!-- <p class="profile__address" id="userAddress">địa chỉ</p> -->
       <p class="profile__item"><b id="userItemNum"></b> đồ vật</p>
+    <p class="profile__item"><b id="userPostNum"></b> bài viết</p>
       <div id="btnAddFriend" class="profile__action" style="display: none;">
         <button class="primary">Thêm bạn bè</button>
       </div>
@@ -94,6 +95,7 @@
     </div>
     <div class="div--center index__action">
       <div onclick="show('itemContainer')" class="tab selected" id="itemContainerTab">Đồ dùng</div>
+      <div onclick="show('donationPostContainer')" class="tab" id="donationPostContainerTab">Bài viết</div>
       <div onclick="show('tradeOfferContainer')" class="tab" id="tradeOfferContainerTab">Lịch sử trao đổi</div>
     </div>
   </div>
@@ -111,8 +113,8 @@
     </div>
   </div>
   <div class="inventory card__container allContainer itemContainer" id="inventory"></div>
-  <div class="div--center allContainer tradeOfferContainer" id="transactionHistory" style="display: none;">
-  </div>
+  <div class="div--center allContainer donationPostContainer post__container" id="donationPost" style="display: none;"></div>
+  <div class="div--center allContainer tradeOfferContainer" id="transactionHistory" style="display: none;"></div>
 
 
 
@@ -138,11 +140,13 @@
   <script src="scripts/register.js"></script>
   <script src="scripts/user.js"></script>
   <script src="scripts/transaction.js"></script>
+  <script src="scripts/donation-post.js"></script>
   <!-- endbuild -->
   <script>
     let userId;
     let isOwn = false;
     $(document).ready(() => {
+      checkLogin();
       initInventoryView();
     });
     function initInventoryView() {
@@ -171,6 +175,11 @@
         getItemsSuccess,
         getItemsFalse
       );
+      getDonationPostByUserId(
+        userId,
+        getDonationPostsSuccess,
+        getDonationPostsFalse
+      )
       getTransactionHistory(
         initTransactionHistory
       );
@@ -235,7 +244,6 @@
       }
     }
     function initTransactionHistory(data) {
-      console.log(data);
       const transactionHistoryTag = $('#transactionHistory');
       data.forEach(transaction => {
         transactionHistoryTag.append(
@@ -268,6 +276,24 @@
     function getItemsFalse(err) {
       const inventoryTag = $("#inventory");
       inventoryTag.html("<h1>Không có đồ dùng nào.</h1>");
+    };
+
+    function getDonationPostsSuccess(data) {
+      const inventoryTag = $("#donationPost");
+      const itemNumTag = $("#userPostNum");
+      inventoryTag.html("");
+      itemNumTag.text(data.length);
+      if (data.length === 0) {
+        inventoryTag.html("<h1>Không có bài viết nào.</h1>");
+      }
+      data.forEach(donationPost => {
+        const card = renderDonationPostCard(donationPost, isOwn);
+        inventoryTag.append(card);
+      });
+    };
+    function getDonationPostsFalse(err) {
+      const inventoryTag = $("#donationPost");
+      inventoryTag.html("<h1>Không có bài viết nào.</h1>");
     };
     function renderUserInfo(user) {
       $('#userName').text(user.fullName);

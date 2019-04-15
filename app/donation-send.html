@@ -128,6 +128,7 @@
     let friendItems = [];
     let details = [];
     $(document).ready(() => {
+      checkLogin();
       let urlParams = new URLSearchParams(window.location.search);
       initCreateView(urlParams);
     });

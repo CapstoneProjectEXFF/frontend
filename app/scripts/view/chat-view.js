@@ -22,6 +22,7 @@ let isInventoryTabShow = false;
 let isConfirm = false;
 
 $(document).ready(() => {
+   checkLogin();
    let urlParams = new URLSearchParams(window.location.search);
    if (urlParams.has("userId")) {
       initChatRoomFromUrl();
@@ -36,8 +37,8 @@ $(document).ready(() => {
       deselectItem(itemInfo.itemId, itemInfo.userId, false);
    });
    initInventoryButton();
-   initDateTime();
    initTradeOfferButton();
+   // initDateTime();
    // getTransactionHistory(
    //    initTransactionHistory
    // );
@@ -147,13 +148,13 @@ function initTradeOfferButton() {
    });
 }
 
-function initDateTime() {
-   // library jquery datetime picker https://xdsoft.net/jqplugins/datetimepicker/
-   $('#datetimepicker').datetimepicker({
-      format: 'd/m/Y, H:i'
-   });
-   $('#datetimepicker').val(moment().format('DD/MM/YYYY, hh:mm'));
-}
+// function initDateTime() {
+//    // library jquery datetime picker https://xdsoft.net/jqplugins/datetimepicker/
+//    $('#datetimepicker').datetimepicker({
+//       format: 'd/m/Y, H:i'
+//    });
+//    $('#datetimepicker').val(moment().format('DD/MM/YYYY, hh:mm'));
+// }
 
 function initChatRoomFromUrl() {
    let urlParams = new URLSearchParams(window.location.search);
@@ -188,11 +189,10 @@ function initMessageForm() {
          $('#chatContent').append(renderMessage(data, avatar));
          scrollBottom(200);
       } else {
-         let name = (data.msg === USER_ID) ? USER_INFO.fullName : friendInfo.fullName;
+         let name = (data.msg == USER_ID) ? USER_INFO.fullName : friendInfo.fullName;
          $('#chatContent').append(renderNotifMessage(data, name));
          scrollBottom(200);
       }
-
    });
 }
 function initRooms() {

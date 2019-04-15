@@ -104,16 +104,16 @@ function renderNotifMessage(message, name = '') {
       msg = `<b>${name}</b> vừa hủy chốt`;
       break;
     case USER_RESET_TRADE_MESSAGE:
-      msg = `<b>${name}</b> đã reset cuộc trao đổi`;
+      msg = `Cuộc trao đổi vừa được reset`;
       break;
     case TRADE_DONE_MESSAGE:
-      msg = `<b>${name}</b> trao đổi vừa hoàn tất`;
+      msg = `Trao đổi hoàn tất`;
       break;
     case USER_ADDED_ITEM_MESSAGE:
-      msg = `<b>${name}</b> vừa thêm một đồ dùng`;
+      msg = `Một đồ dùng vừa được thêm`;
       break;
     case USER_REMOVED_ITEM_MESSAGE:
-      msg = `<b>${name}</b> vừa xóa một đồ dùng`;
+      msg = `Một đồ dùng vừa bị xóa`;
       break;
     default:
       msg = '';

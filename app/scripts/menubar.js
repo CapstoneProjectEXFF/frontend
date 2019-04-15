@@ -50,25 +50,26 @@ function renderNotificationList(notifs) {
 
 $(document).ready(() => {
   const btnBell = $('#btnBell');
-  btnBell.append(
-    renderNotificationContainer(
-      notificationPopupTagId,
-      notificationContainerTagId
-    )
-  );
-  btnBell.click(() => {
-    const notificationPopup = $(`#${notificationPopupTagId}`);
-    hideAllMenuPopupExcept(notificationPopupTagId);
-    notificationPopup.toggle();
-    if (notification.length <= 0) {
-      getReceivedTransaction((data) => {
-        notification = data;
-        renderNotificationList(notification);
-      });
-    } else {
-      renderNotificationList(notification);
-    }
-  });
+  btnBell.hide();
+  // btnBell.append(
+  //   renderNotificationContainer(
+  //     notificationPopupTagId,
+  //     notificationContainerTagId
+  //   )
+  // );
+  // btnBell.click(() => {
+  //   const notificationPopup = $(`#${notificationPopupTagId}`);
+  //   hideAllMenuPopupExcept(notificationPopupTagId);
+  //   notificationPopup.toggle();
+  //   if (notification.length <= 0) {
+  //     getReceivedTransaction((data) => {
+  //       notification = data;
+  //       renderNotificationList(notification);
+  //     });
+  //   } else {
+  //     renderNotificationList(notification);
+  //   }
+  // });
 });
 // friend relationship -----------------------------
 function renderRelationshipNotifContainer(popupId, containerId) {
@@ -144,26 +145,30 @@ function rejectAddFriend(id) {
 // TODO better click
 $(document).ready(() => {
   const btnFriend = $('#btnFriend');
-  btnFriend.append(
-    renderRelationshipNotifContainer(
-      relationshipNotifPopupTagId,
-      relationshipNotifContainerTagId
-    )
-  );
-  btnFriend.click(() => {
-    const relationshipNotifContainer = $(`#${relationshipNotifPopupTagId}`);
-    hideAllMenuPopupExcept(relationshipNotifPopupTagId);
-    relationshipNotifContainer.toggle();
-    if (relationshipNotif.length <= 0) {
-      getAddFriendRequest(
-        0,
-        10,
-        renderRelationshipNotifList
-      );
-    } else {
-      renderRelationshipNotifList(relationshipNotif);
-    }
-  });
+  if (isNotLogin()) {
+    btnFriend.hide();
+  } else {
+    btnFriend.append(
+      renderRelationshipNotifContainer(
+        relationshipNotifPopupTagId,
+        relationshipNotifContainerTagId
+      )
+    );
+    btnFriend.click(() => {
+      const relationshipNotifContainer = $(`#${relationshipNotifPopupTagId}`);
+      hideAllMenuPopupExcept(relationshipNotifPopupTagId);
+      relationshipNotifContainer.toggle();
+      if (relationshipNotif.length <= 0) {
+        getAddFriendRequest(
+          0,
+          10,
+          renderRelationshipNotifList
+        );
+      } else {
+        renderRelationshipNotifList(relationshipNotif);
+      }
+    });
+  }
 });
 
 // login -----------------------------

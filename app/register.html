@@ -64,6 +64,11 @@
             <input type="text" name="fullname" id="fullname" />
             <p class="error hidden">Họ và tên không được để trống.</p>
           </div>
+          <div class="field__container">
+            <label for="address">Địa chỉ</label>
+            <input type="text" name="address" id="address" />
+            <p class="error hidden">Địa chỉ không được để trống.</p>
+          </div>
           <div class="field__container clearfix">
             <button class="primary float-right" id="btnRegister">Đăng ký</button>
           </div>
@@ -106,10 +111,12 @@
           let phoneNumber = $("#phoneNumber").val();
           let password = $("#password").val();
           let fullName = $("#fullname").val();
+          let address = $("#address").val();
           let data = {
             "phoneNumber": phoneNumber,
             "password": password,
-            "fullName": fullName
+            "fullName": fullName,
+            "address": address
           }
           register(data, registerSuccess, registerFails);
         }
@@ -126,13 +133,17 @@
       $("#fullname").focusout(() => {
         checkRequire('#fullname');
       });
+      $("#address").focusout(() => {
+        checkRequire('#address');
+      });
     });
 
     function validate() {
       return checkRegex('#phoneNumber', /^[a-z0-9]{6,12}$/) &&
         checkRegex('#password', /^.{8,50}$/) &&
         checkMatch('#confirmPassword', $("#password").val()) &&
-        checkRequire('#fullname');
+        checkRequire('#fullname') &&
+        checkRequire('#address');
     }
 
     function registerSuccess(data) {
