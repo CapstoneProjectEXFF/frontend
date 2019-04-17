@@ -5,15 +5,19 @@ function addDonationPost(
   content,
   address,
   urls = [],
+  targets = [],
   successCallback = DEFAULT_FUNCTION,
   failCallback = DEFAULT_FUNCTION
 ) {
   let url = API_URL + DONATION_POST_URL;
   let data = {
-    'title': title,
-    'content': content,
-    'address': address,
-    'urls': urls
+    'donationPost': {
+      'title': title,
+      'content': content,
+      'address': address
+    },
+    'urls': urls,
+    'targets': targets
   };
   let options = {
     method: 'POST',
@@ -39,17 +43,22 @@ function updateDonationPost(
   address,
   urls = [],
   removedUrlIds = [],
+  targets = [],
+  removeTargets = [],
   successCallback = DEFAULT_FUNCTION,
   failCallback = DEFAULT_FUNCTION
 ) {
   let url = API_URL + DONATION_POST_URL + `/${id}`;
   let data = {
-    'id': id,
-    'title': title,
-    'content': content,
-    'address': address,
-    'urls': urls,
-    'removedUrlIds': removedUrlIds
+    'donationPost': {
+      'title': title,
+      'content': content,
+      'address': address
+    },
+    'newUrls': urls,
+    'removedUrlIds': removedUrlIds,
+    'targets': targets,
+    'removeTargets': removeTargets
   };
   let options = {
     method: 'PUT',
@@ -187,7 +196,7 @@ function renderDonatorCard(data) {
 }
 
 function renderDonationPostCard(donationPost, isEdit = false) {
-  const {user} = donationPost;
+  const { user } = donationPost;
   const image = (donationPost.images !== undefined && donationPost.images.length > 0)
     ? (donationPost.images[0].url)
     : ('./images/default-donation-post.png');

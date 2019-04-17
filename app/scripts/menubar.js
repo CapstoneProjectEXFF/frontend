@@ -203,6 +203,16 @@ function renderUserAvatar(avatar) {
       <div class="background" id="menubarAvatar" style="background-image: url(${image});"></div>
     </div>
     <div class="popup user__popup" id="userPopup" style="display:none">
+      <a class="reset" href="./form-item.html">
+        <p>
+          <i class="fas fa-plus"></i> Thêm đồ
+        </p>
+      </a>
+      <a class="reset" href="./form-donation-post.html">
+        <p>
+          <i class="fas fa-pen"></i> Viết bài
+        </p>
+      </a>
       <a class="reset" href="./inventory.html">
         <p>
           <i class="fas fa-boxes"></i> Kho
@@ -210,7 +220,7 @@ function renderUserAvatar(avatar) {
       </a>
       <a class="reset" href="./profile.html">
         <p>
-          <i class="fas fa-user"></i> Tài khoản
+          <i class="fas fa-user"></i> Cá nhân
         </p>
       </a>
       <hr style="margin:0;"/>

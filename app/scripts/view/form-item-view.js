@@ -148,7 +148,7 @@ let categoryLoaded = false;
         })
         let subCate = data.filter(category => category.supercategoryId === superCategory.id);
         subCate.forEach(subCategory => {
-          option = $("<option/>")
+          let option = $("<option/>");
           option.text(subCategory.name);
           option.val(subCategory.id);
           groupOption.append(option);

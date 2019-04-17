@@ -77,6 +77,8 @@ function initShareButton(data) {
 
 }
 function getDonationPostSuccess(data) {
+  console.log(data);
+  
   initDonationPostView(data);
   initShareButton(data);
 };

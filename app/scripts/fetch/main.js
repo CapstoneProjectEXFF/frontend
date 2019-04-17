@@ -1,5 +1,5 @@
-// const API_URL = 'http://localhost:8080';
-const API_URL = 'http://35.247.191.68:8080';
+const API_URL = 'http://localhost:8080';
+// const API_URL = 'http://35.247.191.68:8080';
 const NODE_URL = 'http://35.247.191.68:3000';
 // const NODE_URL = 'http://localhost:3000';
 // const API_URL = 'http://172.16.1.38:8080';

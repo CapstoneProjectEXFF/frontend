@@ -37,7 +37,17 @@ input[type="password"] {
   &.reset {
     border-radius: 0px;
     border: none;
-    border-top: 1px solid #888;
+    // border-top: 1px solid #888;
+  }
+  &.text-align--center{
+    text-align: center;
+  }
+  &.border--bottom {
+    border-bottom: 1px solid #888;
+    &:focus {
+      outline: none;
+      border-color: $primary-color;
+    }
   }
 }
 textarea {
@@ -56,6 +66,10 @@ textarea {
   }
   &.unvalidate{
     border-color: $error-color;
+  }
+  &.autosize{
+    padding:10px;
+    overflow: hidden;
   }
 }
 select{

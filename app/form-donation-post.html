@@ -68,54 +68,75 @@
     </div>
   </div>
   <br />
-  <br />
-  <div class="item__form__container">
-    <div class="item__form">
-      <div class="position--relative">
-        <h1>Đăng bài</h1>
-        <hr />
+  <div class="donation_post__container div--center">
+    <!-- <div class="cover position--relative">
+      <div class="background background--paralax" id="image" style="background-image: url('./images/default-donation-post.jpg')"></div>
+    </div> -->
+    <div class="field__container clearfix" style="padding-top: 15px">
+      <h1 class="float-left" style="margin: 0px;">Đăng bài viết</h1>
+      <button class="primary float-right" id="btnEditDonationPost">Đăng bài</button>
+    </div>
+
+    <div class="donation_post__body">
+      <div class="donation_post__title">
         <div class="field__container hidden" id="errorNotif">
-          <span class="error">Đã xảy ra lỗi, vui lòng nhập lại sau.</span>
+          <span class="error">Đã xảy ra lỗi, vui lòng kiểm tra và đăng bài viết lại sau.</span>
         </div>
-        <input type="text" name="id" id="id" value="" disabled hidden />
         <div class="field__container">
           <label for="title">Tiêu đề</label>
-          <input type="text" name="title" id="title" />
+          <input type="text" name="title" class="reset border--bottom text-align--center" id="title"
+            placeholder="Tiêu đề của bài viết." />
           <p class="error hidden">Tiêu đề không được để trống.</p>
         </div>
-        <div class="field__container">
-          <label for="content">Nội dung</label>
-          <textarea name="content" id="content"></textarea>
-          <p class="error hidden">Nội dung không được để trống.</p>
-        </div>
-        <div class="field__container">
-          <label for="address">Địa chỉ</label>
-          <input type="text" name="address" id="address" />
-          <p class="error hidden">Địa chỉ không được để trống.</p>
-        </div>
-        <div class="field__container clearfix">
-          <button class="primary float-right" id="btnEditDonationPost">Xác nhận</button>
-        </div>
       </div>
-    </div>
-    <div class="item__form__image">
-      <div>
-        <p class="error hidden">Phải đăng 1 hình.</p>
+      <br>
+      <div class="flex flex_justify__center flex_align_items__start">
+        <div class="donation_post__content">
+          <input type="text" name="id" id="id" value="" disabled hidden />
+          <div class="field__container">
+            <label for="address">Địa chỉ</label>
+            <input type="text" name="address" id="address" placeholder="Địa chỉ nhận quyên góp" />
+            <p class="error hidden">Địa chỉ không được để trống.</p>
+          </div>
+          <div class="field__container">
+            <label for="content">Nội dung</label>
+            <textarea class="autosize" name="content" id="content" placeholder="Nội dung bài viết..."></textarea>
+            <p class="error hidden">Nội dung không được để trống.</p>
+          </div>
+
+        </div>
+        <div class="donation_post__donator__list">
+          <div class="donation_post__donator__action clearfix">
+            <h3 class="float-left">Mục tiêu quyên góp:</h3>
+          </div>
+          <hr class="gray no--margin">
+          <div id="targetList"></div>
+          <div class="field__container clearfix">
+            <button class="primary--o float-right" id="btnAddTarget">Đặt mục tiêu</button>
+          </div>
+        </div>
+
       </div>
-      <div class="image__form__uploaded" id="imageUploaded"></div>
-      <div class="upload-btn-wrapper" id="btnUpload">
-        <button class="primary--o">
-          <i class="fas fa-images"></i> Thêm hình ảnh
-        </button>
-        <input type="file" name="image" id="image" accept="image/*" multiple>
+      <div class="item__form__image">
+        <div>
+          <p class="error hidden">Phải đăng 1 hình.</p>
+        </div>
+        <div class="image__form__uploaded" id="imageUploaded"></div>
+        <div class="upload-btn-wrapper" id="btnUpload">
+          <button class="primary--o">
+            <i class="fas fa-images"></i> Thêm hình ảnh
+          </button>
+          <input type="file" name="image" id="image" accept="image/*" multiple>
+        </div>
       </div>
     </div>
   </div>
+  <br />
 
   <!-- build:js scripts/vendor/vendor.js -->
   <!-- bower:js -->
   <script src="/bower_components/jquery/dist/jquery.js"></script>
-   <script src="/bower_components/moment/moment.js"></script>
+  <script src="/bower_components/moment/moment.js"></script>
   <script src="/bower_components/moment/locale/vi.js"></script>
   <script src="/bower_components/jquery-mousewheel/jquery.mousewheel.js"></script>
   <script src="/bower_components/php-date-formatter/js/php-date-formatter.js"></script>
@@ -128,8 +149,8 @@
   <script src="scripts/main.js"></script>
   <script src="scripts/menubar.js"></script>
   <script src="scripts/validation.js"></script>
-  <script src="scripts/donation-post.js"></script>
-  <script src="scripts/category.js"></script>
+  <script src="scripts/fetch/donation-post.js"></script>
+  <script src="scripts/fetch/category.js"></script>
   <script src="scripts/image.js"></script>
   <!-- endbuild -->
   <!-- build:js scripts/firebase-image.js -->

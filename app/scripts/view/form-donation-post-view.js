@@ -5,6 +5,8 @@ let urls = [];
 let removedUrls = [];
 let removedImageId = [];
 let images = [];
+let targets = [];
+let removeTargets = [];
 $(document).ready(() => {
   let urlParams = new URLSearchParams(window.location.search);
   if (urlParams.has("id")) {
@@ -32,11 +34,11 @@ function getDonationPostSuccess(data) {
       showOldImage(images[i]);
     }
   }
-};
+}
 function getDonationPostFalse(err) {
   // console.log(err);
   window.location.href("./error404.html");
-};
+}
 
 function initForm() {
   $("#btnEditDonationPost").click(() => {
@@ -51,6 +53,7 @@ function initForm() {
           content,
           address,
           urls,
+          targets,
           addDonationPostSuccess,
           addDonationPostFails
         );
@@ -62,6 +65,8 @@ function initForm() {
           address,
           urls,
           removedImageId,
+          targets,
+          removeTargets,
           updateDonationPostSuccess,
           addDonationPostFails
         );
@@ -78,6 +83,9 @@ function initForm() {
     checkRequire("#address");
   });
   $("#image").change(uploadImage);
+
+  $('textarea').keydown(autosize);
+
 }
 
 function validate() {
@@ -96,7 +104,14 @@ function checkImage() {
   }
   return res;
 }
-
+function autosize() {
+  let el = $(this);
+  setTimeout(function () {
+    el.css('height', 'auto');
+    el.css('height', el.prop("scrollHeight") + 'px');
+    // el.style.cssText = 'height:' + el.scrollHeight + 'px';
+  }, 0);
+}
 function addDonationPostSuccess(data) {
   // console.log(data);
   window.location.replace(`./donation-post.html?id=${data.id}`);
