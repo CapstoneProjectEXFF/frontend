@@ -5,13 +5,13 @@ $(document).ready(() => {
   $("#form").submit((event) => {
     event.preventDefault();
     if (validate()) {
-      let phoneNumber = $("#phoneNumber").val();
+      let username = $("#username").val();
       let password = $("#password").val();
-      let api = login(phoneNumber, password, loginSuccess, loginFails);
+      let api = loginAdmin(username, password, loginSuccess, loginFails);
     }
   });
-  $("#phoneNumber").focusout(() => {
-    checkRegex('#phoneNumber', /^[0-9]{9,11}$/);
+  $("#username").focusout(() => {
+    checkRegex('#username', /^[a-zA-Z0-9]{9,11}$/);
   });
   $("#password").focusout(() => {
     checkRegex('#password', /^.{8,50}$/);
@@ -21,11 +21,11 @@ $(document).ready(() => {
 
 
 function validate() {
-  return checkRegex('#phoneNumber', /^[0-9]{9,11}$/) && checkRegex('#password', /^.{8,50}$/);
+  return checkRegex('#username', /^[a-zA-Z0-9]{9,11}$/) && checkRegex('#password', /^.{8,50}$/);
 }
 
 function loginSuccess(data) {
-  window.location.replace("/");
+  window.location.replace("./admin.html");
 }
 
 function loginFails(err) {

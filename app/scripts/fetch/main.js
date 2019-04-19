@@ -49,6 +49,7 @@ function checkLogin() {
     window.location.replace("./login.html");
   }
 }
+
 function isNotLogin() {
   return (getUserId() === undefined || getUserId() === null || getAuthentoken() === null);
 }
