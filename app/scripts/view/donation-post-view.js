@@ -1,20 +1,38 @@
+/* eslint-disable no-use-before-define */
 /* eslint-disable eqeqeq */
 /* eslint-disable no-extra-semi */
 /* eslint-disable handle-callback-err */
+let transactions = [];
+let tracsactionsCategory = [];
+let targetValue;
+let targetValueMax;
 $(document).ready(() => {
   let urlParams = new URLSearchParams(window.location.search);
   if (urlParams.has("id")) {
     let id = urlParams.get("id");
-    getDonationPost(
-      id,
-      getDonationPostSuccess,
-      getDonationPostFalse
-    );
-    getDonatorOfDonationPost(
-      id,
-      getDonatorSuccess,
-      getDonatorSuccess
-    );
+    let p1 = new Promise((resolve, reject) => {
+      getDonationPost(
+        id,
+        (data) => {
+          getDonationPostSuccess(data);
+          resolve(true);
+        },
+        getDonationPostFalse
+      );
+    });
+    let p2 = new Promise((resolve, reject) => {
+      getDonatorOfDonationPost(
+        id,
+        (data) => {
+          getDonatorSuccess(data);
+          resolve(true);
+        },
+        getDonatorFalse
+      );
+    });
+    Promise.all([p1, p2]).then((value) => {
+
+    });
   } else {
     window.location.replace("./error404.html");
   }
@@ -60,6 +78,17 @@ function initImageList(images) {
     imageList.append(renderImage(image.url));
   }
 }
+function initTarget(data) {
+  const targetTag = $('#target');
+  const targets = data.targets;
+  targetValueMax = targets;
+  if (targets.length == 0) {
+    $('#target').html('');
+    $('#target').hide();
+  } else {
+    targetTag.html(renderTarget(targets));
+  }
+}
 function initShareButton(data) {
   overrideLink = `https://exff.ml/donation-post.html?id=${data.id}`;
   overrideTitle = data.title;
@@ -77,9 +106,8 @@ function initShareButton(data) {
 
 }
 function getDonationPostSuccess(data) {
-  console.log(data);
-  
   initDonationPostView(data);
+  initTarget(data);
   initShareButton(data);
 };
 function getDonationPostFalse(err) {
@@ -90,6 +118,7 @@ function getDonationPostFalse(err) {
 function getDonatorSuccess(data) {
   const donatorList = $('#donatorList');
   const donatorNum = $('#donatorNum');
+  getCategoryCount(data);
   if (data.length > 0) {
     data.forEach(elem => {
       donatorList.append(renderDonatorCard(elem));
@@ -100,6 +129,64 @@ function getDonatorSuccess(data) {
   donatorNum.html(`${numeral(data.length).format('0,0')} `);
 };
 function getDonatorFalse(err) {
-  console.log(data);
+  console.log(err);
   // window.location.href = ("./error404.html");
 };
+
+function getCategoryCount(data) {
+  transactions = data;
+  tracsactionsCategory = transactions.map((elem) => {
+    let { details } = elem;
+    let tmpDetails = details.map(i => i.item.category.id);
+    return tmpDetails;
+  });
+  let res = [];
+  tracsactionsCategory.forEach(element => {
+    res = res.concat(element);
+  });
+
+  targetValue = res.reduce((accumulator, current) => {
+    accumulator['' + current] = (accumulator[current] || 0) + 1;
+    return accumulator;
+  }, {});
+  targetValueMax = getMaxTarget();
+  targetValue = Object.entries(targetValue);
+  targetValue.forEach(([categoryId, value]) => {
+    let tag = $(`#targetProcess${categoryId}`);
+    let tagValue = $(`#targetProcessValue${categoryId}`);
+    if (targetValueMax[categoryId] != undefined) {
+      if (targetValueMax[categoryId] <= 0) {
+        tag.animate({ width: '100%' }, 500);
+      } else {
+        let percent = value / targetValueMax[categoryId] * 100;
+        tag.animate({ width: percent + '%' }, 500);
+        tagValue.text(`${value}/${targetValueMax[categoryId]}`);
+      }
+    }
+  });
+}
+
+function getMaxTarget() {
+  return targetValueMax.reduce((accumulator, current) => {
+    let { categoryId, target } = current;
+    accumulator['' + categoryId] = target;
+    return accumulator;
+  }, {});
+}
+
+function renderTarget(targets) {
+  let targetTagList = '';
+  targets.forEach(target => {
+    let value = (target.target > 0) ? `0/${target.target}` : 'Không giới hạn';
+    targetTagList += `
+    <p>${target.category.name}: <span id="targetProcessValue${target.category.id}">${value}</span></p>
+    <div class="progress" style="height:1.2em">
+      <div class="progress-bar primary" style="width:0%;" id="targetProcess${target.category.id}"></div>
+    </div>
+    `;
+  });
+  return `
+    <h3>Mục tiêu:</h3>
+    ${targetTagList}
+  `;
+}

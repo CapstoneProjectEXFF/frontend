@@ -147,3 +147,41 @@ hr.gray {
 hr.no--margin {
   margin: 0px;
 }
+
+// table 
+table.mystyle{
+  border-collapse: collapse;
+  border-spacing: 0;
+  th{
+    text-align: left;
+  }
+  tr{
+    td{
+      line-height: 36px;
+    }
+    input{
+      background-color: rgba($color: #000000, $alpha: 0);
+    }
+  }
+  tr:hover{
+    background-color: #efefef;
+  }
+}
+
+.progress {
+  background-color: #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+.progress-bar{
+  height: 100%;
+  text-align: center;
+  &.primary{
+    color: #fff;
+    background-color: $primary-color;
+  }
+  &.danger{
+    background-color: $danger-color;
+  }
+}

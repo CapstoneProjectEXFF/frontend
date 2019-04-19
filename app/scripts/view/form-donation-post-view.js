@@ -7,6 +7,9 @@ let removedImageId = [];
 let images = [];
 let targets = [];
 let removeTargets = [];
+let categories = [];
+let tmpTargets = [];
+let tmpRemoveTargets = [];
 $(document).ready(() => {
   let urlParams = new URLSearchParams(window.location.search);
   if (urlParams.has("id")) {
@@ -16,10 +19,13 @@ $(document).ready(() => {
       getDonationPostSuccess,
       getDonationPostFalse
     );
+  } else {
+    getCategory(getCategorySuccess);
   }
   initForm();
 });
 function getDonationPostSuccess(data) {
+  getCategory(getCategorySuccess);
   const id = $("#id");
   const title = $("#title");
   const content = $("#content");
@@ -29,6 +35,7 @@ function getDonationPostSuccess(data) {
   content.val(data.content);
   address.val(data.address);
   images = data.images;
+  targets = data.targets;
   if (images != null && images.length > 0) {
     for (let i = 0; i < images.length; i++) {
       showOldImage(images[i]);
@@ -36,8 +43,21 @@ function getDonationPostSuccess(data) {
   }
 }
 function getDonationPostFalse(err) {
-  // console.log(err);
   window.location.href("./error404.html");
+}
+
+function getCategorySuccess(data) {
+  categories = data.filter(category => category.supercategoryId !== null);
+  categories.forEach(category => {
+    let target = targets.find(t => t.categoryId == category.id);
+    if (target != undefined) {
+      category.target = target.target;
+    } else {
+      category.target = 0;
+    }
+  });
+  $('#setTarget').append(renderSetDonationTargetTable(categories));
+  initTarget();
 }
 
 function initForm() {
@@ -72,6 +92,11 @@ function initForm() {
         );
       }
     }
+  });
+  $('#btnAddTarget').click(() => {
+    tmpTargets = targets.map(t => t.categoryId);
+    tmpRemoveTargets = [];
+    $('#modal').show();
   });
   $("#title").focusout(() => {
     checkRequire("#title");
@@ -109,7 +134,6 @@ function autosize() {
   setTimeout(function () {
     el.css('height', 'auto');
     el.css('height', el.prop("scrollHeight") + 'px');
-    // el.style.cssText = 'height:' + el.scrollHeight + 'px';
   }, 0);
 }
 function addDonationPostSuccess(data) {
@@ -160,3 +184,78 @@ function deleteOldImage(url, id) {
   removedUrls.push(url);
   $(`#oldImage${id}`).remove();
 }
+
+function checkTarget(id) {
+  const tagId = "targetCheck" + id;
+  let checkbox = $(`#${tagId} input[type=checkbox]`);
+  if (!checkbox.is(":checked")) {
+    checkbox.prop('checked', true);
+    $(`#${tagId} input[type=number]`).show();
+    if ($(`#${tagId} input[type=number]`).val() == 0) {
+      $(`#${tagId} input[type=number]`).val(10);
+    }
+    $(`#${tagId} span`).html('<i class="fas fa-check-square"></i>');
+    tmpTargets.push(id);
+    tmpRemoveTargets = tmpRemoveTargets.filter(rmId => rmId != id);
+  } else {
+    checkbox.prop('checked', false);
+    $(`#${tagId} input[type=number]`).hide();
+    $(`#${tagId} input[type=number]`).val(0);
+    $(`#${tagId} span`).html('<i class="far fa-square"></i>');
+    tmpTargets = tmpTargets.filter(t => t != id);
+    tmpRemoveTargets.push(id);
+  }
+}
+
+function confirmSetTarget() {
+  tmpTargets.forEach(tmpTarget => {
+    const tagId = "targetCheck" + tmpTarget;
+    const value = $(`#${tagId} input[type=number]`).val();
+    let target = targets.find(t => t.categoryId == tmpTarget);
+    if (target == undefined) {
+      targets.push({
+        categoryId: tmpTarget,
+        target: value
+      });
+    } else {
+      target.target = value;
+    }
+  });
+  tmpRemoveTargets.forEach(tmpRemoveTarget => {
+    let target = targets.find(t => t.categoryId == tmpRemoveTarget);
+
+    if (target != undefined && target.id != undefined && target.id != null) {
+      removeTargets.push(target.id);
+      targets = targets.filter(t => t.id != target.id);
+    } else if (target != undefined) {
+      targets = targets.filter(t => t.categoryId != tmpRemoveTarget);
+    }
+  });
+  initTarget();
+  hideModal('modal');
+}
+
+function cancelSetTarget() {
+  tmpTargets = [];
+  tmpRemoveTargets = [];
+  hideModal('modal');
+}
+
+function initTarget() {
+  const tag = $('#targetList');
+  tag.html('');
+  if (targets.length === 0) {
+    tag.html('<p style="text-align: center">Không đặt mục tiêu</p>');
+  } else {
+    targets.forEach(target => {
+      let category = categories.find(cate => cate.id == target.categoryId);
+      tag.append(`
+      <div class="flex flex_justify__space_between donation_post__input_target">
+        <p class="ellipsis">${category.name}</p>
+        <p class="ellipsis">${target.target}</p>
+      </div>
+      `);
+    });
+  }
+}
+

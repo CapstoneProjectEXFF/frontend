@@ -83,7 +83,7 @@
           <span class="error">Đã xảy ra lỗi, vui lòng kiểm tra và đăng bài viết lại sau.</span>
         </div>
         <div class="field__container">
-          <label for="title">Tiêu đề</label>
+          <!-- <label for="title">Tiêu đề</label> -->
           <input type="text" name="title" class="reset border--bottom text-align--center" id="title"
             placeholder="Tiêu đề của bài viết." />
           <p class="error hidden">Tiêu đề không được để trống.</p>
@@ -108,14 +108,13 @@
         <div class="donation_post__donator__list">
           <div class="donation_post__donator__action clearfix">
             <h3 class="float-left">Mục tiêu quyên góp:</h3>
-          </div>
-          <hr class="gray no--margin">
-          <div id="targetList"></div>
-          <div class="field__container clearfix">
             <button class="primary--o float-right" id="btnAddTarget">Đặt mục tiêu</button>
           </div>
+          <hr class="gray no--margin">
+          <div id="targetList">
+            <p style="text-align: center">Không đặt mục tiêu</p>
+          </div>
         </div>
-
       </div>
       <div class="item__form__image">
         <div>
@@ -133,6 +132,58 @@
   </div>
   <br />
 
+  <div id="modalShow">
+    <div class="modal__container" id="modal" style="display: none;">
+      <div class="modal__close" onclick="cancelSetTarget()"></div>
+      <div class="modal center">
+        <div class="modal__title clearfix">
+          <h3 class="float-left">Đặt mục tiêu</h3>
+          <h3 class="float-right" onclick="cancelSetTarget()">
+            <i class="fas fa-times"></i>
+          </h3>
+        </div>
+        <hr class="gray no--margin">
+        <div class="modal__content" id="modalContent">
+          <div>
+            <table class="mystyle" style="width: 100%">
+              <thead>
+                <tr>
+                  <th>Loại đồ dùng</th>
+                  <th>Số lượng</th>
+                </tr>
+              </thead>
+              <tbody id="setTarget">
+                
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <hr class="gray no--margin">
+        <div class="modal__action clearfix">
+            <button class="danger float-right" onclick="cancelSetTarget()">Hủy</button>
+            <button class="primary float-right" onclick="confirmSetTarget()">Xác nhận</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <div class="modal__container">
+    <div class="modal__close" id="bgModalClose"></div>
+    <div class="modal center">
+      <div class="modal__title clearfix">
+        <h3 class="float-left">Title</h3>
+        <h3 class="float-right"><i class="fas fa-times"></i></h3>
+      </div>
+      <hr class="gray no--margin">
+      <div class="modal__content">
+        <p>Đây là một dòng thông báo</p>
+      </div>
+      <hr class="gray no--margin">
+      <div class="modal__action clearfix">
+        <button class="danger float-right">Hủy</button>
+        <button class="primary float-right">Đồng ý</button>
+      </div>
+    </div>
+  </div> -->
   <!-- build:js scripts/vendor/vendor.js -->
   <!-- bower:js -->
   <script src="/bower_components/jquery/dist/jquery.js"></script>
@@ -152,6 +203,7 @@
   <script src="scripts/fetch/donation-post.js"></script>
   <script src="scripts/fetch/category.js"></script>
   <script src="scripts/image.js"></script>
+  <script src="scripts/modal.js"></script>
   <!-- endbuild -->
   <!-- build:js scripts/firebase-image.js -->
   <script src="scripts/firebase-image.js"></script>

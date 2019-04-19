@@ -23,6 +23,19 @@ button {
       border-color: darken($color: $primary-color, $amount: 5%);
     }
   }
+  &.danger {
+    color: $light-color;
+    background-color: $danger-color;
+    border-color: $danger-color;
+    &:hover {
+      background-color: lighten($color: $danger-color, $amount: 5%);
+      border-color: lighten($color: $danger-color, $amount: 5%);
+    }
+    &:active{
+      background-color: darken($color: $danger-color, $amount: 5%);
+      border-color: darken($color: $danger-color, $amount: 5%);
+    }
+  }
   &.primary--o {
     color: $primary-color;
     background-color: #ffffff00;

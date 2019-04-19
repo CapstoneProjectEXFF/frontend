@@ -3,6 +3,7 @@
 
 $light-color: #fff;
 $primary-color: #0c8ae8;
+$danger-color: #dc3545;
 $default-color: #888;
 $error-color: #ff3333;
 $sucsess-color: #28a745;
@@ -19,6 +20,9 @@ $card-padding: 10px;
 @import 'general';
 
 @import 'flexstyle';
+
+@import 'modal';
+
 // scroll
 @import 'scroll';
 // background

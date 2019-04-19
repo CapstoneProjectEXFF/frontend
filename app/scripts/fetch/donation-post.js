@@ -246,3 +246,26 @@ function renderDonationPostCard(donationPost, isEdit = false) {
     </div>`
   );
 }
+function renderSetDonationTarget(category) {
+  let check = (category.target > 0);
+  let checkButton = check ? '<i class="fas fa-check-square"></i>' : '<i class="far fa-square"></i>';
+  let hide = check ? '' : 'style="display: none;"';
+  let checked = check ? 'checked' : '';
+  return `
+    <tr id="targetCheck${category.id}">
+      <td style="font-size: 1.2em; cursor: pointer; width:300px" onclick="checkTarget('${category.id}')">
+        <span style="color: #0c8ae8">${checkButton}</span>
+        <input type="checkbox" name="target" style="display:none;" ${checked}/>
+        ${category.name}
+      </td>
+      <td><input class="reset border--bottom text-align--right" ${hide} size="10" type="number" name="target" id="targetNum" value=${category.target} min=0 default=0></td>
+    </tr>
+  `;
+}
+function renderSetDonationTargetTable(categories) {
+  let res = '';
+  categories.forEach(category => {
+    res += renderSetDonationTarget(category);
+  });
+  return res;
+}

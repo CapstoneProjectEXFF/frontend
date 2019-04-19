@@ -97,7 +97,8 @@
 
   <div class="donation_post__container div--center">
     <div class="cover position--relative">
-      <div class="background background--paralax" id="image" style="background-image: url('./images/default-donation-post.jpg')"></div>
+      <div class="background background--paralax" id="image"
+        style="background-image: url('./images/default-donation-post.jpg')"></div>
       <div class="cover__info">
         <div class="user__info flex" id="userInfo">
           <div class="user__avatar position--relative">
@@ -128,15 +129,19 @@
           </p>
           <p id="postContent"></p>
         </div>
-        <div class="donation_post__donator__list">
-          <div class="donation_post__donator__action clearfix">
-            <a class="reset float-right" id="tradeOfferLink" style="display: none;">
-              <button class="primary">Quyên góp</button>
-            </a>
-            <h3 class="float-left">Quyên góp: <span id="donatorNum"></span> lượt</h3>
+        <div class="donation_post__right">
+          <div class="donation_post__target" id="target">
           </div>
-          <hr class="gray no--margin">
-          <div id="donatorList"></div>
+          <div class="donation_post__donator__list">
+            <div class="donation_post__donator__action clearfix">
+              <a class="reset float-right" id="tradeOfferLink" style="display: none;">
+                <button class="primary">Quyên góp</button>
+              </a>
+              <h3 class="float-left">Quyên góp: <span id="donatorNum"></span> lượt</h3>
+            </div>
+            <hr class="gray no--margin">
+            <div id="donatorList"></div>
+          </div>
         </div>
       </div>
     </div>

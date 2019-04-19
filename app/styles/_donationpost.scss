@@ -42,9 +42,12 @@
       width: 50%;
       min-width: 300px;
     }
-    .donation_post__donator__list{
+    .donation_post__right {
       width: 50%;
-      min-width: 300px;  
+      min-width: 300px;
+      box-sizing: border-box;
+    }
+    .donation_post__donator__list{ 
       border: 1px solid #ccc;
       border-radius: 4px;
       box-sizing: border-box;
@@ -70,4 +73,23 @@
 
 .datetime {
   color: #888;
+}
+
+.donation_post__input_target{
+  width: 100%;
+  padding: 0px 10px;
+  overflow: hidden;
+  box-sizing: border-box;
+  p {
+    margin: 4px;
+    font-size: 1.2em;
+  }
+}
+
+.donation_post__target{
+  padding: 0px 4px 5px;
+  box-sizing: border-box;
+  p{
+    margin: 5px 0px 0px;
+  }
 }
