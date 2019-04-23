@@ -14,7 +14,7 @@ $(document).ready(() => {
         "password": password,
         "fullName": fullName,
         "address": address
-      }
+      };
       register(data, registerSuccess, registerFails);
     }
   });

@@ -193,11 +193,23 @@ $card-padding: 10px;
       overflow: auto;
     }
   }
+  &.height--auto{
+    height: auto;
+  }
+  &.max-height--300px{
+    max-height: 300px;
+  }
   &.bottomPadding{
     padding-bottom: 5px;
   }
   &.topPadding{
     padding-top: 5px;
+  }
+  &.leftPadding{
+    padding-left: 5px;
+  }
+  &.rightPadding{
+    padding-right: 5px;
   }
 }
 

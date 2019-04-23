@@ -13,6 +13,7 @@
   <!-- build:css styles/vendor.css -->
   <!-- bower:css -->
   <link rel="stylesheet" href="/bower_components/datetimepicker/jquery.datetimepicker.css" />
+  <link rel="stylesheet" href="/bower_components/datatables.net-dt/css/jquery.dataTables.css" />
   <!-- endbower -->
   <!-- endbuild -->
 
@@ -35,18 +36,18 @@
   <div class="menu_bar__container">
     <div class="menu_bar">
       <div class="icon">
-        <a class="reset" href="/">
+        <a class="reset" href="./index.html">
           <img class="icon" src="./images/Logo-64px.png" alt="">
         </a>
       </div>
       <div class="logo">
-        <a class="reset" href="/">
+        <a class="reset" href="./index.html">
           <span>Exff</span>
         </a>
       </div>
       <div class="search_bar">
         <form action="#" id="searchForm">
-          <input type="text" name="searchItem" id="inputSearch" placeholder="Search..." />
+          <input class="mystyle" type="text" name="searchItem" id="inputSearch" placeholder="Search..." />
           <button id="btnSearch" class="primary"><i class="fas fa-search"></i></button>
         </form>
       </div>
@@ -76,7 +77,7 @@
       <p class="profile__phonenumber"><b>Số điện thoại: </b><span id="userPhoneNum"></span></p>
       <!-- <p class="profile__address" id="userAddress">địa chỉ</p> -->
       <p class="profile__item"><b id="userItemNum"></b> đồ vật</p>
-    <p class="profile__item"><b id="userPostNum"></b> bài viết</p>
+      <p class="profile__item"><b id="userPostNum"></b> bài viết</p>
       <div id="btnAddFriend" class="profile__action" style="display: none;">
         <button class="primary">Thêm bạn bè</button>
       </div>
@@ -85,6 +86,10 @@
       </div>
       <div id="btnCancelAddFriend" class="profile__action" style="display: none;">
         <button class="primary--o">Hủy kết bạn</button>
+      </div>
+      <div id="btnBan" class="profile__action" style="display: none;">
+        <br>
+        <button class="danger">Khóa tài khoản</button>
       </div>
       <div id="btnProfileEdit" class="profile__action" style="display: none;">
         <a href="./profile.html" class="primary">
@@ -113,7 +118,8 @@
     </div>
   </div>
   <div class="inventory card__container allContainer itemContainer" id="inventory"></div>
-  <div class="div--center allContainer donationPostContainer post__container" id="donationPost" style="display: none;"></div>
+  <div class="div--center allContainer donationPostContainer post__container" id="donationPost" style="display: none;">
+  </div>
   <div class="div--center allContainer tradeOfferContainer" id="transactionHistory" style="display: none;"></div>
 
 
@@ -127,6 +133,7 @@
   <script src="/bower_components/php-date-formatter/js/php-date-formatter.js"></script>
   <script src="/bower_components/datetimepicker/build/jquery.datetimepicker.full.min.js"></script>
   <script src="/bower_components/numeral/numeral.js"></script>
+  <script src="/bower_components/datatables.net/js/jquery.dataTables.js"></script>
   <!-- endbower -->
   <!-- endbuild -->
 
@@ -135,10 +142,10 @@
   <script src="scripts/menubar.js"></script>
   <script src="scripts/fetch/relationship.js"></script>
   <script src="scripts/validation.js"></script>
-   <script src="scripts/fetch/item.js"></script>
+  <script src="scripts/fetch/item.js"></script>
   <script src="scripts/fetch/login.js"></script>
   <script src="scripts/fetch/register.js"></script>
-  <script src="scripts/user.js"></script>
+  <script src="scripts/fetch/user.js"></script>
   <script src="scripts/fetch/transaction.js"></script>
   <script src="scripts/fetch/donation-post.js"></script>
   <!-- endbuild -->

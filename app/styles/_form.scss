@@ -3,6 +3,32 @@
 .field__container {
   padding: 8px 24px;
   box-sizing: border-box;
+  label {
+    font-size: 14px;
+    font-weight: bold;
+  }
+  textarea {
+    min-height: 108px;
+    width: 100%;
+    padding: 12px 24px;
+    border: 1px solid #000;
+    border-radius: 18px;
+    font-size: 18px;
+    box-sizing: border-box;
+    resize: none;
+    overflow: auto;
+    &:focus {
+      outline: none;
+      border-color: $primary-color;
+    }
+    &.unvalidate{
+      border-color: $error-color;
+    }
+    &.autosize{
+      padding:10px;
+      overflow: hidden;
+    }
+  }
 }
 .error{
   font-size: 0.8em;
@@ -14,12 +40,9 @@
   color: $sucsess-color;
   font-weight: bold;
 }
-label {
-  font-size: 14px;
-  font-weight: bold;
-}
-input[type="text"],
-input[type="password"] {
+
+input[type="text"].mystyle,
+input[type="password"].mystyle {
   height: 36px;
   width: 100%;
   padding: 0px 24px;
@@ -50,7 +73,7 @@ input[type="password"] {
     }
   }
 }
-input[type="number"] {
+input[type="number"].mystyle {
   height: 36px;
   width: 5em;
   padding: 0px;
@@ -84,29 +107,8 @@ input[type="number"] {
     }
   }
 }
-textarea {
-  min-height: 108px;
-  width: 100%;
-  padding: 12px 24px;
-  border: 1px solid #000;
-  border-radius: 18px;
-  font-size: 18px;
-  box-sizing: border-box;
-  resize: none;
-  overflow: auto;
-  &:focus {
-    outline: none;
-    border-color: $primary-color;
-  }
-  &.unvalidate{
-    border-color: $error-color;
-  }
-  &.autosize{
-    padding:10px;
-    overflow: hidden;
-  }
-}
-select{
+
+select.mystyle{
   color: #000;
   height: 36px;
   width: 100%;

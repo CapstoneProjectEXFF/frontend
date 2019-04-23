@@ -15,7 +15,7 @@ $(document).ready(() => {
         "avatar": avatar,
         "fullName": fullName,
         "address": address
-      }
+      };
       updateUser(data, updateSuccess, updateFails);
     }
   });
@@ -27,7 +27,7 @@ $(document).ready(() => {
       let data = {
         "oldPassword": oldPassword,
         "newPassword": password
-      }
+      };
       updateUserPasword(data, updatePasswordSuccess, updatePasswordFails);
     }
   });

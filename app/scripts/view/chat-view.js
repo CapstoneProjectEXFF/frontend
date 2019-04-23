@@ -38,7 +38,7 @@ $(document).ready(() => {
       console.log(itemInfo);
       deselectItem(itemInfo.itemId, itemInfo.userId, false);
    });
-   initInventoryButton();
+   initChatBoxButton();
    initTradeOfferButton();
    // initDateTime();
    // getTransactionHistory(
@@ -53,39 +53,54 @@ function initTransactionHistory(data) {
       );
    });
 }
-function initInventoryButton() {
-   $('#chatInventoryTab').click(() => {
-      if (!isInventoryTabShow) {
-         isInventoryTabShow = true;
-         $('#chatRoomContainer').removeClass('expand');
-         $('#chatRoomContainer').addClass('collapse');
-         $('#chatInventory').removeClass('collapse');
-         $('#chatInventory').addClass('expand');
-      } else {
-         isInventoryTabShow = false;
-         $('#chatRoomContainer').removeClass('collapse');
-         $('#chatRoomContainer').addClass('expand');
-         $('#chatInventory').removeClass('expand');
-         $('#chatInventory').addClass('collapse');
+function initChatBoxButton() {
+   $('#chatRoomContainer').hover(
+      () => {
+         if (isInventoryTabShow) {
+            isInventoryTabShow = false;
+            $('#chatRoomContainer').removeClass('collapse');
+            $('#chatRoomContainer').addClass('expand');
+            $('#chatBox').removeClass('expand');
+            $('#chatBox').addClass('collapse');
+         }
+      },
+      () => {
+         if (!isInventoryTabShow) {
+            isInventoryTabShow = true;
+            $('#chatRoomContainer').removeClass('expand');
+            $('#chatRoomContainer').addClass('collapse');
+            $('#chatBox').removeClass('collapse');
+            $('#chatBox').addClass('expand');
+         }
       }
-   });
+   );
 }
 function initTradeOfferButton() {
    $('#btnConfirm').click(() => {
       if (!checkTradeContentIsEmpty()) {
+         $('#modalContent').append(renderModal({
+            title: 'Thông báo',
+            content: '<p>Bạn chưa chọn đồ dùng để trao đổi</p>'
+         }));
          return;
+      } else {
+         $('#modalContent').append(renderModal({
+            title: 'Xác nhận',
+            content: '<p>Xác nhận chốt trao đổi.</p><p>Trao đổi sẽ tự động hủy chốt khi có bất kì sự thay đổi nào.</p>',
+            action: [
+               {
+                  className: 'primary',
+                  value: 'Xác nhận',
+                  handle: 'confirmTradeOffer()'
+               },
+               {
+                  className: 'danger',
+                  value: 'Hủy',
+                  handle: "closeModal('modal0')"
+               }
+            ]
+         }));
       }
-      let data = {
-         room: roomName,
-         userId: USER_ID,
-         token: getAuthentoken()
-      };
-      socket.emit('confirm-trade', data);
-      isConfirm = true;
-      $('#btnConfirm').hide();
-      $('#btnReset').hide();
-      $('#btnCancle').show();
-      $('#tradeOfferContentNotif').show();
    });
    $('#btnReset').click(() => {
       let data = {
@@ -133,9 +148,7 @@ function initTradeOfferButton() {
       // selectChatRoom(currentChatRoom.room);
    });
    socket.on('trade-reseted', (data) => {
-      console.log("Reset: " + data);
-
-      if (data === undefined || data !== currentChatRoom.room) {
+      if (data === undefined || data.room !== currentChatRoom.room) {
          return;
       }
       selectChatRoom(currentChatRoom.room);
@@ -143,10 +156,8 @@ function initTradeOfferButton() {
    socket.on('trade-done', (data) => {
       console.log("Done" + data);
       if (data.room === undefined || data.room !== currentChatRoom.room) {
-         // selectChatRoom(currentChatRoom.room);
          return;
       }
-      // selectChatRoom(currentChatRoom.room);
       window.location.replace(`./transaction-confirm.html?id=${data.transactionId}`);
    });
 }
@@ -318,8 +329,8 @@ function renderChatContent() {
 }
 
 function renderTradeOfferContent(users, isClickable = true) {
-   $('#myTradeOffer').html('');
-   $('#friendTradeOffer').html('');
+   $('#myTradeOffer').html('<h3>Chọn đồ muốn cho đi từ kho của bạn</h3>');
+   $('#friendTradeOffer').html('<h3>Chọn đồ muốn cho đi từ kho bên dưới</h3>');
    users.forEach(user => {
       user.item.forEach(itemId => {
          selectItem(itemId, user.userId, false);
@@ -361,8 +372,14 @@ function selectChatRoom(selectedRoomName) {
             }
             $('#chatRoom').children().removeClass('selected');
             $(`#chatRoom${selectedRoomName}`).addClass('selected');
+            $('#tradeTitle').text(`Trao đổi với ${friendInfo.fullName}`);
+            $('#friendInventoryTitle').text(`${friendInfo.fullName}`);
             if (!isInventoryTabShow) {
-               $('#chatInventoryTab').click();
+               isInventoryTabShow = true;
+               $('#chatRoomContainer').removeClass('expand');
+               $('#chatRoomContainer').addClass('collapse');
+               $('#chatBox').removeClass('collapse');
+               $('#chatBox').addClass('expand');
             }
          } else {
             console.log('currentChatRoom do not have user');
@@ -390,6 +407,7 @@ function selectItem(itemId, userId, isEmit = true) {
       item = friendItems.find((value) => value.id == itemId);
    }
    itemTag.hide();
+   tradeOfferContentTag.children('h3').hide();
    if (isEmit) {
       socketSendTradeInfo(item.user.id, item.id, "add-item");
    } else {
@@ -404,6 +422,12 @@ function deselectItem(itemId, userId, isEmit = true) {
    const selectItemTag = $("#selectItem" + itemId);
    itemTag.show();
    selectItemTag.remove();
+   if ($("#myTradeOffer .list__item").length <= 0) {
+      $("#myTradeOffer h3").show();
+   }
+   if ($("#friendTradeContent .list__item").length <= 0) {
+      $("#friendTradeContent h3").show();
+   }
    if (isEmit) {
       socketSendTradeInfo(userId, itemId, "remove-item");
    }
@@ -447,5 +471,19 @@ function checkTradeContentIsEmpty() {
    return $('#myTradeOffer .list__item').length > 0 || $('#friendTradeOffer .list__item').length > 0;
 }
 
+function confirmTradeOffer() {
+   closeModal('modal0');
+   let data = {
+      room: roomName,
+      userId: USER_ID,
+      token: getAuthentoken()
+   };
+   socket.emit('confirm-trade', data);
+   isConfirm = true;
+   $('#btnConfirm').hide();
+   $('#btnReset').hide();
+   $('#btnCancle').show();
+   $('#tradeOfferContentNotif').show();
+}
 
 

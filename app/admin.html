@@ -13,6 +13,7 @@
   <!-- build:css styles/vendor.css -->
   <!-- bower:css -->
   <link rel="stylesheet" href="/bower_components/datetimepicker/jquery.datetimepicker.css" />
+  <link rel="stylesheet" href="/bower_components/datatables.net-dt/css/jquery.dataTables.css" />
   <!-- endbower -->
   <!-- endbuild -->
   <!-- build:css styles/bootstrap.css -->
@@ -44,17 +45,16 @@
     <![endif]-->
   <div class="d-flex" id="wrapper">
 
-    <!-- Sidebar -->
+
     <div class="bg-light border-right" id="sidebar-wrapper">
       <div class="sidebar-heading">EXFF</div>
       <div class="list-group list-group-flush">
-        <a href="#" class="list-group-item list-group-item-action bg-light">User</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Ban list</a>
+        <a href="#" onclick="show('userContainer')" class="list-group-item list-group-item-action bg-light">Người dùng</a>
+        <a href="#" onclick="show('banContainer')" class="list-group-item list-group-item-action bg-light">Tài khoản bị cấm</a>
       </div>
     </div>
-    <!-- /#sidebar-wrapper -->
 
-    <!-- Page Content -->
+
     <div id="page-content-wrapper">
 
       <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
@@ -68,10 +68,10 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
             <li class="nav-item active">
-                <a class="nav-link" href="#" id="adminName"></a>
+              <a class="nav-link" href="#" id="adminName"></a>
             </li>
             <li class="nav-item" id="adminIcon">
-              
+
             </li>
             <li class="nav-item">
               <a class="nav-link" href="./adminLogin.html" onclick="logout()">Logout</a>
@@ -80,11 +80,57 @@
         </div>
       </nav>
 
-      <div class="container-fluid">
-
+      <div class="container-fluid allContainer userContainer" >
+        <div class="row">
+          <div class="col-sm-12">
+            <h2>Quản lý tài khoản</h2>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <table id="userTable" class="table table-striped" style="width:100%">
+              <thead>
+                <tr>
+                  <th>Stt</th>
+                  <th>ID</th>
+                  <th>Họ và tên</th>
+                  <th>Số điện thoại</th>
+                  <th>Địa chỉ</th>
+                </tr>
+              </thead>
+              <tbody id="userTableLoad">
+                
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
+      <div class="container-fluid allContainer banContainer" style="display: none;">
+          <div class="row">
+            <div class="col-sm-12">
+              <h2>Tài khoản bị khóa</h2>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <table id="banTable" class="table table-striped" style="width:100%">
+                <thead>
+                  <tr>
+                    <th>Stt</th>
+                    <th>ID</th>
+                    <th>Họ và tên</th>
+                    <th>Số điện thoại</th>
+                    <th>Địa chỉ</th>
+                  </tr>
+                </thead>
+                <tbody id="banTableLoad">
+                  
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
     </div>
-    <!-- /#page-content-wrapper -->
 
   </div>
 
@@ -98,6 +144,7 @@
   <script src="/bower_components/php-date-formatter/js/php-date-formatter.js"></script>
   <script src="/bower_components/datetimepicker/build/jquery.datetimepicker.full.min.js"></script>
   <script src="/bower_components/numeral/numeral.js"></script>
+  <script src="/bower_components/datatables.net/js/jquery.dataTables.js"></script>
   <!-- endbower -->
   <!-- endbuild -->
 
@@ -111,6 +158,9 @@
   <script src="scripts/menubar.js"></script>
   <script src="scripts/fetch/login.js"></script>
   <script src="scripts/fetch/register.js"></script>
+  <!-- endbuild -->
+  <!-- build:js scripts/admin.js -->
+  <script src="scripts/fetch/admin.js"></script>
   <!-- endbuild -->
   <!-- build:js scripts/view/admin-view.js-->
   <script src="scripts/view/admin-view.js"></script>

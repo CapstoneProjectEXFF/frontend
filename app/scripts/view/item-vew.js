@@ -32,7 +32,7 @@ function initView(data) {
   address.text(data.address);
   if (data.user.id != getUserId()) {
     tradeOfferLink.show();
-    tradeOfferLink.attr("href", `./chat.html?userId=${data.user.id}&itemId=${data.id}`)
+    tradeOfferLink.attr("href", `./chat.html?userId=${data.user.id}&itemId=${data.id}`);
   }
   initUserInfo(data.user);
   initSlideShow(data.images);
@@ -76,8 +76,8 @@ function initShareButton(data) {
 function getItemSuccess(data) {
   initShareButton(data);
   initView(data);
-};
+}
 function getItemFalse(err) {
   // console.log(err);
   window.location.href = ("./error404.html");
-};
+}

@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 /* eslint-disable no-shadow */
 /* eslint-disable eqeqeq */
 /* eslint-disable handle-callback-err */

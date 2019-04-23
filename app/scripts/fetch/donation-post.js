@@ -258,7 +258,7 @@ function renderSetDonationTarget(category) {
         <input type="checkbox" name="target" style="display:none;" ${checked}/>
         ${category.name}
       </td>
-      <td><input class="reset border--bottom text-align--right" ${hide} size="10" type="number" name="target" id="targetNum" value=${category.target} min=0 default=0></td>
+      <td><input class="mystyle reset border--bottom text-align--right" ${hide} size="10" type="number" name="target" id="targetNum" value=${category.target} min=0 default=0></td>
     </tr>
   `;
 }

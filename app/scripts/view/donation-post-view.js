@@ -59,7 +59,7 @@ function initDonationPostView(data) {
 
   if (data.user.id != getUserId()) {
     tradeOfferLink.show();
-    tradeOfferLink.attr("href", `./donation-send.html?donationPostId=${data.id}`)
+    tradeOfferLink.attr("href", `./donation-send.html?donationPostId=${data.id}`);
   }
 
   if (data.images != null && data.images.length > 0) {

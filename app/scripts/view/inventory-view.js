@@ -1,3 +1,6 @@
+/* eslint-disable no-shadow */
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-alert */
 /* eslint-disable eqeqeq */
 /* eslint-disable handle-callback-err */
 /* eslint-disable no-use-before-define */
@@ -17,7 +20,7 @@ function initInventoryView() {
         userId,
         getUserSuccess,
         redirectTo404
-      )
+      );
     } else {
       userId = getUserId();
       isOwn = true;
@@ -28,6 +31,7 @@ function initInventoryView() {
     isOwn = true;
     renderUserInfo(getUserInfo());
   }
+  initBanButton(userId);
   getItemsByUserId(
     userId,
     ITEM_ENABLE,
@@ -38,11 +42,27 @@ function initInventoryView() {
     userId,
     getDonationPostsSuccess,
     getDonationPostsFalse
-  )
+  );
   getTransactionHistory(
     initTransactionHistory
   );
 }
+
+function initBanButton(id) {
+  if (!isOwn && isAdminLogin()) {
+    $('#btnBan').show();
+    $('#btnBan').click(() => {
+      if (isAdminLogin()) {
+        banUser(
+          id,
+          (data) => alert('Bạn đã khóa tài khoản này'),
+          (data) => alert('Bạn không thể khóa tài khoản này')
+        );
+      }
+    });
+  }
+}
+
 function initFriendButton(data = {}) {
   $('#btnAddFriend').show();
   $('#btnCancelAddFriend').hide();
@@ -52,7 +72,7 @@ function initFriendButton(data = {}) {
     sendAddFriendRequest(
       userId,
       initCancleAddFriendButton
-    )
+    );
   });
 }
 function initCancleAddFriendButton(data) {
@@ -67,7 +87,7 @@ function initCancleAddFriendButton(data) {
       (data) => {
         initFriendButton();
       }
-    )
+    );
   });
 }
 function initConfirmAddFriendButton(data) {
@@ -117,7 +137,7 @@ function getUserSuccess(data) {
     data.id,
     initAddFriendAction,
     initFriendButton
-  )
+  );
 }
 function getItemsSuccess(data) {
   const inventoryTag = $("#inventory");
@@ -131,11 +151,11 @@ function getItemsSuccess(data) {
     const card = createItemCard(item, isOwn);
     inventoryTag.append(card);
   });
-};
+}
 function getItemsFalse(err) {
   const inventoryTag = $("#inventory");
   inventoryTag.html("<h1>Không có đồ dùng nào.</h1>");
-};
+}
 
 function getDonationPostsSuccess(data) {
   const inventoryTag = $("#donationPost");
@@ -149,11 +169,11 @@ function getDonationPostsSuccess(data) {
     const card = renderDonationPostCard(donationPost, isOwn);
     inventoryTag.append(card);
   });
-};
+}
 function getDonationPostsFalse(err) {
   const inventoryTag = $("#donationPost");
   inventoryTag.html("<h1>Không có bài viết nào.</h1>");
-};
+}
 function renderUserInfo(user) {
   $('#userName').text(user.fullName);
   $('#userPhoneNum').text(user.phoneNumber);

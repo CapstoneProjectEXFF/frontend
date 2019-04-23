@@ -20,6 +20,7 @@
   <!-- build:css styles/vendor.css -->
   <!-- bower:css -->
   <link rel="stylesheet" href="/bower_components/datetimepicker/jquery.datetimepicker.css" />
+  <link rel="stylesheet" href="/bower_components/datatables.net-dt/css/jquery.dataTables.css" />
   <!-- endbower -->
   <!-- endbuild -->
 
@@ -62,18 +63,18 @@
   <div class="menu_bar__container">
     <div class="menu_bar">
       <div class="icon">
-        <a class="reset" href="/">
+        <a class="reset" href="./index.html">
           <img class="icon" src="./images/Logo-64px.png" alt="">
         </a>
       </div>
       <div class="logo">
-        <a class="reset" href="/">
+        <a class="reset" href="./index.html">
           <span>Exff</span>
         </a>
       </div>
       <div class="search_bar">
         <form action="#" id="searchForm">
-          <input type="text" name="searchItem" id="inputSearch" placeholder="Search..." />
+          <input class="mystyle" type="text" name="searchItem" id="inputSearch" placeholder="Search..." />
           <button id="btnSearch" class="primary"><i class="fas fa-search"></i></button>
         </form>
       </div>
@@ -151,12 +152,13 @@
   <!-- build:js scripts/vendor/vendor.js -->
   <!-- bower:js -->
   <script src="/bower_components/jquery/dist/jquery.js"></script>
-  <script src="/bower_components/moment/moment.js"></script>
+    <script src="/bower_components/moment/moment.js"></script>
   <script src="/bower_components/moment/locale/vi.js"></script>
   <script src="/bower_components/jquery-mousewheel/jquery.mousewheel.js"></script>
   <script src="/bower_components/php-date-formatter/js/php-date-formatter.js"></script>
   <script src="/bower_components/datetimepicker/build/jquery.datetimepicker.full.min.js"></script>
   <script src="/bower_components/numeral/numeral.js"></script>
+  <script src="/bower_components/datatables.net/js/jquery.dataTables.js"></script>
   <!-- endbower -->
   <!-- endbuild -->
 

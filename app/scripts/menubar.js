@@ -2,9 +2,12 @@ const notificationPopupTagId = 'notificationPopup';
 const notificationContainerTagId = 'notificationContainer';
 const relationshipNotifPopupTagId = 'relationshipNotifPopup';
 const relationshipNotifContainerTagId = 'relationshipNotifContainer';
+const chatNotifPopupTagId = 'chatNotifPopup';
+const chatNotifContainerTagId = 'chatNotifContainer';
 
 let notification = [];
 let relationshipNotif = [];
+let chatNotif = [];
 
 // hide menu popup
 
@@ -71,16 +74,11 @@ $(document).ready(() => {
   //   }
   // });
 });
+
 // friend relationship -----------------------------
 function renderRelationshipNotifContainer(popupId, containerId) {
   return `
     <div class="popup notification__popup " id="${popupId}" style="display:none">
-      <a class="primary" href="./chat.html">
-        <div>
-          Chat
-        </div>
-      </a>
-      <hr>
       <div class="notification__container" id="${containerId}"></div>
     </div>
     `;
@@ -170,6 +168,86 @@ $(document).ready(() => {
     });
   }
 });
+
+// chat ------------------------------
+
+function renderChatNotifContainer(popupId, containerId) {
+  return `
+    <div class="popup notification__popup " id="${popupId}" style="display:none">
+      <a class="primary" href="./chat.html">
+        <div>
+          Chat
+        </div>
+      </a>
+      <hr class="gray no--margin"/>
+      <div class="notification__container" id="${containerId}"></div>
+    </div>
+    `;
+}
+function renderChatNotif(chatRoom) {
+  const user = chatRoom.users.find(u => u.userId !== getUserId());
+  const image = (user.avatar !== null && user.avatar !== undefined)
+    ? (user.avatar)
+    : ('./images/user.png');
+  const msg = (chatRoom.messages !== null && chatRoom.messages.length > 0)
+    ? chatRoom.messages[chatRoom.messages.length - 1].msg
+    : '';
+  return (
+    `<a class="reset" href='./chat.html?userId=${user.userId}'>
+      <div class="list__card__avatar margin--none" id="chatRoom${chatRoom.room}">
+        <div class="list__card__avatar__image position--relative">
+          <div class="background" style="background-image: url(${image})"></div>
+        </div>
+        <div class="list__card__avatar__chat__info flex flex_vertical flex_justify__center">
+          <h3 class="ellipsis">${user.fullName}</h3>
+          <p class="chatRoomLastMessage ellipsis">${msg}</p>
+        </div>
+        <hr class="gray no--margin"/>
+      </div>
+    </a>`
+  );
+  // <p class="notification__time">${moment(notif.modifyTime).format('DD/MM/YYYY')}</p>
+}
+function renderChatNotifList(notifs) {
+  chatNotif = notifs;
+  const notificationContainer = $(`#${chatNotifContainerTagId}`);
+  if (notifs.length <= 0) {
+    notificationContainer.html('<p style="text-align:center;">Không có cuộc trò chuyện nào.</p>');
+  } else {
+    notificationContainer.html('');
+    notifs.forEach(notif => {
+      notificationContainer.append(renderChatNotif(notif));
+    });
+  }
+}
+
+$(document).ready(() => {
+  const btnChatNotif = $('#btnChat');
+  if (isNotLogin()) {
+    btnChatNotif.hide();
+  } else {
+    btnChatNotif.append(
+      renderChatNotifContainer(
+        chatNotifPopupTagId,
+        chatNotifContainerTagId
+      )
+    );
+    btnChatNotif.click(() => {
+      const chatNotifContainer = $(`#${chatNotifPopupTagId}`);
+      hideAllMenuPopupExcept(chatNotifPopupTagId);
+      chatNotifContainer.toggle();
+      if (chatNotif.length <= 0) {
+        getChatRooms(
+          getUserId(),
+          renderChatNotifList
+        );
+      } else {
+        renderChatNotifList(chatNotif);
+      }
+    });
+  }
+});
+
 
 // login -----------------------------
 $(document).ready(() => {

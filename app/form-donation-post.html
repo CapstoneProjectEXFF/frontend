@@ -13,6 +13,7 @@
   <!-- build:css styles/vendor.css -->
   <!-- bower:css -->
   <link rel="stylesheet" href="/bower_components/datetimepicker/jquery.datetimepicker.css" />
+  <link rel="stylesheet" href="/bower_components/datatables.net-dt/css/jquery.dataTables.css" />
   <!-- endbower -->
   <!-- endbuild -->
 
@@ -38,18 +39,18 @@
   <div class="menu_bar__container">
     <div class="menu_bar">
       <div class="icon">
-        <a class="reset" href="/">
+        <a class="reset" href="./index.html">
           <img class="icon" src="./images/Logo-64px.png" alt="">
         </a>
       </div>
       <div class="logo">
-        <a class="reset" href="/">
+        <a class="reset" href="./index.html">
           <span>Exff</span>
         </a>
       </div>
       <div class="search_bar">
         <form action="#" id="searchForm">
-          <input type="text" name="searchItem" id="inputSearch" placeholder="Search..." />
+          <input class="mystyle" type="text" name="searchItem" id="inputSearch" placeholder="Search..." />
           <button id="btnSearch" class="primary"><i class="fas fa-search"></i></button>
         </form>
       </div>
@@ -82,20 +83,20 @@
         <div class="field__container hidden" id="errorNotif">
           <span class="error">Đã xảy ra lỗi, vui lòng kiểm tra và đăng bài viết lại sau.</span>
         </div>
-        <div class="field__container">
-          <!-- <label for="title">Tiêu đề</label> -->
-          <input type="text" name="title" class="reset border--bottom text-align--center" id="title"
-            placeholder="Tiêu đề của bài viết." />
-          <p class="error hidden">Tiêu đề không được để trống.</p>
-        </div>
       </div>
       <br>
       <div class="flex flex_justify__center flex_align_items__start">
         <div class="donation_post__content">
-          <input type="text" name="id" id="id" value="" disabled hidden />
+          <input class="mystyle" type="text" name="id" id="id" value="" disabled hidden />
+          <div class="field__container">
+              <label for="title">Tiêu đề</label>
+              <input class="mystyle" type="text" name="title" id="title"
+                placeholder="Tiêu đề của bài viết." />
+              <p class="error hidden">Tiêu đề không được để trống.</p>
+            </div>
           <div class="field__container">
             <label for="address">Địa chỉ</label>
-            <input type="text" name="address" id="address" placeholder="Địa chỉ nhận quyên góp" />
+            <input class="mystyle" type="text" name="address" id="address" placeholder="Địa chỉ nhận quyên góp" />
             <p class="error hidden">Địa chỉ không được để trống.</p>
           </div>
           <div class="field__container">
@@ -187,12 +188,13 @@
   <!-- build:js scripts/vendor/vendor.js -->
   <!-- bower:js -->
   <script src="/bower_components/jquery/dist/jquery.js"></script>
-  <script src="/bower_components/moment/moment.js"></script>
+    <script src="/bower_components/moment/moment.js"></script>
   <script src="/bower_components/moment/locale/vi.js"></script>
   <script src="/bower_components/jquery-mousewheel/jquery.mousewheel.js"></script>
   <script src="/bower_components/php-date-formatter/js/php-date-formatter.js"></script>
   <script src="/bower_components/datetimepicker/build/jquery.datetimepicker.full.min.js"></script>
   <script src="/bower_components/numeral/numeral.js"></script>
+  <script src="/bower_components/datatables.net/js/jquery.dataTables.js"></script>
   <!-- endbower -->
   <!-- endbuild -->
 

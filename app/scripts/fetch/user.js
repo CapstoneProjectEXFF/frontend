@@ -1,4 +1,5 @@
 const USER_URL = '/user';
+const ADMIN_USER_URL = '/admin/user';
 
 function getUser(
   successCallback = DEFAULT_FUNCTION,
@@ -140,6 +141,28 @@ function getChatRoom(
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
+    }
+  };
+  fetchApi(
+    url,
+    options,
+    successCallback,
+    failCallback
+  );
+}
+
+function banUser(
+  id,
+  successCallback = DEFAULT_FUNCTION,
+  failCallback = DEFAULT_FUNCTION
+) {
+  let url = API_URL + ADMIN_USER_URL + `/${id}`;
+  let options = {
+    method: 'PUT',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': getAuthentoken()
     }
   };
   fetchApi(

@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 const API_URL = 'http://localhost:8080';
 // const API_URL = 'http://35.247.191.68:8080';
 const NODE_URL = 'http://35.247.191.68:3000';
@@ -52,6 +53,28 @@ function checkLogin() {
 
 function isNotLogin() {
   return (getUserId() === undefined || getUserId() === null || getAuthentoken() === null);
+}
+function checkAdminLogin() {
+  if (getUserId() === undefined || getUserId() === null || getAuthentoken() === null) {
+    window.location.replace("./adminLogin.html");
+  } else {
+    let userInfor = getUserInfo();
+    if (userInfor.roleByRoleId.name != 'ADMIN') {
+      window.location.replace("./adminLogin.html");
+    }
+  }
+}
+function isAdminLogin() {
+  if (getUserId() === undefined || getUserId() === null || getAuthentoken() === null) {
+    return false;
+  } else {
+    let userInfor = getUserInfo();
+    if (userInfor.roleByRoleId.name != 'ADMIN') {
+      return false;
+    } else {
+      return true;
+    }
+  }
 }
 // fetch
 function fetchApi(

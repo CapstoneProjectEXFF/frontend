@@ -67,7 +67,7 @@ function searchItemInView() {
     categoryValue,
     getItemsSuccess,
     getItemsFalse
-  )
+  );
 }
 function searchDonationInView(page, site) {
   searchDonationPosts(
@@ -75,7 +75,7 @@ function searchDonationInView(page, site) {
     page,
     site,
     getDonationPostsSuccess,
-    getDonationPostsFalse,
+    getDonationPostsFalse
   );
 }
 
@@ -88,7 +88,7 @@ function getUserSuccess(data) {
     const card = createUserCard(data);
     usersTag.append(card);
   }
-};
+}
 function getUsersSuccess(data) {
   const usersTag = $("#users");
   usersTag.html("");
@@ -99,11 +99,11 @@ function getUsersSuccess(data) {
     const card = createUserCard(user);
     usersTag.append(card);
   });
-};
+}
 function getUserFalse(err) {
   const usersTag = $("#users");
   usersTag.html("<p>Không tìm thấy người nào.</p>");
-};
+}
 function getItemsSuccess(data) {
   const itemsTag = $("#items");
   itemsTag.html("");
@@ -114,11 +114,11 @@ function getItemsSuccess(data) {
     const card = createItemCard(item);
     itemsTag.append(card);
   });
-};
+}
 function getItemsFalse(err) {
   const itemsTag = $("#items");
   itemsTag.html("<p>Không có đồ dùng nào.</p>");
-};
+}
 
 function getDonationPostsSuccess(data) {
   const donationPostsTag = $("#donationPosts");
@@ -130,11 +130,11 @@ function getDonationPostsSuccess(data) {
     const card = renderDonationPostCard(donationPost);
     donationPostsTag.append(card);
   });
-};
+}
 function getDonationPostsFalse(err) {
   const donationPostsTag = $("#donationPosts");
   donationPostsTag.html("<p>Không có bài viết nào.</p>");
-};
+}
 function getCategorySuccess(data) {
   console.log(data);
   let options = "";

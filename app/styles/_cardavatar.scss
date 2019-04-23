@@ -1,4 +1,4 @@
-$selected-card-color: #fff;
+$selected-card-color: #0c8ae8;
 
 $user-avatar-size: 48px;
 $list-user-padding: 10px;
@@ -20,6 +20,9 @@ $list-user-padding: 10px;
   }
   &.selected{
     background-color: $selected-card-color;
+    h3,p {
+      color: #fff!important;
+    }
   }
 }
 

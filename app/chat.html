@@ -13,6 +13,7 @@
   <!-- build:css styles/vendor.css -->
   <!-- bower:css -->
   <link rel="stylesheet" href="/bower_components/datetimepicker/jquery.datetimepicker.css" />
+  <link rel="stylesheet" href="/bower_components/datatables.net-dt/css/jquery.dataTables.css" />
   <!-- endbower -->
   <!-- endbuild -->
 
@@ -32,14 +33,15 @@
   <!-- build:js scripts/vendor/vendor.js -->
   <!-- bower:js -->
   <script src="/bower_components/jquery/dist/jquery.js"></script>
-   <script src="/bower_components/moment/moment.js"></script>
+  <script src="/bower_components/moment/moment.js"></script>
   <script src="/bower_components/moment/locale/vi.js"></script>
   <script src="/bower_components/jquery-mousewheel/jquery.mousewheel.js"></script>
   <script src="/bower_components/php-date-formatter/js/php-date-formatter.js"></script>
   <script src="/bower_components/numeral/numeral.js"></script>
+  <script src="/bower_components/datatables.net/js/jquery.dataTables.js"></script>
   <!-- endbower -->
   <!-- endbuild -->
- 
+
   <!-- build:js scripts/vendor/jquery.datetimepicker.full.min.js -->
   <script src="/bower_components/datetimepicker/build/jquery.datetimepicker.full.min.js"></script>
   <!-- endbuild -->
@@ -54,25 +56,97 @@
     <![endif]-->
   <div class="chat__container">
     <div class="chat__room expand chat__room__width__transition" id="chatRoomContainer">
-
       <div class="list" id="chatRoom">
       </div>
       <div class="chat__room__action clearfix">
-        <div class="chat__room__action__button float-left">
-          <a class="reset" href="/">
+        <div class="chat__room__action__button">
+          <a class="reset" href="./index.html">
             <i class="fas fa-home"></i>
           </a>
         </div>
-        <div class="chat__room__action__button float-right" id="chatInventoryTab">
-          <i class="fas fa-boxes"></i>
-        </div>
+        <!-- <div class="chat__room__action__button float-right" id="chatInventoryTab">
+          <i class="fas fa-angle-left"></i>
+        </div> -->
       </div>
     </div>
-    <div class="chat__inventory collapse chat__room__width__transition" id="chatInventory">
+    <div class="chat__box collapse" id="chatBox">
+        <div class="chat__content" id="chatContent">
+        </div>
+        <div class="chat__form">
+          <form action="#" id="messageForm" autocomplete="off">
+            <input class="mystyle reset chat__form__input" type="text" name="message" id="inputMessage"
+              placeholder="Gửi tin nhắn" />
+            <button id="btnSearch" class="primary"><i class="fas fa-paper-plane"></i></button>
+          </form>
+        </div>
+      </div>
+    <div class="flex flex_grow__1 flex_vertical">
+      <div class="chat__info">
+        <div class="chat__inventory__action">
+            <h3 id="tradeTitle" style="padding: 0px 10px;">Trao đổi</h3>
+            <!-- <input class="mystyle" type="text" name="txtAddress" placeholder="Địa chỉ">
+                        <input class="mystyle" type="text" name="txtDateTime" id="datetimepicker"> -->
+            <div class="clearfix">
+              <button class="primary float-right" id="btnConfirm">Chốt trao đổi</button>
+              <button class="primary--o float-right" style="display: none;" id="btnCancle">Bỏ chốt</button>
+              <button class="primary--o float-right" id="btnReset">Hủy trao đổi này</button>
+            </div>
+          </div>
+        <div class="trade_offer__content__notif" style="text-align: center;display: none;" id="tradeOfferContentNotif">
+          <h4 style="margin: 0px;">Đã chốt! Giao địch đang đợi được xác nhận.</h4>
+        </div>
+        <div class="div--center chat__main">
+          <div class="chat__trade_offer__content__container">
+            <div class="trade_offer__content height--auto max-height--300px rightPadding">
+              <div>
+                <h4 id="myTradeContent">Đồ dùng bạn muốn cho đi: </h4>
+                <div class="trade_offer__content__list chat__trade_offer__content__list" id="myTradeOffer">
+                  <h3>Chọn đồ muốn cho đi từ kho của bạn</h3>
+                </div>
+              </div>
+            </div>
+            <div class="trade_offer__content height--auto max-height--300px leftPadding">
+              <div>
+                <h4 id="friendTradeContent">Đồ dùng bạn muốn nhận được: </h4>
+                <div class="trade_offer__content__list chat__trade_offer__content__list" id="friendTradeOffer">
+                  <h3>Chọn đồ muốn nhận được từ kho bên dưới</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="div--center chat__main">
+          <div class="chat__trade_offer__content__container">
+            <div class="trade_offer__content rightPadding">
+              <div>
+                <h4 id="myInventoryTab">Kho của bạn: </h4>
+                <div class="trade_offer__content__list" id="myInventory"></div>
+              </div>
+            </div>
+            <div class="trade_offer__content leftPadding">
+              <div>
+                <h4 id="friendInventoryTab">Kho của <span id="friendInventoryTitle">đối phương</span>: </h4>
+                <div class="trade_offer__content__list" id="friendInventory"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="transaction__history__container">
+                <div class="dropdown clearfix" onclick="dropdown('transactionHistory',this)">
+                  <h3 class="float-left">Lịch sử giao dịch</h3>
+                  <h3 class="float-right"><i id="dropdownHide" class="fas fa-angle-left"></i></h3>
+                  <h3 class="float-right"><i id="dropdownShow" class="fas fa-angle-down" style="display: none;"></i></h3>
+                </div>
+                <div id="transactionHistory" style="display: none;"></div>
+              </div> -->
+      </div>
+    </div>
+    <!-- <div class="chat__inventory collapse chat__room__width__transition" id="chatInventory">
       <div class="chat__inventory__container" id="inventoryContainer">
         <div class="trade_offer__inventory__action" style="border-bottom: 1px solid #ccc;">
           <div onclick="show('#myInventory')" id="myInventoryTab">Kho của tôi</div>
-          <div onclick="show('#friendInventory')" class="selected" id="friendInventoryTab">Kho của bạn bè</div>
+          <div onclick="show('#friendInventory')" class="selected" id="friendInventoryTab">Kho của <span
+              id="friendInventoryTitle">bạn bè</span></div>
         </div>
         <div class="trade_offer__inventory">
           <div class="list" id="myInventory" style="display: none;">
@@ -81,59 +155,10 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="chat__box">
-      <div class="chat__content" id="chatContent">
-      </div>
-      <div class="chat__form">
-        <form action="#" id="messageForm" autocomplete="off">
-          <input type="text" name="searchItem" class="reset" id="inputMessage" placeholder="message" />
-          <button id="btnSearch" class="primary"><i class="fas fa-paper-plane"></i></button>
-        </form>
-      </div>
-    </div>
-    <div class="chat__info">
-      <div class="chat__inventory__action">
-          <h4>Trao đổi</h4>
-        <!-- <input type="text" name="txtAddress" placeholder="Địa chỉ">
-        <input class="" type="text" name="txtDateTime" id="datetimepicker"> -->
-        <div class="clearfix">
-          <button class="primary float-right" id="btnConfirm">Chốt trao đổi</button>
-          <button class="primary--o float-right" style="display: none;" id="btnCancle">Bỏ chốt</button>
-          <button class="primary--o float-right" id="btnReset">Hủy trao đổi này</button>
-        </div>
-      </div>
-      <div class="trade_offer__container">
-        <div class="trade_offer__content__container">
-          <div class="trade_offer__content__notif" id="tradeOfferContentNotif" style="display: none;">
-            <h3>Giao địch đang đợi xác nhận</h3>
-          </div>
-          <div class="trade_offer__content bottomPadding">
-            <div>
-              <h4>Trao</h4>
-              <div class="trade_offer__content__list" id="myTradeOffer"></div>
-            </div>
-          </div>
-          <div class="trade_offer__content topPadding">
-            <div>
-              <h4>Nhận</h4>
-              <div class="trade_offer__content__list" id="friendTradeOffer"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- <div class="transaction__history__container">
-        <div class="dropdown clearfix" onclick="dropdown('transactionHistory',this)">
-          <h3 class="float-left">Lịch sử giao dịch</h3>
-          <h3 class="float-right"><i id="dropdownHide" class="fas fa-angle-left"></i></h3>
-          <h3 class="float-right"><i id="dropdownShow" class="fas fa-angle-down" style="display: none;"></i></h3>
-        </div>
-        <div id="transactionHistory" style="display: none;"></div>
-      </div> -->
-    </div>
+    </div> -->
   </div>
 
-
+  <div id="modalContent"></div>
 
 
 
@@ -142,12 +167,13 @@
   <script src="scripts/menubar.js"></script>
   <script src="scripts/fetch/relationship.js"></script>
   <script src="scripts/validation.js"></script>
-   <script src="scripts/fetch/item.js"></script>
+  <script src="scripts/fetch/item.js"></script>
   <script src="scripts/fetch/login.js"></script>
   <script src="scripts/fetch/register.js"></script>
   <script src="scripts/fetch/transaction.js"></script>
   <script src="scripts/fetch/chat.js"></script>
   <script src="scripts/user.js"></script>
+  <script src="scripts/modal.js"></script>
   <!-- endbuild -->
   <!-- build:js scripts/view/chat-view.js-->
   <script src="scripts/view/chat-view.js"></script>
