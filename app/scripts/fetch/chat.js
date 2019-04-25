@@ -86,7 +86,7 @@ function renderMessage(message, avatar = './images/user.png') {
 }
 
 function renderNotifMessage(message, name = '') {
-  const { sender } = message;
+  const { type } = message;
 
   let msg = '';
   USER_ACCEPTED_TRADE_MESSAGE = -1;
@@ -96,7 +96,7 @@ function renderNotifMessage(message, name = '') {
   USER_ADDED_ITEM_MESSAGE = -5;
   USER_REMOVED_ITEM_MESSAGE = -6;
 
-  switch (sender) {
+  switch (type) {
     case USER_ACCEPTED_TRADE_MESSAGE:
       msg = `<b>${name}</b> đã chốt`;
       break;
@@ -104,7 +104,7 @@ function renderNotifMessage(message, name = '') {
       msg = `<b>${name}</b> vừa hủy chốt`;
       break;
     case USER_RESET_TRADE_MESSAGE:
-      msg = `Cuộc trao đổi vừa được reset`;
+      msg = `Cuộc trao đổi vừa bị hủy`;
       break;
     case TRADE_DONE_MESSAGE:
       msg = `Trao đổi hoàn tất`;
@@ -120,8 +120,6 @@ function renderNotifMessage(message, name = '') {
       break;
   }
   return `
-    <div class="chat__message__notif">
-      <p>${msg}</p>
-    </div>
+      <span>${msg}</span>
   `;
 }

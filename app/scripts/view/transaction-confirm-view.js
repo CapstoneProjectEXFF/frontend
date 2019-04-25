@@ -127,6 +127,8 @@ function initTransactionConfirmImage(data) {
 }
 function getTransactionSuccess(data) {
   myUserId = USER_ID;
+  console.log(data);
+  
   $('#myName').text(getUserInfo().fullName);
   senderId = data.transaction.senderId;
   receiverId = data.transaction.receiverId;

@@ -110,7 +110,7 @@ function initTradeOfferButton() {
       socket.emit('reset-trade', data);
       isConfirm = false;
       $('#btnConfirm').show();
-      $('#tradeOfferContentNotif').hide();
+      // $('#tradeOfferContentNotif').hide();
    });
    $('#btnCancle').click(() => {
       let data = {
@@ -122,7 +122,7 @@ function initTradeOfferButton() {
       $('#btnConfirm').show();
       $('#btnReset').show();
       $('#btnCancle').hide();
-      $('#tradeOfferContentNotif').hide();
+      // $('#tradeOfferContentNotif').hide();
    });
    socket.on('user-accepted-trade', (data) => {
       console.log(data);
@@ -132,7 +132,7 @@ function initTradeOfferButton() {
       }
       isConfirm = true;
       // $('#btnConfirm').hide();
-      $('#tradeOfferContentNotif').show();
+      // $('#tradeOfferContentNotif').show();
    });
    socket.on('trade-unconfirmed', (data) => {
       console.log('unconfirm');
@@ -144,7 +144,7 @@ function initTradeOfferButton() {
       $('#btnConfirm').show();
       $('#btnReset').show();
       $('#btnCancle').hide();
-      $('#tradeOfferContentNotif').hide();
+      // $('#tradeOfferContentNotif').hide();
       // selectChatRoom(currentChatRoom.room);
    });
    socket.on('trade-reseted', (data) => {
@@ -206,10 +206,18 @@ function initMessageForm() {
          $('#chatContent').append(renderMessage(data, avatar));
          scrollBottom(200);
       } else {
-         let name = (data.msg == USER_ID) ? USER_INFO.fullName : friendInfo.fullName;
-         $('#chatContent').append(renderNotifMessage(data, name));
-         scrollBottom(200);
+         // let name = (data.msg == USER_ID) ? USER_INFO.fullName : friendInfo.fullName;
+         // $('#chatContent').append(renderNotifMessage(data, name));
+         // scrollBottom(200);
       }
+   });
+   socket.on("trade-change", function (data) {
+      if (data.room == undefined || data.room != currentChatRoom.room) {
+         return;
+      }
+      let name = (data.receiverId == USER_ID) ? USER_INFO.fullName : friendInfo.fullName;
+      let msg = renderNotifMessage(data, name);
+      $('#tradeOfferContentNotif').html(`<h4 style="margin: 0px;">${msg}</h4>`);
    });
 }
 function initRooms() {
@@ -352,7 +360,7 @@ function selectChatRoom(selectedRoomName) {
             "rejoin-room",
             roomInfo
          );
-         $('#tradeOfferContentNotif').hide();
+         // $('#tradeOfferContentNotif').hide();
          if (currentChatRoom.users != undefined && currentChatRoom.users.length >= 2) {
             myInfo = (currentChatRoom.users[0].userId === USER_ID) ? currentChatRoom.users[0] : currentChatRoom.users[1];
             friendInfo = (currentChatRoom.users[0].userId !== USER_ID) ? currentChatRoom.users[0] : currentChatRoom.users[1];
@@ -363,12 +371,12 @@ function selectChatRoom(selectedRoomName) {
                $('#btnConfirm').hide();
                $('#btnReset').hide();
                $('#btnCancle').show();
-               $('#tradeOfferContentNotif').show();
+               // $('#tradeOfferContentNotif').show();
             } else {
                $('#btnConfirm').show();
                $('#btnReset').show();
                $('#btnCancle').hide();
-               $('#tradeOfferContentNotif').hide();
+               // $('#tradeOfferContentNotif').hide();
             }
             $('#chatRoom').children().removeClass('selected');
             $(`#chatRoom${selectedRoomName}`).addClass('selected');
@@ -387,7 +395,7 @@ function selectChatRoom(selectedRoomName) {
          if (currentChatRoom.status == 1) {
             isConfirm = true;
             $('#btnConfirm').hide();
-            $('#tradeOfferContentNotif').show();
+            // $('#tradeOfferContentNotif').show();
          }
       }
    );
@@ -483,7 +491,7 @@ function confirmTradeOffer() {
    $('#btnConfirm').hide();
    $('#btnReset').hide();
    $('#btnCancle').show();
-   $('#tradeOfferContentNotif').show();
+   // $('#tradeOfferContentNotif').show();
 }
 
 
