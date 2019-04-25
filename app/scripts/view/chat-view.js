@@ -452,7 +452,7 @@ function getItemsSuccess(data, tagId) {
    const inventoryTag = $(tagId);
    inventoryTag.html("");
    if (data.length === 0) {
-      inventoryTag.html("<h1>Không có đồ dùng nào.</h1>");
+      inventoryTag.html("<h3>Không có đồ dùng nào.</h3>");
    }
    data.forEach(item => {
       const listItem = createTradeOfferIventoryItem(item);
@@ -462,7 +462,7 @@ function getItemsSuccess(data, tagId) {
 
 function getItemsFalse(err, tagId) {
    const inventoryTag = $(tagId);
-   inventoryTag.html("<h1>Không có đồ dùng nào.</h1>");
+   inventoryTag.html("<h3>Không có đồ dùng nào.</h3>");
 }
 
 

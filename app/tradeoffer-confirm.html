@@ -61,7 +61,9 @@
       <div class="menu_bar__icon" id="btnFriend">
         <i class="fas fa-user-plus"></i>
       </div>
-
+      <div class="menu_bar__icon" id="btnChat">
+        <i class="fas fa-comment"></i>
+      </div>
       <div class="user_icon" id="userInfoIcon">
         <a class="reset" href="./login.html">
           <i class="fas fa-user-circle"></i>
@@ -126,10 +128,10 @@
   <!-- build:js scripts/main.js -->
   <script src="scripts/main.js"></script>
   <script src="scripts/menubar.js"></script>
-  <script src="scripts/fetch/relationship.js"></script>
+  <script src="scripts/fetch/chat.js"></script>
   <script src="scripts/validation.js"></script>
-   <script src="scripts/fetch/item.js"></script>
-   <script src="scripts/fetch/item.js"></script>
+  <script src="scripts/fetch/relationship.js"></script>
+  <script src="scripts/fetch/item.js"></script>
   <script src="scripts/fetch/login.js"></script>
   <script src="scripts/fetch/register.js"></script>
   <script src="scripts/fetch/transaction.js"></script>
@@ -257,7 +259,7 @@
       const inventoryTag = $(tagId);
       inventoryTag.html("");
       if (data.length === 0) {
-        inventoryTag.html("<h1>Không có đồ dùng nào.</h1>");
+        inventoryTag.html("<h3>Không có đồ dùng nào.</h3>");
       }
       data.forEach(item => {
         let isSelected = false;
@@ -270,7 +272,7 @@
     };
     function getItemsFalse(err, tagId) {
       const inventoryTag = $(tagId);
-      inventoryTag.html("<h1>Không có đồ dùng nào.</h1>");
+      inventoryTag.html("<h3>Không có đồ dùng nào.</h3>");
     };
     function show(tagId) {
       const hideTagId = tagId === "#myInventory" ? "#friendInventory" : "#myInventory";

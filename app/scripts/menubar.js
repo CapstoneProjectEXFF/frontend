@@ -293,12 +293,12 @@ function renderUserAvatar(avatar) {
       </a>
       <a class="reset" href="./inventory.html">
         <p>
-          <i class="fas fa-boxes"></i> Kho
+          <i class="fas fa-user"></i> Tài khoản
         </p>
       </a>
       <a class="reset" href="./profile.html">
         <p>
-          <i class="fas fa-user"></i> Cá nhân
+        <i class="fas fa-edit"></i> Sửa thông tin
         </p>
       </a>
       <hr style="margin:0;"/>

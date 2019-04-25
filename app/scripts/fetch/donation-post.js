@@ -212,7 +212,7 @@ function renderDonationPostCard(donationPost, isEdit = false) {
     </div>`
   ) : '';
   const donateAction = (user.id + '' !== getUserId()) ? (
-    `<a class="reset" href="./donation-send.html?donationPostId=${donationPost.id}">
+    `<a class="reset donation_action" href="./donation-send.html?donationPostId=${donationPost.id}">
       <button class="primary">Quyên góp</button>
     </a>`
   ) : '';
@@ -228,9 +228,9 @@ function renderDonationPostCard(donationPost, isEdit = false) {
               <p class="info__name ellipsis">${user.fullName}</p>
             </a>
             <p class="info__time ellipsis">${formatTime(donationPost.createTime)}</p>
-            <p class="info__address ellipsis">- tại <b>${donationPost.address}</b></p>
+            ${donateAction}
           </div>
-          ${donateAction}
+            <p class="info__address ellipsis">- tại <b>${donationPost.address}</b></p>
         </div>
         <a class="reset" href="./donation-post.html?id=${donationPost.id}">
           <div class="post__info">

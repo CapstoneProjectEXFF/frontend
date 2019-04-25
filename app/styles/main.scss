@@ -169,6 +169,11 @@ $card-padding: 10px;
   h4 {
     margin: 5px 0px;
   }
+  .list h3{
+    text-align: center;
+    color: #888;
+    font-size: 1.5em;
+  }
 }
 .trade_offer__content{
   width: 100%;
@@ -191,6 +196,11 @@ $card-padding: 10px;
       height: 100%;
       box-sizing: border-box;
       overflow: auto;
+      h3 {
+        text-align: center;
+        color: #888;
+        font-size: 1.5em;
+      }
     }
   }
   &.height--auto{

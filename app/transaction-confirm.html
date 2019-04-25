@@ -27,10 +27,12 @@
   <!-- build:js scripts/vendor/modernizr.js -->
   <script src="/bower_components/modernizr/modernizr.js"></script>
   <!-- endbuild -->
- 
+
   <!-- build:js scripts/vendor/socket.js -->
   <script src="/bower_components/socket.io-client/dist/socket.io.js"></script>
   <!-- endbuild -->
+  <!-- firebase -->
+  <script src="https://www.gstatic.com/firebasejs/5.8.5/firebase.js"></script>
 </head>
 
 <body>
@@ -61,7 +63,9 @@
       <div class="menu_bar__icon" id="btnFriend">
         <i class="fas fa-user-plus"></i>
       </div>
-
+      <div class="menu_bar__icon" id="btnChat">
+        <i class="fas fa-comment"></i>
+      </div>
       <div class="user_icon" id="userInfoIcon">
         <a class="reset" href="./login.html">
           <i class="fas fa-user-circle"></i>
@@ -92,121 +96,136 @@
         <div>
           <h4>Người trao đổi</h4>
           <div class="transaction_confirm__userinfo clearfix" id="transactionUserInfo">
-            
+
           </div>
         </div>
         <div>
           <p><b>Ngày trao đổi: </b><span id="transactionCofirmDate"></span></p>
         </div>
+        <div>
+          <button class="primary--o" id="btnRating" style="display: none;">Đánh giá</button>
+        </div>
+      </div>
+    </div>
+    <div class="trade_offer__content__container">
+      <div class="trasaction_confirm__info">
+        <h3>Thông tin xác nhận trao đổi</h3>
+        <p id="receiptConfirmNotif" style="color: darkgreen"></p>
+        <div>
+          <canvas id="canvas"></canvas>
+        </div>
+        <div>
+          Xác nhận đã chuyển hàng
+          <div class="item__form__image">
+            <div>
+              <p class="error hidden">Phải đăng ít nhất 1 hình.</p>
+            </div>
+            <div class="image__form__uploaded" id="imageUploaded"></div>
+            <div>
+              <button class="primary" id="btnUploadReceipt" style="display: none;">
+                <i class="fas fa-check"></i> Gửi hình ảnh xác nhận
+              </button>
+            </div>
+            <div class="upload-btn-wrapper" id="btnChooseFile">
+              <button class="primary--o">
+                <i class="fas fa-images"></i> Thêm hình ảnh
+              </button>
+              <input type="file" name="image" id="image" accept="image/*">
+            </div>
+          </div>
+        </div>
+        <div>
+          Xác nhận
+          <div class="item__form__image">
+            <div class="image__form__uploaded" id="friendReceipt">
+              <div class="image position--relative">
+                <div class="background" id="friendReceiptImage"></div>
+              </div>
+            </div>
+            <div>
+              <button class="primary" id="btnConfirmReceipt" style="display: none;">
+                <i class="fas fa-check"></i> Xác nhận đã trao đổi
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
+  <div id="modalContent"></div>
+  <div>
+    <div class="modal__container" id="modalRating" style="display: none;">
+      <div class="modal__close" onclick="hideModal('modalRating')"></div>
+      <div class="modal center">
+        <div class="modal__title clearfix">
+          <h3 class="float-left">Đánh giá</h3>
+          <h3 class="float-right" onclick="hideModal('modalRating')">
+            <i class="fas fa-times"></i>
+          </h3>
+        </div>
+        <hr class="gray no--margin">
+        <div class="modal__content">
+          <div class="field__container">
+            <p id="ratingStar" style="text-align: center;font-size: 1.5em;cursor: pointer;color:#fff263;">
+              <i class="fas fa-star" onclick="renderStar(0)"></i>
+              <i class="fas fa-star" onclick="renderStar(1)"></i>
+              <i class="fas fa-star" onclick="renderStar(2)"></i>
+              <i class="fas fa-star" onclick="renderStar(3)"></i>
+              <i class="fas fa-star" onclick="renderStar(4)"></i>
+            </p>
+          </div>
+          <div class="field__container">
+            <label for="content">Nội dung</label>
+            <textarea class="autosize" name="content" id="content" placeholder="Nhận xét"></textarea>
+          </div>
+          <hr class="gray no--margin">
+          <div class="modal__action clearfix">
+            <button class="primary float-right" onclick="sendRate()">Gửi</button>
+            <button class="danger float-right" onclick="hideModal('modalRating')">Hủy</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
 
-
-  <!-- build:js scripts/vendor/vendor.js -->
-  <!-- bower:js -->
-  <script src="/bower_components/jquery/dist/jquery.js"></script>
+    <!-- build:js scripts/vendor/vendor.js -->
+    <!-- bower:js -->
+    <script src="/bower_components/jquery/dist/jquery.js"></script>
     <script src="/bower_components/moment/moment.js"></script>
-  <script src="/bower_components/moment/locale/vi.js"></script>
-  <script src="/bower_components/jquery-mousewheel/jquery.mousewheel.js"></script>
-  <script src="/bower_components/php-date-formatter/js/php-date-formatter.js"></script>
-  <script src="/bower_components/datetimepicker/build/jquery.datetimepicker.full.min.js"></script>
-  <script src="/bower_components/numeral/numeral.js"></script>
-  <script src="/bower_components/datatables.net/js/jquery.dataTables.js"></script>
-  <!-- endbower -->
-  <!-- endbuild -->
+    <script src="/bower_components/moment/locale/vi.js"></script>
+    <script src="/bower_components/jquery-mousewheel/jquery.mousewheel.js"></script>
+    <script src="/bower_components/php-date-formatter/js/php-date-formatter.js"></script>
+    <script src="/bower_components/datetimepicker/build/jquery.datetimepicker.full.min.js"></script>
+    <script src="/bower_components/numeral/numeral.js"></script>
+    <script src="/bower_components/datatables.net/js/jquery.dataTables.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
 
-  <!-- build:js scripts/main.js -->
-  <script src="scripts/main.js"></script>
-  <script src="scripts/menubar.js"></script>
-  <script src="scripts/fetch/relationship.js"></script>
-  <script src="scripts/validation.js"></script>
-   <script src="scripts/fetch/item.js"></script>
-   
-  <script src="scripts/fetch/login.js"></script>
-  <script src="scripts/fetch/register.js"></script>
-  <script src="scripts/fetch/transaction.js"></script>
-  <!-- endbuild -->
-  <script>
-    const USER_ID = getUserId();
-    let transactionId;
-    let senderId;
-    let receiverId;
-    let myUserId;
-    let friendUserId;
-    let myUserInfo;
-    let friendUserInfo;
-    let sendedItems = []; // list item want to send
-    let receivedItems = []; // list item want to receive 
-    let details = [];
-    $(document).ready(() => {
-      let urlParams = new URLSearchParams(window.location.search);
-      if (urlParams.has("id")) {
-        initConfirmView(urlParams);
-      } else {
-        window.location.replace("./error404.html");
-      }
-    });
-    function initConfirmView(urlParams) {
-      transactionId = urlParams.get("id");
-      getTransaction(
-        transactionId,
-        getTransactionSuccess,
-        getTransactionFail
-      );
-    }
-    function initTransactionInfo(data) {
-      let transaction = data.transaction;
-      let info = `
-      <div class="float-left">
-        <p class="ellipsis">${transaction.sender.fullName}</p>
-        <p class="ellipsis">${transaction.sender.phoneNumber}</p>
-      </div>
-      <div class="split"></div>
-      <div class="float-right">
-        <p class="ellipsis">${transaction.receiver.fullName}</p>
-        <p class="ellipsis">${transaction.receiver.phoneNumber}</p>
-      </div>
-      `
-      $('#transactionUserInfo').html(info);
-      $('#transactionCofirmDate').text(formatTime(transaction.modifyDate))
-    }
-    function getTransactionSuccess(data) {
-      myUserId = USER_ID;
-      $('#myName').text(getUserInfo().fullName);
-      senderId = data.transaction.senderId;
-      receiverId = data.transaction.receiverId;
-      if (receiverId == myUserId) {
-        friendUserId = senderId;
-        $('#friendName').text(data.transaction.sender.fullName);
-      } else {
-        friendUserId = receiverId;
-        $('#friendName').text(data.transaction.receiver.fullName);
-      }
-      details = data.details;
-      initTransactionInfo(data);
-      renderTradeOfferContent(details);
-    }
-    function getTransactionFail(err) {
-      window.location.replace("./error404.html");
-    }
-    function renderTradeOfferContent(details, isClickable = false) {
-      const myTradeOfferContentTag = $("#myTradeOffer");
-      const friendTradeOfferContentTag = $("#friendTradeOffer");
-      myTradeOfferContentTag.html("");
-      friendTradeOfferContentTag.html("");
-      details.forEach(detail => {
-        if (detail.userId == USER_ID) {
-          myTradeOfferContentTag.append(createTradeOfferContentItem(detail.item, isClickable));
-          sendedItems.push(detail.item);
-        } else {
-          friendTradeOfferContentTag.append(createTradeOfferContentItem(detail.item, isClickable));
-          receivedItems.push(detail.item);
-        }
-      });
-    }
-  </script>
+    <!-- build:js scripts/vendor/qrcode.js -->
+    <script src="scripts/qrcode.min.js"></script>
+    <!-- endbuild -->
+
+    <!-- build:js scripts/main.js -->
+    <script src="scripts/main.js"></script>
+    <script src="scripts/menubar.js"></script>
+    <script src="scripts/image.js"></script>
+    <script src="scripts/modal.js"></script>
+    <script src="scripts/fetch/chat.js"></script>
+    <script src="scripts/validation.js"></script>
+    <script src="scripts/fetch/relationship.js"></script>
+    <script src="scripts/fetch/item.js"></script>
+    <script src="scripts/fetch/login.js"></script>
+    <script src="scripts/fetch/register.js"></script>
+    <script src="scripts/fetch/transaction.js"></script>
+    <script src="scripts/fetch/rating.js"></script>
+    <!-- endbuild -->
+    <!-- build:js scripts/firebase-image.js -->
+    <script src="scripts/firebase-image.js"></script>
+    <!-- endbuild -->
+    <!-- build:js scripts/view/transaction-confirm-view.js-->
+    <script src="scripts/view/transaction-confirm-view.js"></script>
+    <!-- endbuild -->
+
 </body>
 
 </html>

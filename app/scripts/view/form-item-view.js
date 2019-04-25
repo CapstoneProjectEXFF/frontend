@@ -164,7 +164,6 @@ function uploadImage(event) {
     let file = files[i];
     uploadImageToFirebase(file, showImage);
   }
-  // uploadImageToFirebase(file, showImage);
 }
 function showImage(url) {
   const imageUploaded = $('#imageUploaded');

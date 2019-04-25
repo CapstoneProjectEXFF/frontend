@@ -274,6 +274,59 @@ function updateTradeOffer(
   );
 }
 
+function uploadTransactionReceipt(
+  id,
+  receiptUrl,
+  successCallback = DEFAULT_FUNCTION,
+  failCallback = DEFAULT_FUNCTION
+) {
+  let url = API_URL + TRANSACTION_URL + '/uploadReceipt';
+  let data = {
+    'id': Number(id),
+    'url': receiptUrl
+  };
+  let options = {
+    method: 'PUT',
+    body: JSON.stringify(data),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': getAuthentoken()
+    }
+  };
+  fetchApi(
+    url,
+    options,
+    successCallback,
+    failCallback
+  );
+}
+function confirmTransactionReceipt(
+  id,
+  successCallback = DEFAULT_FUNCTION,
+  failCallback = DEFAULT_FUNCTION
+) {
+  let url = API_URL + TRANSACTION_URL + '/confirmReceipt';
+  let data = {
+    'id': Number(id)
+  };
+  let options = {
+    method: 'PUT',
+    body: JSON.stringify(data),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': getAuthentoken()
+    }
+  };
+  fetchApi(
+    url,
+    options,
+    successCallback,
+    failCallback
+  );
+}
+
 function renderTransactionHistory(transaction) {
   return `
     <a class="reset" href='./transaction-confirm.html?id=${transaction.id}'>
