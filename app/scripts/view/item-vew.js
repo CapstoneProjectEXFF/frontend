@@ -29,7 +29,7 @@ function initView(data) {
   category.text(data.category.name);
   name.text(data.name);
   description.text(data.description);
-  address.text(data.address);
+  address.text(data.user.address);
   if (data.user.id != getUserId()) {
     tradeOfferLink.show();
     tradeOfferLink.attr("href", `./chat.html?userId=${data.user.id}&itemId=${data.id}`);

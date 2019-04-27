@@ -4,7 +4,6 @@ function addItem(
   category,
   name,
   description,
-  address,
   privacy,
   urls = [],
   successCallback = DEFAULT_FUNCTION,
@@ -15,7 +14,6 @@ function addItem(
     'category': category,
     'name': name,
     'description': description,
-    'address': address,
     'privacy': privacy,
     'urls': urls
   };
@@ -41,7 +39,6 @@ function updateItem(
   category,
   name,
   description,
-  address,
   privacy,
   urls = [],
   removedUrls = [],
@@ -54,7 +51,6 @@ function updateItem(
     'category': category,
     'name': name,
     'description': description,
-    'address': address,
     'privacy': privacy,
     'newUrls': urls,
     'removedUrlIds': removedUrls
@@ -268,7 +264,7 @@ function createItemCard(item, isEdit = false) {
           <div class="background" style="background-image: url(${image})"></div>
         </div>
         <div class="card__info">
-          <p class="address ellipsis">${item.address}</p>
+          <p class="address ellipsis">${item.user.address}</p>
           <h4 class="ellipsis">${item.name}</h4>
           <p class="ellipsis">${item.description}</p>
         </div>

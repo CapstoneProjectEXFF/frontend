@@ -27,7 +27,9 @@
   <!-- build:js scripts/vendor/modernizr.js -->
   <script src="/bower_components/modernizr/modernizr.js"></script>
   <!-- endbuild -->
-
+  <!-- build:js scripts/vendor/socket.js -->
+  <script src="/bower_components/socket.io-client/dist/socket.io.js"></script>
+  <!-- endbuild -->
   <!-- firebase -->
   <script src="https://www.gstatic.com/firebasejs/5.8.5/firebase.js"></script>
 </head>
@@ -97,11 +99,11 @@
           <textarea name="description" id="description"></textarea>
           <p class="error hidden">Mô tả không được để trống.</p>
         </div>
-        <div class="field__container">
+        <!-- <div class="field__container">
           <label for="address">Địa chỉ</label>
           <input class="mystyle" type="text" name="address" id="address" />
           <p class="error hidden">Địa chỉ không được để trống.</p>
-        </div>
+        </div> -->
         <div class="field__container">
           <label for="privacy">Chia sẻ với</label>
           <select class="mystyle" name="privacy" id="privacy">
@@ -141,7 +143,6 @@
 
   <!-- build:js scripts/main.js -->
   <script src="scripts/main.js"></script>
-  <script src="scripts/menubar.js"></script>
   <script src="scripts/fetch/chat.js"></script>
   <script src="scripts/image.js"></script>
   <script src="scripts/validation.js"></script>
@@ -149,13 +150,15 @@
   <script src="scripts/fetch/item.js"></script>
   <script src="scripts/fetch/category.js"></script>
   <!-- endbuild -->
+  <!-- build:js scripts/menubar.js-->
+  <script src="scripts/menubar.js"></script>
+  <!-- endbuild -->
   <!-- build:js scripts/firebase-image.js -->
   <script src="scripts/firebase-image.js"></script>
   <!-- endbuild -->
   <!-- build:js scripts/view/form-item-view.js -->
   <script src="scripts/view/form-item-view.js"></script>
   <!-- endbuild -->
-  
 </body>
 
 </html>

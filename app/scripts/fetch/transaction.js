@@ -1,5 +1,6 @@
 const TRANSACTION_URL = '/transaction';
 const DONATION_URL = '/donators';
+const NOTIF_URL = '/notification';
 
 function createDetails(senderItems, receiverItems) {
   let details = [];
@@ -60,6 +61,28 @@ function getReceivedTransaction(
   failCallback = DEFAULT_FUNCTION
 ) {
   let url = API_URL + TRANSACTION_URL;
+  let options = {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': getAuthentoken()
+    }
+  };
+  fetchApi(
+    url,
+    options,
+    successCallback,
+    failCallback
+  );
+}
+function getTransactionNotif(
+  successCallback = DEFAULT_FUNCTION,
+  failCallback = DEFAULT_FUNCTION
+) {
+  let id = getUserId();
+  let url = NODE_URL + NOTIF_URL + `?userId=${id}`;
+
   let options = {
     method: 'GET',
     headers: {
@@ -326,6 +349,8 @@ function confirmTransactionReceipt(
     failCallback
   );
 }
+
+
 
 function renderTransactionHistory(transaction) {
   return `

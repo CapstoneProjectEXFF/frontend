@@ -5,6 +5,8 @@ const relationshipNotifContainerTagId = 'relationshipNotifContainer';
 const chatNotifPopupTagId = 'chatNotifPopup';
 const chatNotifContainerTagId = 'chatNotifContainer';
 
+const socket = io(NODE_URL);
+
 let notification = [];
 let relationshipNotif = [];
 let chatNotif = [];
@@ -17,12 +19,16 @@ function hideAllMenuPopupExcept(tagId) {
 
 // notification -----------------------------
 
+function markAsRead(id) {
+  socket.emit('noti-read', id);
+}
+
 function renderNotification(notif) {
   let message = (notif.senderId === Number(getUserId())) ?
     `<b>${notif.receiver.fullName}</b> đề xuất một yêu trao đổi` :
     `Bạn nhận được một yêu cầu trao đổi từ <b>${notif.sender.fullName}</b>`;
   return `
-    <a class="reset" href="/chat.html?userId=${notif.sender.id}">
+    <a class="reset" onclick="markAsRead(${notif.id})" href="/chat.html?userId=${notif.sender.id}">
       <div class="notification">
         <p class="notification__content">${message}</p>
         <p class="notification__time">${formatTime(notif.modifyTime)}</p>
@@ -41,6 +47,7 @@ function renderNotificationContainer(popupId, containerId) {
 
 function renderNotificationList(notifs) {
   const notificationContainer = $(`#${notificationContainerTagId}`);
+  console.log(notifs);
   if (notifs.length <= 0) {
     notificationContainer.html('Không có giao dịch nào.');
   } else {
@@ -53,26 +60,41 @@ function renderNotificationList(notifs) {
 
 $(document).ready(() => {
   const btnBell = $('#btnBell');
-  btnBell.hide();
-  // btnBell.append(
-  //   renderNotificationContainer(
-  //     notificationPopupTagId,
-  //     notificationContainerTagId
-  //   )
-  // );
-  // btnBell.click(() => {
-  //   const notificationPopup = $(`#${notificationPopupTagId}`);
-  //   hideAllMenuPopupExcept(notificationPopupTagId);
-  //   notificationPopup.toggle();
-  //   if (notification.length <= 0) {
-  //     getReceivedTransaction((data) => {
-  //       notification = data;
-  //       renderNotificationList(notification);
-  //     });
-  //   } else {
-  //     renderNotificationList(notification);
-  //   }
-  // });
+  // btnBell.hide();
+  btnBell.append(
+    renderNotificationContainer(
+      notificationPopupTagId,
+      notificationContainerTagId
+    )
+  );
+  socket.on('trade-change', function(data) {
+    notification.push(data);
+    renderNotificationList(notification);
+  });
+  btnBell.click(() => {
+    const notificationPopup = $(`#${notificationPopupTagId}`);
+    hideAllMenuPopupExcept(notificationPopupTagId);
+    notificationPopup.toggle();
+    getTransactionNotif(
+      (data) => {
+        notification = data;
+        renderNotificationList(notification);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+    // if (notification.length <= 0) {
+    //   getTransactionNotif(
+    //     (data) => {
+    //       notification = data;
+    //       renderNotificationList(notification);
+    //     }
+    //   );
+    // } else {
+    //   renderNotificationList(notification);
+    // }
+  });
 });
 
 // friend relationship -----------------------------

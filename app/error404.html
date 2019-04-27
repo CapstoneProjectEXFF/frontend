@@ -27,6 +27,9 @@
   <!-- build:js scripts/vendor/modernizr.js -->
   <script src="/bower_components/modernizr/modernizr.js"></script>
   <!-- endbuild -->
+  <!-- build:js scripts/vendor/socket.js -->
+  <script src="/bower_components/socket.io-client/dist/socket.io.js"></script>
+  <!-- endbuild -->
 </head>
 
 <body>
@@ -47,7 +50,7 @@
       </div>
       <div class="search_bar">
         <form action="#" id="searchForm">
-          <input  class="mystyle" type="text" name="searchItem" id="inputSearch" placeholder="Search..." />
+          <input class="mystyle" type="text" name="searchItem" id="inputSearch" placeholder="Search..." />
           <button id="btnSearch" class="primary"><i class="fas fa-search"></i></button>
         </form>
       </div>
@@ -69,15 +72,15 @@
   </div>
 
   <div class="hero-unit">
-      <h1>Error 404</h1>
-      <p>Not found</p>
-      <!-- <ul>
+    <h1>Error 404</h1>
+    <p>Not found</p>
+    <!-- <ul>
         <li><a href="./login.html">Login</a></li>
         <li><a href="./register.html">Register</a></li>
         <li></li>
         <li></li>
       </ul> -->
-    </div>
+  </div>
 
   <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
   <script>
@@ -101,7 +104,7 @@
   <!-- build:js scripts/vendor/vendor.js -->
   <!-- bower:js -->
   <script src="/bower_components/jquery/dist/jquery.js"></script>
-    <script src="/bower_components/moment/moment.js"></script>
+  <script src="/bower_components/moment/moment.js"></script>
   <script src="/bower_components/moment/locale/vi.js"></script>
   <script src="/bower_components/jquery-mousewheel/jquery.mousewheel.js"></script>
   <script src="/bower_components/php-date-formatter/js/php-date-formatter.js"></script>
@@ -113,14 +116,16 @@
 
   <!-- build:js scripts/main.js -->
   <script src="scripts/main.js"></script>
-  <script src="scripts/menubar.js"></script>
   <script src="scripts/fetch/chat.js"></script>
   <script src="scripts/fetch/relationship.js"></script>
   <script src="scripts/validation.js"></script>
-   <script src="scripts/fetch/item.js"></script>
-   
+  <script src="scripts/fetch/item.js"></script>
+
   <script src="scripts/fetch/login.js"></script>
   <script src="scripts/fetch/register.js"></script>
+  <!-- endbuild -->
+  <!-- build:js scripts/menubar.js-->
+  <script src="scripts/menubar.js"></script>
   <!-- endbuild -->
 </body>
 

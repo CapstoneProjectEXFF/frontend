@@ -31,13 +31,13 @@ function getItemSuccess(data) {
   const category = $("#category");
   const name = $("#name");
   const description = $("#description");
-  const address = $("#address");
+  // const address = $("#address");
   const privacy = $("#privacy");
   id.val(data.id);
   category.val(data.category.id);
   name.val(data.name);
   description.val(data.description);
-  address.val(data.address);
+  // address.val(data.address);
   privacy.val(`${data.privacy}`);
   images = data.images;
   if (images != null && images.length > 0) {
@@ -58,14 +58,13 @@ function initForm() {
       let category = $("#category").val();
       let name = $("#name").val();
       let description = $("#description").val();
-      let address = $("#address").val();
+      // let address = $("#address").val();
       let privacy = $("#privacy").val();
       if (id == null || id == undefined || id == "") {
         addItem(
           category,
           name,
           description,
-          address,
           privacy,
           urls,
           addItemSuccess,
@@ -77,7 +76,6 @@ function initForm() {
           category,
           name,
           description,
-          address,
           privacy,
           urls,
           removedImageId,
@@ -96,9 +94,9 @@ function initForm() {
   $("#description").focusout(() => {
     checkRequire("#description");
   });
-  $("#address").focusout(() => {
-    checkRequire("#address");
-  });
+  // $("#address").focusout(() => {
+  //   checkRequire("#address");
+  // });
   $("#image").change(uploadImage);
 }
 
@@ -106,7 +104,7 @@ function validate() {
   return checkRequire("#category")
     && checkRequire("#name")
     && checkRequire("#description")
-    && checkRequire("#address")
+    // && checkRequire("#address")
     && checkImage();
 }
 
