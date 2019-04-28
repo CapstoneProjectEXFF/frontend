@@ -123,6 +123,8 @@ function initAddFriendAction(data) {
   }
 }
 function initTransactionHistory(data) {
+  console.log(data);
+  
   const transactionHistoryTag = $('#transactionHistory');
   data.forEach(transaction => {
     transactionHistoryTag.append(

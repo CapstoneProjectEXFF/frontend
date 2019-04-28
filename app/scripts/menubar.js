@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 const notificationPopupTagId = 'notificationPopup';
 const notificationContainerTagId = 'notificationContainer';
 const relationshipNotifPopupTagId = 'relationshipNotifPopup';
@@ -19,22 +20,56 @@ function hideAllMenuPopupExcept(tagId) {
 
 // notification -----------------------------
 
-function markAsRead(id) {
+function markAsRead(id, userId) {
   socket.emit('noti-read', id);
+  // href="/chat.html?userId=${user.userId}"
+  window.location.href = `/chat.html?userId=${userId}`;
 }
 
-function renderNotification(notif) {
-  let message = (notif.senderId === Number(getUserId())) ?
-    `<b>${notif.receiver.fullName}</b> đề xuất một yêu trao đổi` :
-    `Bạn nhận được một yêu cầu trao đổi từ <b>${notif.sender.fullName}</b>`;
+function getNotifMessage(notif, name = '') {
+  const { notiType } = notif;
+
+  let msg = '';
+  USER_ACCEPTED_TRADE_MESSAGE = -1;
+  USER_CANCELED_TRADE_CONFIRM_MESSAGE = -2;
+  USER_RESET_TRADE_MESSAGE = -3;
+  TRADE_DONE_MESSAGE = -4;
+  USER_ADDED_ITEM_MESSAGE = -5;
+  USER_REMOVED_ITEM_MESSAGE = -6;
+
+  switch (notiType) {
+    case USER_ACCEPTED_TRADE_MESSAGE:
+      msg = `<b>${name}</b> đã chốt`;
+      break;
+    case USER_CANCELED_TRADE_CONFIRM_MESSAGE:
+      msg = `<b>${name}</b> vừa hủy chốt`;
+      break;
+    case USER_RESET_TRADE_MESSAGE:
+      msg = `Cuộc trao đổi vừa bị hủy`;
+      break;
+    case TRADE_DONE_MESSAGE:
+      msg = `Trao đổi hoàn tất`;
+      break;
+    case USER_ADDED_ITEM_MESSAGE:
+      msg = `<b>${name}</b> thêm một đồ dùng vào cuộc trao đổi`;
+      break;
+    case USER_REMOVED_ITEM_MESSAGE:
+      msg = `<b>${name}</b> xóa một đồ dùng khỏi cuộc trao đổi`;
+      break;
+    default:
+      msg = '';
+      break;
+  }
+  return `${msg}`;
+}
+function renderNotification(notif, user) {
+  let message = getNotifMessage(notif, user.fullName);
   return `
-    <a class="reset" onclick="markAsRead(${notif.id})" href="/chat.html?userId=${notif.sender.id}">
-      <div class="notification">
+      <div class="notification" onclick="markAsRead('${notif._id}','${user.userId}')">
         <p class="notification__content">${message}</p>
-        <p class="notification__time">${formatTime(notif.modifyTime)}</p>
       </div>
-    </a>
-  `;
+    `;
+  // <p class="notification__time">${formatTime(notif.modifyTime)}</p>
 }
 
 function renderNotificationContainer(popupId, containerId) {
@@ -49,11 +84,13 @@ function renderNotificationList(notifs) {
   const notificationContainer = $(`#${notificationContainerTagId}`);
   console.log(notifs);
   if (notifs.length <= 0) {
-    notificationContainer.html('Không có giao dịch nào.');
+    notificationContainer.html('<p style="text-align:center">Không có thông báo mới nào.</p>');
   } else {
     notificationContainer.html('');
-    notifs.forEach(notif => {
-      notificationContainer.append(renderNotification(notif));
+    notifs.forEach(room => {
+      room.notifications.forEach(notif => {
+        notificationContainer.append(renderNotification(notif, room.user[0]));
+      });
     });
   }
 }
@@ -67,7 +104,8 @@ $(document).ready(() => {
       notificationContainerTagId
     )
   );
-  socket.on('trade-change', function(data) {
+  socket.on('trade-change', function (data) {
+    console.log(data);
     notification.push(data);
     renderNotificationList(notification);
   });
@@ -78,6 +116,7 @@ $(document).ready(() => {
     getTransactionNotif(
       (data) => {
         notification = data;
+        console.log(data);
         renderNotificationList(notification);
       },
       (err) => {

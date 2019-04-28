@@ -32,11 +32,11 @@ $(document).ready(() => {
    initMessageForm();
    socket.on('item-added', function (itemInfo) {
       console.log(itemInfo);
-      selectItem(itemInfo.itemId, itemInfo.userId, false);
+      selectItem(itemInfo.itemId, itemInfo.ownerId, false);
    });
    socket.on('item-removed', function (itemInfo) {
       console.log(itemInfo);
-      deselectItem(itemInfo.itemId, itemInfo.userId, false);
+      deselectItem(itemInfo.itemId, itemInfo.ownerId, false);
    });
    initChatBoxButton();
    initTradeOfferButton();
@@ -294,8 +294,9 @@ function socketConnectRoom() { //create connect
 
 function socketSendTradeInfo(userId, itemId, action = "add-item") {
    let tradeInfo = {
-      'userId': userId,
+      'ownerId': userId,
       'itemId': itemId,
+      'userId': USER_ID,
       'room': roomName
    };
    socket.emit(action, tradeInfo);
