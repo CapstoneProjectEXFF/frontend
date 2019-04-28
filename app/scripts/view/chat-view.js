@@ -38,6 +38,11 @@ $(document).ready(() => {
       console.log(itemInfo);
       deselectItem(itemInfo.itemId, itemInfo.ownerId, false);
    });
+   socket.on('trade-change', function (data) {
+      console.log(data);
+      // notification.push(data);
+      // renderNotificationList(notification);
+    });
    initChatBoxButton();
    initTradeOfferButton();
    // initDateTime();
