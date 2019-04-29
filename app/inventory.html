@@ -126,24 +126,8 @@
   <div class="div--center background--color-white allContainer donationPostContainer post__container" id="donationPost"
     style="display: none;">
   </div>
-  <div class="div--center background--color-white allContainer tradeOfferContainer" id="transactionHistory"
+  <div class="div--center allContainer tradeOfferContainer transaction__history" id="transactionHistory"
     style="display: none;">
-    <a class="reset" href='./transaction-confirm.html?id=${transaction.id}'>
-      <div class="transaction__container">
-        <div>
-          <p>Đang chuyển</p>
-        </div>
-        <div class="transaction__info">
-          <p>Thời gian: ${formatTime(transaction.createTime)}</p>
-        </div>
-        <div class="transaction__userinfo clearfix position--relative">
-          <div class="float-left">
-            <p class="ellipsis">${transaction.sender.fullName}</p>
-            <p class="ellipsis">${transaction.sender.phoneNumber}</p>
-          </div>
-        </div>
-      </div>
-    </a>
   </div>
 
 

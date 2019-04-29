@@ -14,47 +14,47 @@ $card-margin: 8px;
 $card-padding: 10px;
 
 // font
-@import 'font';
+@import "font";
 
 // general
-@import 'general';
+@import "general";
 
-@import 'flexstyle';
+@import "flexstyle";
 
-@import 'modal';
+@import "modal";
 
-@import 'dasboard';
+@import "dasboard";
 
 // scroll
-@import 'scroll';
+@import "scroll";
 // background
-@import 'background';
+@import "background";
 
 // custom position
-@import 'position';
+@import "position";
 
 // custom form
-@import 'form';
+@import "form";
 // menu bar
-@import 'menubar';
+@import "menubar";
 
 //card
-@import 'card';
+@import "card";
 
 //post
-@import 'post';
+@import "post";
 
 //list
-@import 'listitem';
+@import "listitem";
 
-//user profile, list_card_avatar, 
-@import 'cardavatar';
+//user profile, list_card_avatar,
+@import "cardavatar";
 
 //chat
-@import 'chat';
+@import "chat";
 
 //index
-.index__action{
+.index__action {
   display: flex;
   justify-content: flex-start;
   flex-wrap: nowrap;
@@ -67,7 +67,7 @@ $card-padding: 10px;
     box-sizing: border-box;
     transition: border 0.2s;
   }
-  div.selected{
+  div.selected {
     color: $primary-color;
     border-bottom: 3px solid $primary-color;
   }
@@ -102,13 +102,13 @@ $card-padding: 10px;
 
 //inventory
 
-.inventory{
+.inventory {
   max-width: 1024px;
   margin-left: auto;
   margin-right: auto;
 }
 //trade_offer
-.trade_offer__container{
+.trade_offer__container {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
@@ -118,7 +118,7 @@ $card-padding: 10px;
   margin-right: auto;
 }
 .trade_offer__inventory__container,
-.trade_offer__content__container{
+.trade_offer__content__container {
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -128,10 +128,10 @@ $card-padding: 10px;
   padding: 5px;
   box-sizing: border-box;
 }
-.trade_offer__content__notif{
+.trade_offer__content__notif {
   color: $sucsess-color;
 }
-.trade_offer__inventory__action{
+.trade_offer__inventory__action {
   display: flex;
   justify-content: space-around;
   flex-wrap: nowrap;
@@ -144,15 +144,15 @@ $card-padding: 10px;
     box-sizing: border-box;
     transition: border 0.2s;
   }
-  div.selected{
+  div.selected {
     color: $primary-color;
     border-bottom: 3px solid $primary-color;
   }
 }
-.trade_offer__inventory{
+.trade_offer__inventory {
   position: relative;
   flex-grow: 1;
-  &>div{
+  & > div {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -169,17 +169,17 @@ $card-padding: 10px;
   h4 {
     margin: 5px 0px;
   }
-  .list h3{
+  .list h3 {
     text-align: center;
     color: #888;
     font-size: 1.5em;
   }
 }
-.trade_offer__content{
-  width: 50%;
+.trade_offer__content {
+  width: 100%;
   height: 300px;
   box-sizing: border-box;
-  &>div{
+  & > div {
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -191,7 +191,7 @@ $card-padding: 10px;
     h4 {
       margin: 5px 0px;
     }
-    .trade_offer__content__list{
+    .trade_offer__content__list {
       width: 100%;
       height: 100%;
       box-sizing: border-box;
@@ -203,44 +203,37 @@ $card-padding: 10px;
       }
     }
   }
-  &.height--auto{
+  &.width--haft{
+    width: 50%;
+  }
+  &.height--auto {
     height: auto;
   }
-  &.max-height--300px{
+  &.max-height--300px {
     max-height: 300px;
   }
-  &.bottomPadding{
+  &.bottomPadding {
     padding-bottom: 5px;
   }
-  &.topPadding{
+  &.topPadding {
     padding-top: 5px;
   }
-  &.leftPadding{
+  &.leftPadding {
     padding-left: 5px;
   }
-  &.rightPadding{
+  &.rightPadding {
     padding-right: 5px;
   }
 }
 
-.trasaction_confirm__info{
+.transaction_confirm__container{
   background-color: #fff;
   border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 5px;
+  padding: 10px;
   box-sizing: border-box;
 }
-.transaction_confirm__userinfo{
-  position: relative;
-  width: 100%;
-  box-sizing: border-box;
-  &>div{
-    display: inline-block;
-    width: 50%;
-    padding: 0px 10px;
-    box-sizing: border-box;
-  }
-  .split{
+.transaction_confirm__info__container{
+  .split {
     position: absolute;
     width: 0px;
     height: 100%;
@@ -248,11 +241,28 @@ $card-padding: 10px;
     border-left: 1px solid #888;
     top: 50%;
     left: 50%;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
+  }
+}
+.transaction_confirm__info {
+  float: left;
+  width: 50%;
+  padding: 5px;
+  box-sizing: border-box;
+}
+.transaction_confirm__userinfo {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  & > div {
+    display: inline-block;
+    width: 50%;
+    padding: 0px 10px;
+    box-sizing: border-box;
   }
 }
 //form_item
-.item__form__container{
+.item__form__container {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -262,23 +272,23 @@ $card-padding: 10px;
   margin-left: auto;
   margin-right: auto;
   padding: 20px 20px;
-  background-color: #fff;  
+  background-color: #fff;
   box-sizing: border-box;
   border: 1px solid #ccc;
   border-radius: 5px;
-  &>div{
+  & > div {
     min-width: 300px;
     width: 50%;
     padding: 0px 10px;
     box-sizing: border-box;
   }
 }
-.item__form{
+.item__form {
   border-right: 1px solid #888;
 }
-.item__form__image{
+.item__form__image {
   overflow: hidden;
-  .image__form__uploaded{
+  .image__form__uploaded {
     display: flex;
     flex-wrap: wrap;
     width: 100%;
@@ -287,18 +297,18 @@ $card-padding: 10px;
     width: 200px;
     height: 200px;
     margin: 5px;
-    .image__action{
+    .image__action {
       display: none;
       position: absolute;
       width: 100%;
       height: 100%;
       background-color: rgba($color: #000000, $alpha: 0.5);
-      .image__action__button{
+      .image__action__button {
         cursor: pointer;
         position: absolute;
         top: 50%;
         left: 50%;
-        transform: translate(-50%,-50%);
+        transform: translate(-50%, -50%);
         width: 48px;
         height: 48px;
         line-height: 48px;
@@ -307,51 +317,52 @@ $card-padding: 10px;
         color: #000;
         background: rgba($color: #fff, $alpha: 0.8);
         border-radius: 100vh;
-        &:hover{
+        &:hover {
           background: rgba($color: #fff, $alpha: 1);
         }
       }
     }
-    &:hover .image__action{
+    &:hover .image__action {
       display: block;
     }
   }
 }
-#itemDescription, #postContent{
+#itemDescription,
+#postContent {
   white-space: pre-wrap;
 }
 
 //item
 
-.item__container{
-  .item__image{
+.item__container {
+  .item__image {
     width: 50%;
     margin: 10px 0px;
     padding: 10px 5px;
     background-color: #fff;
     box-sizing: border-box;
   }
-  .item__info{
+  .item__info {
     width: 50%;
     min-height: 364px;
     padding: 8px 2px;
     box-sizing: border-box;
-    &>div{
+    & > div {
       margin: 2px;
       padding: 10px 5px;
       background-color: #fff;
       box-sizing: border-box;
     }
-    .item__category{
+    .item__category {
       padding: 5px 0px;
     }
-    .item__name{
+    .item__name {
       font-size: 2.5em;
       font-weight: 100;
     }
-    .item__user__info{
+    .item__user__info {
       width: 100%;
-      .item__user__avatar{
+      .item__user__avatar {
         flex: 0 0 48px;
         height: 48px;
         width: 48px;
@@ -359,7 +370,7 @@ $card-padding: 10px;
         overflow: hidden;
         background-color: #ccc;
       }
-      p{
+      p {
         padding: 0px 10px;
       }
     }
@@ -367,10 +378,11 @@ $card-padding: 10px;
       margin: 0px;
       word-wrap: break-word;
     }
-    #user, #date{
+    #user,
+    #date {
       font-size: 0.9em;
     }
-    #user{
+    #user {
       font-weight: 600;
     }
   }
@@ -385,7 +397,7 @@ $profile-container-padding: 8px;
 .profile__container {
   background-color: #fff;
   padding: $profile-container-padding;
-  padding-bottom: 0px; 
+  padding-bottom: 0px;
   border: 1px solid $boder-color;
   overflow: hidden;
   box-sizing: border-box;
@@ -399,25 +411,25 @@ $profile-container-padding: 8px;
     border-radius: $profile-height;
     overflow: hidden;
   }
-  .profile__info{
+  .profile__info {
     text-align: center;
   }
-  p{
+  p {
     width: 100%;
-    white-space: nowrap; 
+    white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis; 
+    text-overflow: ellipsis;
     margin: 0px;
     padding: 2px 10px;
     color: #333;
     box-sizing: border-box;
   }
-  .profile__name{
+  .profile__name {
     font-size: 1.5em;
   }
 }
 
-.profile__form__container{
+.profile__form__container {
   max-width: 680px;
   padding: 10px;
   background-color: #fff;
@@ -446,38 +458,59 @@ $profile-container-padding: 8px;
 }
 
 // transaction history
-.transaction__container{
-  position: relative;
-  width: 100%;
-  box-sizing: border-box;
-  background-color: #fff;
-  margin: 5px 0px;
-  padding: 10px 0px;
-  &:hover{
-    background-color: #cfcfcf;
+.transaction__history {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  &::after {
+    content: "";
+    flex: auto;
   }
 }
-.transaction__info{
+.transaction__container {
+  position: relative;
+  min-width: 250px;
+  width: 25%;
+  box-sizing: border-box;
+  background-color: #fff;
+  margin: 10px 3px;
+  padding: 0px 0px;
+  border-radius: 4px;
+  overflow: hidden;
+  &:hover {
+    // background-color: #cfcfcf;
+    box-shadow: 0px 0px 5px #888;
+  }
+  .user__avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 100vh;
+    background-color: #ccc;
+    overflow: hidden;
+  }
+}
+.transaction__status {
   width: 100%;
   padding: 0px 10px;
+  box-sizing: border-box;
+  p {
+    margin: 0px;
+    text-align: center;
+    color: #fff;
+  }
+}
+.transaction__info {
+  width: 100%;
+  padding: 0px 10px;
+  p {
+    margin: 2px;
+  }
 }
 .transaction__userinfo {
   width: 100%;
-  &>div{
-    display: inline-block;
-    width: 50%;
-    padding: 0px 15px;
-    box-sizing: border-box;
-    p {
-      width: 100%;
-      margin: 0px;
-    }
-  }
-  &>i{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%,-50%);
+  padding: 0px 10px;
+  p {
+    margin: 2px;
   }
 }
 

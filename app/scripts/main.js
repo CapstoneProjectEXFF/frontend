@@ -1,3 +1,4 @@
+/* eslint-disable no-use-before-define */
 /* eslint-disable eqeqeq */
 // const API_URL = 'http://localhost:8080';
 const API_URL = 'http://35.247.191.68:8080';
@@ -37,6 +38,17 @@ const TRADE_DONE_MESSAGE = -4;
 const USER_ADDED_ITEM_MESSAGE = -5;
 const USER_REMOVED_ITEM_MESSAGE = -6;
 
+// login emmit
+$(document).ready(() => {
+  if (isNotLogin()) {
+    return;
+  }
+  const socket = io(NODE_URL);
+  let data = {
+    userId: getUserId()
+  };
+  socket.emit('assign-user', data);
+});
 
 // get
 function getAuthentoken() {

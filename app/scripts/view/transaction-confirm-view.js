@@ -43,18 +43,6 @@ function initConfirmView(urlParams) {
 function initTransactionInfo(data) {
   console.log(data);
   let transaction = data.transaction;
-  let info = `
-      <div class="float-left">
-        <p class="ellipsis">${transaction.sender.fullName}</p>
-        <p class="ellipsis">${transaction.sender.phoneNumber}</p>
-      </div>
-      <div class="split"></div>
-      <div class="float-right">
-        <p class="ellipsis">${transaction.receiver.fullName}</p>
-        <p class="ellipsis">${transaction.receiver.phoneNumber}</p>
-      </div>
-      `;
-  $('#transactionUserInfo').html(info);
   $('#transactionCofirmDate').text(formatTime(transaction.modifyTime));
 }
 function initTransactionConfirmInfo(data) {
@@ -130,14 +118,17 @@ function getTransactionSuccess(data) {
   console.log(data);
   
   $('#myName').text(getUserInfo().fullName);
+  $('#myPhone').text(getUserInfo().phoneNumber);
   senderId = data.transaction.senderId;
   receiverId = data.transaction.receiverId;
   if (receiverId == myUserId) {
     friendUserId = senderId;
     $('#friendName').text(data.transaction.sender.fullName);
+    $('#friendPhone').text(data.transaction.sender.phoneNumber);
   } else {
     friendUserId = receiverId;
     $('#friendName').text(data.transaction.receiver.fullName);
+    $('#friendPhone').text(data.transaction.sender.phoneNumber);
   }
   details = data.details;
   initTransactionInfo(data);

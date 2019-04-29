@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 const TRANSACTION_URL = '/transaction';
 const DONATION_URL = '/donators';
 const NOTIF_URL = '/notification';
@@ -353,23 +354,42 @@ function confirmTransactionReceipt(
 
 
 function renderTransactionHistory(transaction) {
+  let user = (transaction.senderId != getUserId()) ? transaction.sender : transaction.receiver;
+  const avatar = (user.avatar !== null && user.avatar !== undefined)
+    ? (user.avatar)
+    : ('./images/user.png');
+  let info = `
+    <div class="clearfix">
+      <div class="user__avatar float-left position--relative">
+        <div id="avatar" class="background" style="background-image: url(${avatar})"></div>
+      </div>
+      <p class="info__name ellipsis">${user.fullName}</p>
+      <p class="info__time ellipsis">${user.phoneNumber}</p>
+    </div>
+  `;
+  let status = (transaction.status == TRANSACTION_DONATE)
+    ? 'Quyên góp'
+    : (transaction.status == TRANSACTION_DONE)
+      ? 'Hoàn thành'
+      : 'Chưa chuyển đồ';
+  let color = (transaction.status == TRANSACTION_DONATE)
+    ? '#2962ff'
+    : (transaction.status == TRANSACTION_DONE)
+      ? '#64dd17'
+      : '#7b1fa2';
+
   return `
     <a class="reset" href='./transaction-confirm.html?id=${transaction.id}'>
       <div class="transaction__container">
+        <div class="transaction__status" style="background-color:${color}">
+          <p class="ellipsis">${status}</p>
+        </div>
+        <div class="transaction__userinfo">
+          ${info}
+        </div>
         <div class="transaction__info">
           <p>Thời gian: ${formatTime(transaction.createTime)}</p>
         </div>
-        <div class="transaction__userinfo clearfix position--relative">
-          <div class="float-left">
-            <p class="ellipsis">${transaction.sender.fullName}</p>
-            <p class="ellipsis">${transaction.sender.phoneNumber}</p>
-          </div>
-          <div class="float-right">
-            <p class="ellipsis">${transaction.receiver.fullName}</p>
-            <p class="ellipsis">${transaction.receiver.phoneNumber}</p>
-          </div>
-          <i class="fas fa-exchange-alt"></i>
-        </div>
       </div>
-    </a>  `;
+    </a>`;
 }

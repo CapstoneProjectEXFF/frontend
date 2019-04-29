@@ -75,6 +75,35 @@
   </div>
   <br>
   <br>
+  <div class="div--center transaction_confirm__container">
+    <div>
+      <h3>Thông tin trao đổi</h3>
+      <p><b>Ngày trao đổi: </b><span id="transactionCofirmDate"></span></p>
+    </div>
+    <div class="transaction_confirm__info__container clearfix position--relative">
+      <div class="transaction_confirm__info">
+        <div class="transaction_confirm__info__user">
+          <p id="myName"></p>
+          <p id="myPhone"></p>
+        </div>
+        <h4>Đồ dùng</h4>
+        <div class="transaction_confirm__info__detail">
+          <div class="trade_offer__content__list" id="myTradeOffer"></div>
+        </div>
+      </div>
+      <div class="transaction_confirm__info">
+        <div class="transaction_confirm__info__user">
+          <p id="friendName"></p>
+          <p id="friendPhone"></p>
+        </div>
+        <h4>Đồ dùng</h4>
+        <div class="transaction_confirm__info__detail">
+          <div class="trade_offer__content__list" id="friendTradeOffer"></div>
+        </div>
+      </div>
+      <div class="split"></div>
+    </div>
+  </div>
   <div class="trade_offer__container">
     <div class="trade_offer__content__container">
       <div class="trade_offer__content bottomPadding">
@@ -106,13 +135,27 @@
           <button class="primary--o" id="btnRating" style="display: none;">Đánh giá</button>
         </div>
       </div>
-    </div>
-    <div class="trade_offer__content__container">
+      <br>
       <div class="trasaction_confirm__info">
         <h3>Thông tin xác nhận trao đổi</h3>
         <p id="receiptConfirmNotif" style="color: darkgreen"></p>
-        <div>
+        <div class="flex flex_justify__center">
           <canvas id="canvas"></canvas>
+        </div>
+        <div>
+          Xác nhận
+          <div class="item__form__image">
+            <div class="image__form__uploaded" id="friendReceipt">
+              <div class="image position--relative">
+                <div class="background" id="friendReceiptImage"></div>
+              </div>
+            </div>
+            <div>
+              <button class="primary" id="btnConfirmReceipt" style="display: none;">
+                <i class="fas fa-check"></i> Xác nhận đã trao đổi
+              </button>
+            </div>
+          </div>
         </div>
         <div>
           Xác nhận đã chuyển hàng
@@ -134,22 +177,10 @@
             </div>
           </div>
         </div>
-        <div>
-          Xác nhận
-          <div class="item__form__image">
-            <div class="image__form__uploaded" id="friendReceipt">
-              <div class="image position--relative">
-                <div class="background" id="friendReceiptImage"></div>
-              </div>
-            </div>
-            <div>
-              <button class="primary" id="btnConfirmReceipt" style="display: none;">
-                <i class="fas fa-check"></i> Xác nhận đã trao đổi
-              </button>
-            </div>
-          </div>
-        </div>
       </div>
+    </div>
+    <div class="trade_offer__content__container">
+
     </div>
   </div>
   <div id="modalContent"></div>

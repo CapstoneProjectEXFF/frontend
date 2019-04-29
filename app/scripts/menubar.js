@@ -105,9 +105,11 @@ $(document).ready(() => {
     )
   );
   socket.on('trade-change', function (data) {
-    console.log(data);
+    const notificationContainer = $(`#${notificationContainerTagId}`);
+    // console.log(data);
     // notification.push(data);
     // renderNotificationList(notification);
+
   });
   btnBell.click(() => {
     const notificationPopup = $(`#${notificationPopupTagId}`);
