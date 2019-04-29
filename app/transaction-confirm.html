@@ -120,9 +120,9 @@
         <canvas id="canvas"></canvas>
       </div>
       <div class="clearfix allContainer receiptContainer" style="display: none;">
-        <div class="float-left" style="width: 50%;">
+        <div class="float-left" id="uploadReceiptContainer" style="width: 50%;">
           Đăng hóa đơn xác nhận chuyển hàng
-          <div class="item__form__image">
+          <div class="item__form__image" id="uploadRecieptForm">
             <div>
               <p class="error hidden">Phải đăng ít nhất 1 hình.</p>
             </div>
@@ -139,8 +139,15 @@
               <input type="file" name="image" id="image" accept="image/*">
             </div>
           </div>
+          <div class="item__form__image">
+            <div class="image__form__uploaded" id="myReceipt" style="display: none;">
+              <div class="image position--relative">
+                <div class="background" id="myReceiptImage"></div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="float-left" style="width: 50%;">
+        <div class="float-left" id="confirmReceiptContainer" style="width: 50%;">
           Xác nhận hóa đơn chuyển hàng
           <div class="item__form__image">
             <div class="image__form__uploaded" id="friendReceipt">

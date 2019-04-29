@@ -7,8 +7,6 @@ let senderId;
 let receiverId;
 let myUserId;
 let friendUserId;
-let myUserInfo;
-let friendUserInfo;
 let sendedItems = []; // list item want to send
 let receivedItems = []; // list item want to receive
 let details = [];
@@ -48,29 +46,59 @@ function initTransactionInfo(data) {
 function initTransactionConfirmInfo(data) {
   let transaction = data.transaction;
   $("#image").change(uploadImage);
-  $('#btnUploadReceipt').click(() => {
-    if (receiptImage != null && receiptImage != undefined && receiptImage != '') {
-      uploadTransactionReceipt(
-        transactionId,
-        receiptImage,
-        uploadReceiptSuccess,
-        uploadReceiptFalse
-      );
-    }
-  });
-  $('#btnConfirmReceipt').click(() => {
-    confirmTransactionReceipt(
-      transactionId,
-      confirmReceiptSuccess,
-      confirmReceiptFalse
-    );
-  });
+
+  initReceiptConfirmButton(data);
   renderQRCode(transaction.qrCode);
   initTransactionConfirmImage(transaction);
   initRating(transaction);
   confirmReceiptSuccess(transaction);
 }
-function initRating(data){
+function initReceiptConfirmButton(data) {
+  if (isGiftAway(data.details)) {
+    if (isPersonWhoGiftAway(data.details, USER_ID)) {
+      // $('#uploadReceiptContainer').html('<p></p>');
+      $('#confirmReceiptContainer').html('<p></p>');
+      $('#btnUploadReceipt').click(() => {
+        if (receiptImage != null && receiptImage != undefined && receiptImage != '') {
+          uploadTransactionReceipt(
+            transactionId,
+            receiptImage,
+            uploadReceiptSuccess,
+            uploadReceiptFalse
+          );
+        }
+      });
+    } else {
+      $('#uploadReceiptContainer').html('<p>Bạn là người nhận nên không thể đăng hóa đơn chuyển hàng</p>');
+      $('#btnConfirmReceipt').click(() => {
+        confirmTransactionReceipt(
+          transactionId,
+          confirmReceiptSuccess,
+          confirmReceiptFalse
+        );
+      });
+    }
+  } else {
+    $('#btnUploadReceipt').click(() => {
+      if (receiptImage != null && receiptImage != undefined && receiptImage != '') {
+        uploadTransactionReceipt(
+          transactionId,
+          receiptImage,
+          uploadReceiptSuccess,
+          uploadReceiptFalse
+        );
+      }
+    });
+    $('#btnConfirmReceipt').click(() => {
+      confirmTransactionReceipt(
+        transactionId,
+        confirmReceiptSuccess,
+        confirmReceiptFalse
+      );
+    });
+  }
+}
+function initRating(data) {
   let transaction = data;
   if (transaction.status == TRANSACTION_DONE) {
     $('#btnRating').show();
@@ -81,6 +109,36 @@ function initRating(data){
 }
 function initTransactionConfirmImage(data) {
   let transaction = data;
+  if (transaction.status == TRANSACTION_DONE) {
+    initNonActionConfirmImage(transaction);
+  } else {
+    initActionConfirmImage(transaction);
+  }
+}
+function initNonActionConfirmImage(transaction) {
+  $('#uploadRecieptForm').hide();
+  
+  if (USER_ID == transaction.senderId) {
+    if (transaction.senderReceipt != undefined && transaction.senderReceipt != null) {
+      $('#myReceipt').show();
+      $('#myReceiptImage').css('background-image', `url('${transaction.senderReceipt}')`);
+    }
+    if (transaction.receiverReceipt != undefined && transaction.receiverReceipt != null) {
+      $('#friendReceipt').show();
+      $('#friendReceiptImage').css('background-image', `url('${transaction.receiverReceipt}')`);
+    }
+  } else if (USER_ID == transaction.receiverId) {
+    if (transaction.senderReceipt != undefined && transaction.senderReceipt != null) {
+      $('#friendReceipt').show();
+      $('#friendReceiptImage').css('background-image', `url('${transaction.senderReceipt}')`);
+    }
+    if (transaction.receiverReceipt != undefined && transaction.receiverReceipt != null) {
+      $('#myReceipt').show();
+      $('#myReceiptImage').css('background-image', `url('${transaction.receiverReceipt}')`);
+    }
+  }
+}
+function initActionConfirmImage(transaction) {
   if (USER_ID == transaction.senderId) {
     if (transaction.senderReceipt != undefined && transaction.senderReceipt != null) {
       showImage(transaction.senderReceipt);
@@ -113,13 +171,13 @@ function initTransactionConfirmImage(data) {
     }
   }
 }
+
 function getTransactionSuccess(data) {
   myUserId = USER_ID;
   // console.log(data);
-  
   $('#myName').text(getUserInfo().fullName);
   $('#myPhone').text(getUserInfo().phoneNumber);
-  
+
   if (getUserInfo().avatar != undefined && getUserInfo().avatar != null) {
     $('#myAvatar').css('background-image', `url('${getUserInfo().avatar}')`);
   }
@@ -231,6 +289,11 @@ function confirmReceiptSuccess(data) {
       $('#receiptConfirmNotif').text('Người dùng đã xác nhận đơn của bạn');
     }
   }
+  if (transaction.senderReceipt == null && transaction.receiverReceipt == null) {
+    show('qrContainer');
+  } else {
+    show('receiptContainer');
+  }
 }
 
 function confirmReceiptFalse(error) {
@@ -287,4 +350,25 @@ function show(tagId = 'allContainer') {
   $(".allContainer").hide();
   $('#' + tagId + "Tab").addClass("selected");
   $("." + tagId).show();
+}
+
+function isPersonWhoGiftAway(data, userId) {
+  let res = true;
+  data.forEach(detail => {
+    if (detail.item.user.id + '' != userId) {
+      res = false;
+    }
+  });
+  return res;
+}
+
+function isGiftAway(data) {
+  for (let index = 1; index < data.length; index++) {
+    const detail1 = data[index - 1];
+    const detail2 = data[index];
+    if (detail1.item.user.id != detail2.item.user.id) {
+      return false;
+    }
+  }
+  return true;
 }

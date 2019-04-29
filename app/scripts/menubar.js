@@ -82,15 +82,17 @@ function renderNotificationContainer(popupId, containerId) {
 
 function renderNotificationList(notifs) {
   const notificationContainer = $(`#${notificationContainerTagId}`);
-  console.log(notifs);
+  // console.log(notifs);
   if (notifs.length <= 0) {
     notificationContainer.html('<p style="text-align:center">Không có thông báo mới nào.</p>');
   } else {
+    console.log(notifs);
     notificationContainer.html('');
-    notifs.forEach(room => {
-      room.notifications.forEach(notif => {
-        notificationContainer.append(renderNotification(notif, room.user[0]));
-      });
+    notifs.forEach(notif => {
+      notificationContainer.append(renderNotification(notif.notification, notif.user[0]));
+      // room.notifications.forEach(notif => {
+      //   notificationContainer.append(renderNotification(notif, room.user[0]));
+      // });
     });
   }
 }
@@ -117,17 +119,22 @@ $(document).ready(() => {
   btnBell.click(() => {
     const notificationPopup = $(`#${notificationPopupTagId}`);
     hideAllMenuPopupExcept(notificationPopupTagId);
-    notificationPopup.toggle();
-    getTransactionNotif(
-      (data) => {
-        notification = data;
-        console.log(data);
-        renderNotificationList(notification);
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
+    if (notificationPopup.is(':hidden')){
+      notificationPopup.show();
+      getTransactionNotif(
+        (data) => {
+          notification = data;
+          console.log(data);
+          
+          renderNotificationList(notification);
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    } else {
+      notificationPopup.hide();
+    }
     // if (notification.length <= 0) {
     //   getTransactionNotif(
     //     (data) => {

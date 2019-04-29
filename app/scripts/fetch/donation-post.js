@@ -204,10 +204,13 @@ function renderDonationPostCard(donationPost, isEdit = false) {
     ? (user.avatar)
     : ('./images/user.png');
   const action = isEdit ? (
-    `<hr>
-    <div class="post__action clearfix">
-      <a class="primary float-right" href="./form-donation-post.html?id=${donationPost.id}">
-        <i class="fas fa-edit"></i> Edit
+    `
+    <div class="post__action flex flex_justify__space_between">
+      <a class="primary" href="./form-donation-post.html?id=${donationPost.id}">
+        <i class="fas fa-tasks"></i> Quản lý
+      </a>
+      <a class="primary" href="./form-donation-post.html?id=${donationPost.id}">
+        <i class="fas fa-edit"></i> Chỉnh sửa nội dung
       </a>
     </div>`
   ) : '';
@@ -219,6 +222,7 @@ function renderDonationPostCard(donationPost, isEdit = false) {
   return (
     `<div class="post__outline">
       <div class="post">
+        ${action}
         <div class="post__user__info">
           <div class="user__info clearfix">
             <div class="user__avatar float-left position--relative">
@@ -241,7 +245,6 @@ function renderDonationPostCard(donationPost, isEdit = false) {
             <div class="background" style="background-image: url(${image})"></div>
           </div>
         </a>
-        ${action}
       </div>
     </div>`
   );
