@@ -104,6 +104,9 @@ $(document).ready(() => {
       notificationContainerTagId
     )
   );
+  if (!isNotLogin()) {
+    socket.emit('assign-user', getUserId());
+  }
   socket.on('trade-change', function (data) {
     const notificationContainer = $(`#${notificationContainerTagId}`);
     // console.log(data);

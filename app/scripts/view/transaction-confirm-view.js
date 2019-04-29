@@ -115,20 +115,30 @@ function initTransactionConfirmImage(data) {
 }
 function getTransactionSuccess(data) {
   myUserId = USER_ID;
-  console.log(data);
+  // console.log(data);
   
   $('#myName').text(getUserInfo().fullName);
   $('#myPhone').text(getUserInfo().phoneNumber);
+  
+  if (getUserInfo().avatar != undefined && getUserInfo().avatar != null) {
+    $('#myAvatar').css('background-image', `url('${getUserInfo().avatar}')`);
+  }
   senderId = data.transaction.senderId;
   receiverId = data.transaction.receiverId;
   if (receiverId == myUserId) {
     friendUserId = senderId;
     $('#friendName').text(data.transaction.sender.fullName);
     $('#friendPhone').text(data.transaction.sender.phoneNumber);
+    if (data.transaction.sender.avatar != undefined && data.transaction.sender.avatar != null) {
+      $('#friendAvatar').css('background-image', `url('${data.transaction.sender.avatar}')`);
+    }
   } else {
     friendUserId = receiverId;
     $('#friendName').text(data.transaction.receiver.fullName);
-    $('#friendPhone').text(data.transaction.sender.phoneNumber);
+    $('#friendPhone').text(data.transaction.receiver.phoneNumber);
+    if (data.transaction.receiver.avatar != undefined && data.transaction.receiver.avatar != null) {
+      $('#friendAvatar').css('background-image', `url('${data.transaction.receiver.avatar}')`);
+    }
   }
   details = data.details;
   initTransactionInfo(data);
@@ -270,4 +280,11 @@ function deleteImage(url, id) {
   }
   btnChooseFile.show();
   btnUpload.hide();
+}
+
+function show(tagId = 'allContainer') {
+  $(".tab").removeClass("selected");
+  $(".allContainer").hide();
+  $('#' + tagId + "Tab").addClass("selected");
+  $("." + tagId).show();
 }

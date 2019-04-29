@@ -59,6 +59,11 @@ $card-padding: 10px;
   justify-content: flex-start;
   flex-wrap: nowrap;
   border-bottom: 1px solid $primary-color;
+  &.width--half{
+    div{
+      width: 50%;
+    }
+  }
   div {
     padding: 0px 20px;
     height: 36px;
@@ -249,6 +254,18 @@ $card-padding: 10px;
   width: 50%;
   padding: 5px;
   box-sizing: border-box;
+}
+.transaction_confirm__info__user{
+  p{
+    margin: 0px;
+  }
+  .user__avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 100vh;
+    background-color: #ccc;
+    overflow: hidden;
+  }
 }
 .transaction_confirm__userinfo {
   position: relative;

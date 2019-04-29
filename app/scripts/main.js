@@ -38,15 +38,6 @@ const TRADE_DONE_MESSAGE = -4;
 const USER_ADDED_ITEM_MESSAGE = -5;
 const USER_REMOVED_ITEM_MESSAGE = -6;
 
-// login emmit
-$(document).ready(() => {
-  if (isNotLogin()) {
-    return;
-  }
-  const socket = io(NODE_URL);
-  socket.emit('assign-user', getUserId());
-});
-
 // get
 function getAuthentoken() {
   return localStorage.getItem('EXFF_TOKEN');

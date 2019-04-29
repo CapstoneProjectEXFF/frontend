@@ -83,8 +83,11 @@
     <div class="transaction_confirm__info__container clearfix position--relative">
       <div class="transaction_confirm__info">
         <div class="transaction_confirm__info__user">
-          <p id="myName"></p>
-          <p id="myPhone"></p>
+          <div class="user__avatar float-left position--relative">
+            <div id="myAvatar" class="background" style="background-image: url('./images/user.png')"></div>
+          </div>
+          <p class="info__name ellipsis" id="myName"></p>
+          <p class="info__time ellipsis" id="myPhone"></p>
         </div>
         <h4>Đồ dùng</h4>
         <div class="transaction_confirm__info__detail">
@@ -93,8 +96,11 @@
       </div>
       <div class="transaction_confirm__info">
         <div class="transaction_confirm__info__user">
-          <p id="friendName"></p>
-          <p id="friendPhone"></p>
+          <div class="user__avatar float-left position--relative">
+            <div id="friendAvatar" class="background" style="background-image: url('./images/user.png')"></div>
+          </div>
+          <p class="info__name ellipsis" id="friendName"></p>
+          <p class="info__time ellipsis" id="friendPhone"></p>
         </div>
         <h4>Đồ dùng</h4>
         <div class="transaction_confirm__info__detail">
@@ -103,62 +109,19 @@
       </div>
       <div class="split"></div>
     </div>
-  </div>
-  <div class="trade_offer__container">
-    <div class="trade_offer__content__container">
-      <div class="trade_offer__content bottomPadding">
-        <div>
-          <h4 id="myName">Trao</h4>
-          <div class="trade_offer__content__list" id="myTradeOffer"></div>
-        </div>
+    <div class="trasaction_confirm__confirm">
+      <h3>Thông tin xác nhận trao đổi</h3>
+      <p id="receiptConfirmNotif" style="color: darkgreen"></p>
+      <div class="div--center index__action width--half">
+        <div onclick="show('qrContainer')" class="tab selected" id="qrContainerTab">QR code</div>
+        <div onclick="show('receiptContainer')" class="tab" id="receiptContainerTab">Xác nhận bằng biên nhận</div>
       </div>
-      <div class="trade_offer__content topPadding">
-        <div>
-          <h4 id="friendName">Nhận</h4>
-          <div class="trade_offer__content__list" id="friendTradeOffer"></div>
-        </div>
+      <div class="flex flex_justify__center allContainer qrContainer">
+        <canvas id="canvas"></canvas>
       </div>
-    </div>
-    <div class="trade_offer__content__container">
-      <div class="trasaction_confirm__info">
-        <h3>Thông tin trao đổi</h3>
-        <div>
-          <h4>Người trao đổi</h4>
-          <div class="transaction_confirm__userinfo clearfix" id="transactionUserInfo">
-
-          </div>
-        </div>
-        <div>
-          <p><b>Ngày trao đổi: </b><span id="transactionCofirmDate"></span></p>
-        </div>
-        <div>
-          <button class="primary--o" id="btnRating" style="display: none;">Đánh giá</button>
-        </div>
-      </div>
-      <br>
-      <div class="trasaction_confirm__info">
-        <h3>Thông tin xác nhận trao đổi</h3>
-        <p id="receiptConfirmNotif" style="color: darkgreen"></p>
-        <div class="flex flex_justify__center">
-          <canvas id="canvas"></canvas>
-        </div>
-        <div>
-          Xác nhận
-          <div class="item__form__image">
-            <div class="image__form__uploaded" id="friendReceipt">
-              <div class="image position--relative">
-                <div class="background" id="friendReceiptImage"></div>
-              </div>
-            </div>
-            <div>
-              <button class="primary" id="btnConfirmReceipt" style="display: none;">
-                <i class="fas fa-check"></i> Xác nhận đã trao đổi
-              </button>
-            </div>
-          </div>
-        </div>
-        <div>
-          Xác nhận đã chuyển hàng
+      <div class="clearfix allContainer receiptContainer" style="display: none;">
+        <div class="float-left" style="width: 50%;">
+          Đăng hóa đơn xác nhận chuyển hàng
           <div class="item__form__image">
             <div>
               <p class="error hidden">Phải đăng ít nhất 1 hình.</p>
@@ -177,87 +140,99 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
-    <div class="trade_offer__content__container">
+        <div class="float-left" style="width: 50%;">
+          Xác nhận hóa đơn chuyển hàng
+          <div class="item__form__image">
+            <div class="image__form__uploaded" id="friendReceipt">
+              <div class="image position--relative">
+                <div class="background" id="friendReceiptImage"></div>
+              </div>
+            </div>
+            <div>
+              <button class="primary" id="btnConfirmReceipt" style="display: none;">
+                <i class="fas fa-check"></i> Xác nhận đã trao đổi
+              </button>
+            </div>
+          </div>
+        </div>
 
+      </div>
     </div>
   </div>
   <div id="modalContent"></div>
-  <div>
-    <div class="modal__container" id="modalRating" style="display: none;">
-      <div class="modal__close" onclick="hideModal('modalRating')"></div>
-      <div class="modal center">
-        <div class="modal__title clearfix">
-          <h3 class="float-left">Đánh giá</h3>
-          <h3 class="float-right" onclick="hideModal('modalRating')">
-            <i class="fas fa-times"></i>
-          </h3>
+  <div class="modal__container" id="modalRating" style="display: none;">
+    <div class="modal__close" onclick="hideModal('modalRating')"></div>
+    <div class="modal center">
+      <div class="modal__title clearfix">
+        <h3 class="float-left">Đánh giá</h3>
+        <h3 class="float-right" onclick="hideModal('modalRating')">
+          <i class="fas fa-times"></i>
+        </h3>
+      </div>
+      <hr class="gray no--margin">
+      <div class="modal__content">
+        <div class="field__container">
+          <p id="ratingStar" style="text-align: center;font-size: 1.5em;cursor: pointer;color:#fff263;">
+            <i class="fas fa-star" onclick="renderStar(0)"></i>
+            <i class="fas fa-star" onclick="renderStar(1)"></i>
+            <i class="fas fa-star" onclick="renderStar(2)"></i>
+            <i class="fas fa-star" onclick="renderStar(3)"></i>
+            <i class="fas fa-star" onclick="renderStar(4)"></i>
+          </p>
+        </div>
+        <div class="field__container">
+          <label for="content">Nội dung</label>
+          <textarea class="autosize" name="content" id="content" placeholder="Nhận xét"></textarea>
         </div>
         <hr class="gray no--margin">
-        <div class="modal__content">
-          <div class="field__container">
-            <p id="ratingStar" style="text-align: center;font-size: 1.5em;cursor: pointer;color:#fff263;">
-              <i class="fas fa-star" onclick="renderStar(0)"></i>
-              <i class="fas fa-star" onclick="renderStar(1)"></i>
-              <i class="fas fa-star" onclick="renderStar(2)"></i>
-              <i class="fas fa-star" onclick="renderStar(3)"></i>
-              <i class="fas fa-star" onclick="renderStar(4)"></i>
-            </p>
-          </div>
-          <div class="field__container">
-            <label for="content">Nội dung</label>
-            <textarea class="autosize" name="content" id="content" placeholder="Nhận xét"></textarea>
-          </div>
-          <hr class="gray no--margin">
-          <div class="modal__action clearfix">
-            <button class="primary float-right" onclick="sendRate()">Gửi</button>
-            <button class="danger float-right" onclick="hideModal('modalRating')">Hủy</button>
-          </div>
+        <div class="modal__action clearfix">
+          <button class="primary float-right" onclick="sendRate()">Gửi</button>
+          <button class="danger float-right" onclick="hideModal('modalRating')">Hủy</button>
         </div>
       </div>
     </div>
+  </div>
 
 
-    <!-- build:js scripts/vendor/vendor.js -->
-    <!-- bower:js -->
-    <script src="/bower_components/jquery/dist/jquery.js"></script>
-    <script src="/bower_components/moment/moment.js"></script>
-    <script src="/bower_components/moment/locale/vi.js"></script>
-    <script src="/bower_components/jquery-mousewheel/jquery.mousewheel.js"></script>
-    <script src="/bower_components/php-date-formatter/js/php-date-formatter.js"></script>
-    <script src="/bower_components/datetimepicker/build/jquery.datetimepicker.full.min.js"></script>
-    <script src="/bower_components/numeral/numeral.js"></script>
-    <script src="/bower_components/datatables.net/js/jquery.dataTables.js"></script>
-    <!-- endbower -->
-    <!-- endbuild -->
+  <!-- build:js scripts/vendor/vendor.js -->
+  <!-- bower:js -->
+  <script src="/bower_components/jquery/dist/jquery.js"></script>
+  <script src="/bower_components/moment/moment.js"></script>
+  <script src="/bower_components/moment/locale/vi.js"></script>
+  <script src="/bower_components/jquery-mousewheel/jquery.mousewheel.js"></script>
+  <script src="/bower_components/php-date-formatter/js/php-date-formatter.js"></script>
+  <script src="/bower_components/datetimepicker/build/jquery.datetimepicker.full.min.js"></script>
+  <script src="/bower_components/numeral/numeral.js"></script>
+  <script src="/bower_components/datatables.net/js/jquery.dataTables.js"></script>
+  <!-- endbower -->
+  <!-- endbuild -->
 
-    <!-- build:js scripts/vendor/qrcode.js -->
-    <script src="scripts/qrcode.min.js"></script>
-    <!-- endbuild -->
+  <!-- build:js scripts/vendor/qrcode.js -->
+  <script src="scripts/qrcode.min.js"></script>
+  <!-- endbuild -->
 
-    <!-- build:js scripts/main.js -->
-    <script src="scripts/main.js"></script>
-    <script src="scripts/image.js"></script>
-    <script src="scripts/modal.js"></script>
-    <script src="scripts/fetch/chat.js"></script>
-    <script src="scripts/validation.js"></script>
-    <script src="scripts/fetch/relationship.js"></script>
-    <script src="scripts/fetch/item.js"></script>
-    <script src="scripts/fetch/login.js"></script>
-    <script src="scripts/fetch/register.js"></script>
-    <script src="scripts/fetch/transaction.js"></script>
-    <script src="scripts/fetch/rating.js"></script>
-    <!-- endbuild -->
-    <!-- build:js scripts/menubar.js-->
-    <script src="scripts/menubar.js"></script>
-    <!-- endbuild -->
-    <!-- build:js scripts/firebase-image.js -->
-    <script src="scripts/firebase-image.js"></script>
-    <!-- endbuild -->
-    <!-- build:js scripts/view/transaction-confirm-view.js-->
-    <script src="scripts/view/transaction-confirm-view.js"></script>
-    <!-- endbuild -->
+  <!-- build:js scripts/main.js -->
+  <script src="scripts/main.js"></script>
+  <script src="scripts/image.js"></script>
+  <script src="scripts/modal.js"></script>
+  <script src="scripts/fetch/chat.js"></script>
+  <script src="scripts/validation.js"></script>
+  <script src="scripts/fetch/relationship.js"></script>
+  <script src="scripts/fetch/item.js"></script>
+  <script src="scripts/fetch/login.js"></script>
+  <script src="scripts/fetch/register.js"></script>
+  <script src="scripts/fetch/transaction.js"></script>
+  <script src="scripts/fetch/rating.js"></script>
+  <!-- endbuild -->
+  <!-- build:js scripts/menubar.js-->
+  <script src="scripts/menubar.js"></script>
+  <!-- endbuild -->
+  <!-- build:js scripts/firebase-image.js -->
+  <script src="scripts/firebase-image.js"></script>
+  <!-- endbuild -->
+  <!-- build:js scripts/view/transaction-confirm-view.js-->
+  <script src="scripts/view/transaction-confirm-view.js"></script>
+  <!-- endbuild -->
 
 </body>
 
