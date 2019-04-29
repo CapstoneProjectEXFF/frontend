@@ -44,10 +44,7 @@ $(document).ready(() => {
     return;
   }
   const socket = io(NODE_URL);
-  let data = {
-    userId: getUserId()
-  };
-  socket.emit('assign-user', data);
+  socket.emit('assign-user', getUserId());
 });
 
 // get
