@@ -31,13 +31,13 @@ function getItemSuccess(data) {
   const category = $("#category");
   const name = $("#name");
   const description = $("#description");
-  // const address = $("#address");
+  const preferItems = $("#preferItems");
   const privacy = $("#privacy");
   id.val(data.id);
   category.val(data.category.id);
   name.val(data.name);
   description.val(data.description);
-  // address.val(data.address);
+  preferItems.val(data.preferItems);
   privacy.val(`${data.privacy}`);
   images = data.images;
   if (images != null && images.length > 0) {
@@ -58,13 +58,14 @@ function initForm() {
       let category = $("#category").val();
       let name = $("#name").val();
       let description = $("#description").val();
-      // let address = $("#address").val();
+      let preferItems = $("#preferItems").val();
       let privacy = $("#privacy").val();
       if (id == null || id == undefined || id == "") {
         addItem(
           category,
           name,
           description,
+          preferItems,
           privacy,
           urls,
           addItemSuccess,
@@ -76,6 +77,7 @@ function initForm() {
           category,
           name,
           description,
+          preferItems,
           privacy,
           urls,
           removedImageId,

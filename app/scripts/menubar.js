@@ -125,7 +125,6 @@ $(document).ready(() => {
         (data) => {
           notification = data;
           console.log(data);
-          
           renderNotificationList(notification);
         },
         (err) => {

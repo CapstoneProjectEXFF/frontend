@@ -26,7 +26,14 @@ function initCreateView(urlParams) {
   }
   $("#btnRequestTradeOffer").show();
   $("#btnRequestTradeOffer").click(() => {
-    addDonationTransaction(
+    // addDonationTransaction(
+    //   receiverId,
+    //   details,
+    //   donationPostId,
+    //   sendRequestSuccess,
+    //   sendRequestFails
+    // );
+    addDonationTransactionWithQR(
       receiverId,
       details,
       donationPostId,

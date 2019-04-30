@@ -1,7 +1,7 @@
 /* eslint-disable no-use-before-define */
 /* eslint-disable eqeqeq */
-// const API_URL = 'http://localhost:8080';
-const API_URL = 'http://35.247.191.68:8080';
+const API_URL = 'http://localhost:8080';
+// const API_URL = 'http://35.247.191.68:8080';
 const NODE_URL = 'http://35.247.191.68:3000';
 // const NODE_URL = 'http://localhost:3000';
 // const API_URL = 'http://172.16.1.38:8080';
@@ -73,11 +73,13 @@ function isAdminLogin() {
     return false;
   } else {
     let userInfor = getUserInfo();
-    if (userInfor.roleByRoleId.name != 'ADMIN') {
+    if (userInfor.roleByRoleId == undefined || userInfor.roleByRoleId.name != 'ADMIN') {
       return false;
-    } else {
+    }
+    if (userInfor.roleByRoleId != undefined && userInfor.roleByRoleId.name == 'ADMIN') {
       return true;
     }
+    return false;
   }
 }
 // fetch

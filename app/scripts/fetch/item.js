@@ -4,6 +4,7 @@ function addItem(
   category,
   name,
   description,
+  preferItems,
   privacy,
   urls = [],
   successCallback = DEFAULT_FUNCTION,
@@ -14,6 +15,7 @@ function addItem(
     'category': category,
     'name': name,
     'description': description,
+    'preferItems': preferItems,
     'privacy': privacy,
     'urls': urls
   };
@@ -39,6 +41,7 @@ function updateItem(
   category,
   name,
   description,
+  preferItems,
   privacy,
   urls = [],
   removedUrls = [],
@@ -51,6 +54,7 @@ function updateItem(
     'category': category,
     'name': name,
     'description': description,
+    'preferItems': preferItems,
     'privacy': privacy,
     'newUrls': urls,
     'removedUrlIds': removedUrls
@@ -95,10 +99,12 @@ function getItem(
 
 function getItemsByStatus(
   status = ITEM_ENABLE,
+  page = 0,
+  size = 12,
   successCallback = DEFAULT_FUNCTION,
   failCallback = DEFAULT_FUNCTION
 ) {
-  let url = API_URL + ITEM_URL + `?status=${status}`;
+  let url = API_URL + ITEM_URL + `?status=${status}&page=${page}&size=${size}`;
   let options = {
     method: 'GET',
     headers: {
@@ -142,6 +148,34 @@ function getItemsByUserId(
   let url;
   if (userId + '' === getUserId()) {
     url = API_URL + `/user/my` + ITEM_URL + `?status=${status}`;
+  } else {
+    url = API_URL + `/user/${userId}` + ITEM_URL + `?status=${status}`;
+  }
+  let options = {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': getAuthentoken()
+    }
+  };
+  fetchApi(
+    url,
+    options,
+    successCallback,
+    failCallback
+  );
+}
+function getItemsByUserIdInChatRoom(
+  userId,
+  status = ITEM_ENABLE,
+  friendId = 0,
+  successCallback = DEFAULT_FUNCTION,
+  failCallback = DEFAULT_FUNCTION
+) {
+  let url;
+  if (userId + '' === getUserId()) {
+    url = API_URL + `/user/my` + ITEM_URL + `?status=${status}&friendId=${friendId}`;
   } else {
     url = API_URL + `/user/${userId}` + ITEM_URL + `?status=${status}`;
   }

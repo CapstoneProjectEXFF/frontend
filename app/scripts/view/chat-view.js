@@ -255,9 +255,10 @@ function initInventory(myId, fridenId) {
       );
    });
    let p2 = new Promise((resolve, reject) => {
-      getItemsByUserId(
+      getItemsByUserIdInChatRoom(
          myId,
          ITEM_ENABLE,
+         fridenId,
          (data) => {
             getMyInventory(data);
             resolve(true);

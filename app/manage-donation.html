@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html class="no-js" lang="">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Exff | </title>
+
+  <link rel="logoicon" href="logoicon.png" />
+  <!-- Place favicon.ico in the root directory -->
+
+  <!-- build:css styles/vendor.css -->
+  <!-- bower:css -->
+  <link rel="stylesheet" href="/bower_components/datetimepicker/jquery.datetimepicker.css" />
+  <link rel="stylesheet" href="/bower_components/datatables.net-dt/css/jquery.dataTables.css" />
+  <!-- endbower -->
+  <!-- endbuild -->
+  <!-- build:css styles/bootstrap.css -->
+  <!-- <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css" /> -->
+  <!-- endbuild -->
+  <!-- build:css vendor/font-awesome/css/font-awesome.min.css -->
+  <link rel="stylesheet" href="/bower_components/Font-Awesome/css/all.min.css">
+  <!-- endbuild -->
+
+  <!-- build:css styles/main.css -->
+  <link rel="stylesheet" href="styles/main.css" />
+  <!-- endbuild -->
+
+  <!-- build:js scripts/vendor/modernizr.js -->
+  <script src="/bower_components/modernizr/modernizr.js"></script>
+  <!-- endbuild -->
+  <!-- build:js scripts/vendor/socket.js -->
+  <script src="/bower_components/socket.io-client/dist/socket.io.js"></script>
+  <!-- endbuild -->
+</head>
+
+<body>
+  <!--[if lt IE 10]>
+      <p class="browserupgrade">
+        You are using an <strong>outdated</strong> browser. Please
+        <a href="http://browsehappy.com/">upgrade your browser</a> to improve
+        your experience.
+      </p>
+    <![endif]-->
+  <div class="menu_bar__container">
+    <div class="menu_bar">
+      <div class="icon">
+        <a class="reset" href="./index.html">
+          <img class="icon" src="./images/Logo-64px.png" alt="">
+        </a>
+      </div>
+      <div class="logo">
+        <a class="reset" href="./index.html">
+          <span>Exff</span>
+        </a>
+      </div>
+      <div class="search_bar">
+        <form action="#" id="searchForm">
+          <input class="mystyle" type="text" name="searchItem" id="inputSearch" placeholder="Search..." />
+          <button id="btnSearch" class="primary"><i class="fas fa-search"></i></button>
+        </form>
+      </div>
+      <div class="menu_bar__icon" id="btnBell">
+        <i class="fas fa-bell"></i>
+      </div>
+      <div class="menu_bar__icon" id="btnFriend">
+        <i class="fas fa-user-plus"></i>
+      </div>
+      <div class="menu_bar__icon" id="btnChat">
+        <i class="fas fa-comment"></i>
+      </div>
+      <div class="user_icon" id="userInfoIcon">
+        <a class="reset" href="./login.html">
+          <i class="fas fa-user-circle"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+  <br>
+  <br>
+  <div class="donation_post__container div--center">
+    <div class="donation_post__body">
+      <div class="donation_post__title">
+        <h1 id="postTitle"></h1>
+      </div>
+      <br>
+      <div>
+        <div>
+          <p style="text-align: center">
+            <b>Địa điểm: </b>
+            <span id="address"></span>
+          </p>
+        </div>
+        <div class="donation_post__full">
+          <div class="donation_post__target" id="target">
+          </div>
+        </div>
+        <h3>Quyên góp: <span id="donatorNum"></span> lượt</h3>
+        <div>
+          <table id="donatorTable" class="table table-striped" style="width:100%">
+            <thead>
+              <tr>
+                <th>Stt</th>
+                <th>ID</th>
+                <th>Họ và tên</th>
+                <th>Số điện thoại</th>
+                <th>Thời gian</th>
+                <th>Trạng thái</th>
+              </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- build:js scripts/vendor/vendor.js -->
+  <!-- bower:js -->
+  <script src="/bower_components/jquery/dist/jquery.js"></script>
+  <script src="/bower_components/moment/moment.js"></script>
+  <script src="/bower_components/moment/locale/vi.js"></script>
+  <script src="/bower_components/jquery-mousewheel/jquery.mousewheel.js"></script>
+  <script src="/bower_components/php-date-formatter/js/php-date-formatter.js"></script>
+  <script src="/bower_components/datetimepicker/build/jquery.datetimepicker.full.min.js"></script>
+  <script src="/bower_components/numeral/numeral.js"></script>
+  <script src="/bower_components/datatables.net/js/jquery.dataTables.js"></script>
+  <!-- endbower -->
+  <!-- endbuild -->
+
+  <!-- build:js scripts/vendor/bootstrap.js -->
+  <script src="/bower_components/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- endbuild -->
+
+  <!-- build:js scripts/main.js -->
+  <script src="scripts/main.js"></script>
+  <script src="scripts/fetch/chat.js"></script>
+  <script src="scripts/image.js"></script>
+  <script src="scripts/validation.js"></script>
+  <script src="scripts/fetch/relationship.js"></script>
+  <script src="scripts/fetch/donation-post.js"></script>
+  <script src="scripts/fetch/login.js"></script>
+  <script src="scripts/fetch/register.js"></script>
+  <script src="scripts/fetch/transaction.js"></script>
+  <!-- endbuild -->
+  <!-- build:js scripts/menubar.js-->
+  <script src="scripts/menubar.js"></script>
+  <!-- endbuild -->
+  <!-- build:js scripts/view/manage-donation-view.js-->
+  <script src="scripts/view/manage-donation-view.js"></script>
+  <!-- endbuild -->
+</body>
+
+</html>

@@ -282,6 +282,45 @@ function addDonationTransaction(
     failCallback
   );
 }
+function addDonationTransactionWithQR(
+  receiverId,
+  details = [],
+  donationPostId,
+  successCallback = DEFAULT_FUNCTION,
+  failCallback = DEFAULT_FUNCTION
+) {
+  if (details.length <= 0) {
+    failCallback('Empty details');
+    return;
+  }
+  let url = API_URL + TRANSACTION_URL;
+  let data = {
+    'transactionWrapper': {
+      'transaction': {
+        'senderId': getUserId(),
+        'receiverId': receiverId,
+        'donationPostId': donationPostId
+      },
+      'details': details
+    },
+    'token': getAuthentoken()
+  };
+  let options = {
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': getAuthentoken()
+    }
+  };
+  fetchApi(
+    url,
+    options,
+    successCallback,
+    failCallback
+  );
+}
 
 function updateTradeOffer(
   id,

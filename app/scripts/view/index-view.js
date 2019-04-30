@@ -5,10 +5,13 @@
 let itemPage = 0;
 let donationPostPage = 0;
 let isDonationLoading = false;
+let isItemLoading = false;
 
 $(document).ready(() => {
   getItemsByStatus(
     ITEM_ENABLE,
+    itemPage,
+    12,
     getItemsSuccess,
     getItemsFalse
   );
@@ -40,21 +43,33 @@ $(document).ready(() => {
           );
         }
       } else {
-        itemPage++;
+        if (!isItemLoading) {
+          isItemLoading = true;
+          itemPage++;
+          getItemsByStatus(
+            ITEM_ENABLE,
+            itemPage,
+            12,
+            getItemsSuccess,
+            getItemsFalse
+          );
+        }
       }
     }
   });
 });
 function getItemsSuccess(data) {
   const itemsTag = $("#items");
-  itemsTag.html("");
+  // itemsTag.html("");
   if (data.length === 0) {
-    itemsTag.html("<h2>Không có thêm đồ dùng nào.</h2>");
+    itemPage--;
+    // itemsTag.html("<h2>Không có thêm đồ dùng nào.</h2>");
   }
   data.forEach(item => {
     const card = createItemCard(item);
     itemsTag.append(card);
   });
+  isItemLoading = false;
 }
 function getItemsFalse(err) {
   const itemsTag = $("#items");
