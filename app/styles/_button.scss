@@ -49,6 +49,19 @@ button {
       border-color: darken($color: $primary-color, $amount: 5%);
     }
   }
+  &.white--o {
+    color: #fff;
+    background-color: #ffffff00;
+    border-color: #fff;
+    &:hover {
+      color: darken($color: #fff, $amount: 5%);
+      border-color: darken($color: #fff, $amount: 5%);
+    }
+    &:active{
+      color: darken($color: #fff, $amount: 15%);
+      border-color: darken($color: #fff, $amount: 15%);
+    }
+  }
   &:focus {
     outline: none;
   }

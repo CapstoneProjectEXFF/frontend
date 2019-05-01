@@ -65,6 +65,7 @@ function searchItemInView() {
   searchItems(
     searchValue,
     categoryValue,
+    0,
     getItemsSuccess,
     getItemsFalse
   );

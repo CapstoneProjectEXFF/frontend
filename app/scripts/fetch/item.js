@@ -97,14 +97,13 @@ function getItem(
   );
 }
 
-function getItemsByStatus(
-  status = ITEM_ENABLE,
+function getItemsPaging(
   page = 0,
   size = 12,
   successCallback = DEFAULT_FUNCTION,
   failCallback = DEFAULT_FUNCTION
 ) {
-  let url = API_URL + ITEM_URL + `?status=${status}&page=${page}&size=${size}`;
+  let url = API_URL + ITEM_URL + `?page=${page}&size=${size}`;
   let options = {
     method: 'GET',
     headers: {
@@ -198,11 +197,12 @@ function getItemsByUserIdInChatRoom(
 function searchItems(
   name,
   categoryId = 0,
+  page = 0,
   successCallback = DEFAULT_FUNCTION,
   failCallback = DEFAULT_FUNCTION
 ) {
   let categoryQuery = (categoryId != null) ? `&categoryId=${categoryId}` : '';
-  let url = API_URL + ITEM_URL + `/search?name=${name}${categoryQuery}`;
+  let url = API_URL + ITEM_URL + `/search?name=${name}${categoryQuery}&page=${page}`;
   let options = (getAuthentoken() === undefined || getAuthentoken() === null)
     ? {
       method: 'GET',

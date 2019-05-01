@@ -6,10 +6,13 @@ let itemPage = 0;
 let donationPostPage = 0;
 let isDonationLoading = false;
 let isItemLoading = false;
+let slideShowPos = 0;
+let slideShowMaxPos = 0;
+let slideShowWidth = 100;
+let slideShowDirect = true;
 
 $(document).ready(() => {
-  getItemsByStatus(
-    ITEM_ENABLE,
+  getItemsPaging(
     itemPage,
     12,
     getItemsSuccess,
@@ -23,6 +26,7 @@ $(document).ready(() => {
   );
   $("#itemsContainer").show();
   $("#postsContainer").hide();
+  initSlideShow();
   $(window).scroll(function () {
     console.log([
       $(window).scrollTop(),
@@ -46,8 +50,7 @@ $(document).ready(() => {
         if (!isItemLoading) {
           isItemLoading = true;
           itemPage++;
-          getItemsByStatus(
-            ITEM_ENABLE,
+          getItemsPaging(
             itemPage,
             12,
             getItemsSuccess,
@@ -58,6 +61,104 @@ $(document).ready(() => {
     }
   });
 });
+function initSlideShow() {
+  getDonationPosts(
+    0,
+    5,
+    getDonationPostsSlideSuccess
+  );
+}
+function getDonationPostsSlideSuccess(data) {
+  const tag = $('#indexSlideShow');
+  console.log(data);
+  tag.html('');
+  if (data.length > 0) {
+    data.forEach(donationPost => {
+      tag.append(renderSlideShowItem(donationPost));
+    });
+    $('#indexSlideShow').css('width', data.length * 100 + '%');
+    $('.index__slide_show__item').css('width', 100 / data.length + '%');
+    startSlide(data.length, 100 / data.length);
+  }
+}
+function startSlide(num, width) {
+  slideShowMaxPos = num;
+  slideShowWidth = width;
+  if (num <= 0) {
+    return;
+  }
+  setInterval(function () {
+    // console.log('current' + slideShowPos);
+    if (slideShowDirect) {
+      $('#indexSlideShow').animate({ left: '-' + 100 * slideShowPos + '%' }, 1000);
+      slideShowPos++;
+      if (slideShowPos >= slideShowMaxPos) {
+        slideShowPos -= 2;
+        slideShowDirect = false;
+      }
+    } else {
+      $('#indexSlideShow').animate({ left: '-' + 100 * slideShowPos + '%' }, 1000);
+      slideShowPos--;
+      if (slideShowPos < 0) {
+        slideShowPos += 2;
+        slideShowDirect = true;
+      }
+    }
+    // console.log('after' + slideShowPos);
+  }, 4000);
+}
+function renderSlideShowItem(data) {
+  const image = (data.images != undefined && data.images.length > 0)
+    ? data.images[0].url
+    : './images/default-donation-post.jpg';
+  const user = data.user;
+  const avatar = (user.avatar !== null && user.avatar !== undefined)
+    ? (user.avatar)
+    : ('./images/user.png');
+    const target = renderTarget(data.targets);
+  return `
+  <div class="index__slide_show__item position--relative float-left">
+    <div class="background background--paralax" style="background-image: url('${image}')">
+    </div>
+    <div class="index__slide_show__item__content">
+      <div>
+        <h1>${data.title}</h1>
+        <p class="ellipsis">${data.address}</p>
+        <p class="ellipsis">${target}</p>
+        <p></p>
+        <a href="./donation-post.html?id=${data.id}">
+          <button class="white--o">Chi tiết</button>
+        </a>
+        <p>&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;</p>
+        <div class="clearfix" style="line-height: 36px">
+          <div class="square-36px round float-right position--relative">
+          <div class="background" style="background-image: url('${avatar}')"></div>
+          </div>
+          <span class="float-right">${user.fullName}&nbsp;</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  `;
+}
+function renderTarget(data) {
+  let res = 'Nhận: ';
+  console.log(data);
+  if (data.length == 0) {
+    res = 'Nhận mọi loại đồ dùng';
+  } else {
+    data.forEach((target, i) => {
+      if (i > 0) {
+        res += ', ';
+      } else {
+        res += ' ';
+      }
+      res += target.category.name;
+    });
+  }
+  
+  return res;
+}
 function getItemsSuccess(data) {
   const itemsTag = $("#items");
   // itemsTag.html("");
