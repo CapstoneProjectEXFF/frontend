@@ -31,16 +31,27 @@ $(document).ready(() => {
    }
    initMessageForm();
    socket.on('item-added', function (itemInfo) {
+      console.log('add item');
       console.log(itemInfo);
+      if (itemInfo.room === undefined || itemInfo.room !== currentChatRoom.room) {
+         return;
+      }
       selectItem(itemInfo.itemId, itemInfo.ownerId, false);
    });
    socket.on('item-removed', function (itemInfo) {
+      console.log('remove item');
       console.log(itemInfo);
+      if (itemInfo.room === undefined || itemInfo.room !== currentChatRoom.room) {
+         return;
+      }
       deselectItem(itemInfo.itemId, itemInfo.ownerId, false);
    });
    socket.on('remove-from-inv', function (itemInfo) {
       console.log('remove inventory');
       console.log(itemInfo);
+      if (itemInfo.room === undefined || itemInfo.room !== currentChatRoom.room) {
+         return;
+      }
       removeItemFromInventory(itemInfo.itemId, itemInfo.ownerId);
    });
    // socket.on('trade-change', function (data) {
