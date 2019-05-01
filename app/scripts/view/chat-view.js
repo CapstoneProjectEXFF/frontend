@@ -45,15 +45,19 @@ $(document).ready(() => {
          return;
       }
       deselectItem(itemInfo.itemId, itemInfo.ownerId, false);
-   });
-   socket.on('remove-from-inv', function (itemInfo) {
-      console.log('remove inventory');
-      console.log(itemInfo);
-      if (itemInfo.room === undefined || itemInfo.room !== currentChatRoom.room) {
-         return;
+      if (itemInfo.removeInv != undefined && itemInfo.removeInv == 1) {
+         console.log('remove item in inventory');
+         removeItemFromInventory(itemInfo.itemId, itemInfo.ownerId);
       }
-      removeItemFromInventory(itemInfo.itemId, itemInfo.ownerId);
    });
+   // socket.on('remove-from-inv', function (itemInfo) {
+   //    console.log('remove inventory');
+   //    console.log(itemInfo);
+   //    if (itemInfo.room === undefined || itemInfo.room !== currentChatRoom.room) {
+   //       return;
+   //    }
+   //    removeItemFromInventory(itemInfo.itemId, itemInfo.ownerId);
+   // });
    // socket.on('trade-change', function (data) {
    //    console.log(data);
    //    // notification.push(data);
