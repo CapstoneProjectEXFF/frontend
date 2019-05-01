@@ -14,8 +14,17 @@
 .background--color-white {
   background-color: #ffffff;
 }
+.background--color-gray-light {
+  background-color: #f4f4f4;
+}
+
+.background--color-gradient-light {
+  background-image: linear-gradient(to right top, #845EC2, #2C73D2);
+}
 
 .background--paralax {
   background-attachment: fixed;
+}
+.background--size-full-width{
   background-size: 100% auto;
 }

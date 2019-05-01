@@ -76,8 +76,31 @@ function initShareButton(data) {
 function getItemSuccess(data) {
   initShareButton(data);
   initView(data);
+  searchItems(
+    '',
+    data.category.id,
+    0,
+    getItemsSuccess,
+    getItemsFalse
+  );
 }
 function getItemFalse(err) {
   // console.log(err);
   window.location.href = ("./error404.html");
+}
+
+function getItemsSuccess(data) {
+  const itemsTag = $("#items");
+  itemsTag.html("");
+  if (data.length === 0) {
+    itemsTag.html("<p>Không có đồ dùng nào.</p>");
+  }
+  data.forEach(item => {
+    const card = createItemCard(item);
+    itemsTag.append(card);
+  });
+}
+function getItemsFalse(err) {
+  const itemsTag = $("#items");
+  itemsTag.html("<p>Không có đồ dùng nào.</p>");
 }

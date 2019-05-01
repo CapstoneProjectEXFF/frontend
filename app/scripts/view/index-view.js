@@ -28,12 +28,12 @@ $(document).ready(() => {
   $("#postsContainer").hide();
   initSlideShow();
   $(window).scroll(function () {
-    console.log([
-      $(window).scrollTop(),
-      $(document).height() - $(window).height(),
-      ($(window).scrollTop() >= $(document).height() - $(window).height() - 50),
-      isDonationLoading
-    ]);
+    // console.log([
+    //   $(window).scrollTop(),
+    //   $(document).height() - $(window).height(),
+    //   ($(window).scrollTop() >= $(document).height() - $(window).height() - 50),
+    //   isDonationLoading
+    // ]);
     if ($(window).scrollTop() >= $(document).height() - $(window).height() - 50) {
       if ($('#itemsContainer').is(':hidden')) {
         if (!isDonationLoading) {
@@ -70,9 +70,9 @@ function initSlideShow() {
 }
 function getDonationPostsSlideSuccess(data) {
   const tag = $('#indexSlideShow');
-  console.log(data);
-  tag.html('');
+  // console.log(data);
   if (data.length > 0) {
+    tag.html('');
     data.forEach(donationPost => {
       tag.append(renderSlideShowItem(donationPost));
     });
@@ -142,10 +142,10 @@ function renderSlideShowItem(data) {
   `;
 }
 function renderTarget(data) {
-  let res = 'Nhận: ';
-  console.log(data);
+  let res = '<b>Quyên góp:</b> ';
+  // console.log(data);
   if (data.length == 0) {
-    res = 'Nhận mọi loại đồ dùng';
+    res = 'Quyên góp mọi loại đồ dùng';
   } else {
     data.forEach((target, i) => {
       if (i > 0) {
@@ -156,7 +156,6 @@ function renderTarget(data) {
       res += target.category.name;
     });
   }
-  
   return res;
 }
 function getItemsSuccess(data) {
@@ -174,7 +173,9 @@ function getItemsSuccess(data) {
 }
 function getItemsFalse(err) {
   const itemsTag = $("#items");
-  itemsTag.html("<h2>Không có thêm đồ dùng nào.</h2>");
+  itemPage--;
+  isItemLoading = false;
+  // itemsTag.html("<h2>Không có thêm đồ dùng nào.</h2>");
 }
 
 function getDonationPostsSuccess(data) {

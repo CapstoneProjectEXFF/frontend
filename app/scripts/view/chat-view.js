@@ -38,11 +38,16 @@ $(document).ready(() => {
       console.log(itemInfo);
       deselectItem(itemInfo.itemId, itemInfo.ownerId, false);
    });
-   socket.on('trade-change', function (data) {
-      console.log(data);
-      // notification.push(data);
-      // renderNotificationList(notification);
-    });
+   socket.on('remove-from-inv', function (itemInfo) {
+      console.log('remove inventory');
+      console.log(itemInfo);
+      removeItemFromInventory(itemInfo.itemId, itemInfo.ownerId);
+   });
+   // socket.on('trade-change', function (data) {
+   //    console.log(data);
+   //    // notification.push(data);
+   //    // renderNotificationList(notification);
+   //  });
    initChatBoxButton();
    initTradeOfferButton();
    // initDateTime();
@@ -153,13 +158,16 @@ function initTradeOfferButton() {
       // selectChatRoom(currentChatRoom.room);
    });
    socket.on('trade-reseted', (data) => {
+      console.log("Reset");
+      console.log(data);
       if (data === undefined || data.room !== currentChatRoom.room) {
          return;
       }
       selectChatRoom(currentChatRoom.room);
    });
    socket.on('trade-done', (data) => {
-      console.log("Done" + data);
+      console.log("Done");
+      console.log(data);
       if (data.room === undefined || data.room !== currentChatRoom.room) {
          return;
       }
@@ -428,6 +436,18 @@ function selectItem(itemId, userId, isEmit = true) {
    } else {
       tradeOfferContentTag.append(createTradeOfferContentItem(item, true));
    }
+}
+function removeItemFromInventory(itemId, userId) {
+   // if (isConfirm) {
+   //    return;
+   // }
+   const itemTag = $("#item" + itemId);
+   if (userId == USER_ID) {
+      myItems = myItems.filter((value) => value.id != itemId);
+   } else {
+      friendItems = friendItems.filter((value) => value.id != itemId);
+   }
+   itemTag.remove();
 }
 function deselectItem(itemId, userId, isEmit = true) {
    // if (isConfirm) {

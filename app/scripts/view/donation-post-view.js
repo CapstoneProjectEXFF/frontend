@@ -2,10 +2,9 @@
 /* eslint-disable eqeqeq */
 /* eslint-disable no-extra-semi */
 /* eslint-disable handle-callback-err */
-let transactions = [];
-let tracsactionsCategory = [];
-let targetValue;
-let targetValueMax;
+// let transactions = [];
+// let tracsactionsCategory = [];
+// let targetValue;
 $(document).ready(() => {
   let urlParams = new URLSearchParams(window.location.search);
   if (urlParams.has("id")) {
@@ -15,7 +14,7 @@ $(document).ready(() => {
         id,
         (data) => {
           getDonationPostSuccess(data);
-          resolve(true);
+          resolve(data);
         },
         getDonationPostFalse
       );
@@ -25,13 +24,13 @@ $(document).ready(() => {
         id,
         (data) => {
           getDonatorSuccess(data);
-          resolve(true);
+          resolve(data);
         },
         getDonatorFalse
       );
     });
     Promise.all([p1, p2]).then((value) => {
-
+      getCategoryCount(value[1], value[0].targets);
     });
   } else {
     window.location.replace("./error404.html");
@@ -81,7 +80,6 @@ function initImageList(images) {
 function initTarget(data) {
   const targetTag = $('#target');
   const targets = data.targets;
-  targetValueMax = targets;
   if (targets.length == 0) {
     $('#target').html('');
     $('#target').hide();
@@ -118,7 +116,7 @@ function getDonationPostFalse(err) {
 function getDonatorSuccess(data) {
   const donatorList = $('#donatorList');
   const donatorNum = $('#donatorNum');
-  getCategoryCount(data);
+  // getCategoryCount(data);
   if (data.length > 0) {
     data.forEach(elem => {
       donatorList.append(renderDonatorCard(elem));
@@ -133,9 +131,12 @@ function getDonatorFalse(err) {
   // window.location.href = ("./error404.html");
 };
 
-function getCategoryCount(data) {
-  transactions = data;
-  tracsactionsCategory = transactions.map((elem) => {
+function getCategoryCount(data, donationTarget) {
+  if (donationTarget.length <= 0) {
+    return;
+  }
+  let transactions = data;
+  let tracsactionsCategory = transactions.map((elem) => {
     let { details } = elem;
     let tmpDetails = details.map(i => i.item.category.id);
     return tmpDetails;
@@ -145,11 +146,11 @@ function getCategoryCount(data) {
     res = res.concat(element);
   });
 
-  targetValue = res.reduce((accumulator, current) => {
+  let targetValue = res.reduce((accumulator, current) => {
     accumulator['' + current] = (accumulator[current] || 0) + 1;
     return accumulator;
   }, {});
-  targetValueMax = getMaxTarget();
+  let targetValueMax = getMaxTarget(donationTarget);
   targetValue = Object.entries(targetValue);
   targetValue.forEach(([categoryId, value]) => {
     let tag = $(`#targetProcess${categoryId}`);
@@ -166,8 +167,8 @@ function getCategoryCount(data) {
   });
 }
 
-function getMaxTarget() {
-  return targetValueMax.reduce((accumulator, current) => {
+function getMaxTarget(donationTarget) {
+  return donationTarget.reduce((accumulator, current) => {
     let { categoryId, target } = current;
     accumulator['' + categoryId] = target;
     return accumulator;

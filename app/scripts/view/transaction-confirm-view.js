@@ -177,7 +177,7 @@ function getTransactionSuccess(data) {
   // console.log(data);
   $('#myName').text(getUserInfo().fullName);
   $('#myPhone').text(getUserInfo().phoneNumber);
-
+  $('#myLink').attr('href', './inventory.html?id=' + getUserInfo().id);
   if (getUserInfo().avatar != undefined && getUserInfo().avatar != null) {
     $('#myAvatar').css('background-image', `url('${getUserInfo().avatar}')`);
   }
@@ -187,6 +187,7 @@ function getTransactionSuccess(data) {
     friendUserId = senderId;
     $('#friendName').text(data.transaction.sender.fullName);
     $('#friendPhone').text(data.transaction.sender.phoneNumber);
+    $('#friendLink').attr('href', './inventory.html?id=' + data.transaction.sender.id);
     if (data.transaction.sender.avatar != undefined && data.transaction.sender.avatar != null) {
       $('#friendAvatar').css('background-image', `url('${data.transaction.sender.avatar}')`);
     }
@@ -194,6 +195,7 @@ function getTransactionSuccess(data) {
     friendUserId = receiverId;
     $('#friendName').text(data.transaction.receiver.fullName);
     $('#friendPhone').text(data.transaction.receiver.phoneNumber);
+    $('#friendLink').attr('href', './inventory.html?id=' + data.transaction.receiver.id);
     if (data.transaction.receiver.avatar != undefined && data.transaction.receiver.avatar != null) {
       $('#friendAvatar').css('background-image', `url('${data.transaction.receiver.avatar}')`);
     }

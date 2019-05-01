@@ -38,7 +38,7 @@
   <!-- endbuild -->
 </head>
 
-<body>
+<body class="background--color-gray-light">
   <!--[if lt IE 10]>
       <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
@@ -76,7 +76,7 @@
       </div>
       <div class="search_bar">
         <form action="#" id="searchForm">
-          <input class="mystyle" type="text" name="searchItem" id="inputSearch" placeholder="Search..." />
+          <input class="mystyle" type="text" name="searchItem" id="inputSearch" placeholder="Tìm kiếm..." />
           <button id="btnSearch" class="primary"><i class="fas fa-search"></i></button>
         </form>
       </div>
@@ -148,13 +148,21 @@
       </div>
     </div>
   </div>
+  <div class="background--color-white">
+    <br>
+    <div class="div--center">
+      <h2>Đồ dùng cùng loại</h2>
+    </div>
+    <br>
+    <div class="div--center card__container" id="items"></div>
+  </div>
 
 
 
   <!-- build:js scripts/vendor/vendor.js -->
   <!-- bower:js -->
   <script src="/bower_components/jquery/dist/jquery.js"></script>
-    <script src="/bower_components/moment/moment.js"></script>
+  <script src="/bower_components/moment/moment.js"></script>
   <script src="/bower_components/moment/locale/vi.js"></script>
   <script src="/bower_components/jquery-mousewheel/jquery.mousewheel.js"></script>
   <script src="/bower_components/php-date-formatter/js/php-date-formatter.js"></script>
@@ -173,6 +181,7 @@
   <script src="scripts/fetch/item.js"></script>
   <script src="scripts/fetch/login.js"></script>
   <script src="scripts/fetch/register.js"></script>
+  <script src="scripts/fetch/transaction.js"></script>
   <!-- endbuild -->
   <!-- build:js scripts/menubar.js-->
   <script src="scripts/menubar.js"></script>

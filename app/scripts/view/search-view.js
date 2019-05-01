@@ -44,8 +44,8 @@ function initSearchView() {
       searchItemInView();
       searchDonationInView(0, 10);
     }
-
   });
+
 }
 function searchUserByPhoneInView() {
   findUserByPhone(
@@ -152,7 +152,12 @@ function getCategorySuccess(data) {
     option.val(category.id);
     selectTag.append(option);
   });
-  selectTag.change(() => categoryValue = $("#category").val());
+  selectTag.change(() => {
+    categoryValue = $("#category").val();
+    searchValue = $('#inputSearch').val();
+    $('#itemsContainerTab').click();
+    searchItemInView();
+  });
 }
 function show(tagId = 'allContainer') {
   $(".tab").removeClass("selected");

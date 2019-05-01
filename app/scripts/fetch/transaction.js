@@ -293,7 +293,7 @@ function addDonationTransactionWithQR(
     failCallback('Empty details');
     return;
   }
-  let url = API_URL + TRANSACTION_URL;
+  let url = NODE_URL + TRANSACTION_URL;
   let data = {
     'transactionWrapper': {
       'transaction': {

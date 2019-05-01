@@ -50,7 +50,7 @@
       </div>
       <div class="search_bar">
         <form action="" id="searchFormInSearch">
-          <input class="mystyle" type="text" name="searchItem" id="inputSearch" placeholder="Search..." />
+          <input class="mystyle" type="text" name="searchItem" id="inputSearch" placeholder="Tìm kiếm..." />
           <button id="btnSearch" class="primary"><i class="fas fa-search"></i></button>
         </form>
       </div>
@@ -81,9 +81,10 @@
     </div>
   </div>
   <div class="flex flex_no_wrap div--center">
-    <div class="filter filter__feild allContainer itemsContainer">
-      <h3 class="">Lọc kết quả</h3>
-      <!-- <div class="filter__feild allContainer usersContainer">
+    <div class="filter filter__feild allContainer itemsContainer position--relative">
+      <div style="position: sticky;top:80px;">
+        <h3 class="">Lọc kết quả</h3>
+        <!-- <div class="filter__feild allContainer usersContainer">
         <h4>Người dùng</h4>
         <div>
           <input type="radio" name="relationship" value="public" checked> Bất kì ai
@@ -92,9 +93,10 @@
           <input type="radio" name="relationship" value="friend"> Bạn bè
         </div>
       </div> -->
-      <div class="filter__feild allContainer itemsContainer">
-        <h4>Loại đồ dùng</h4>
-        <select class="mystyle" name="category" id="category"></select>
+        <div class="filter__feild allContainer itemsContainer">
+          <h4>Loại đồ dùng</h4>
+          <select class="mystyle" name="category" id="category"></select>
+        </div>
       </div>
     </div>
     <div class="flex_grow__1">

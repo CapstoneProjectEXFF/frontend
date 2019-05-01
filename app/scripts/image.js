@@ -5,6 +5,13 @@ function renderImage(url) {
   </div>
   `;
 }
+function renderImageInGallery(url) {
+  return `
+  <div class="image position--relative">
+    <div class="background" style="background-image: url(${url})"></div>
+  </div>
+  `;
+}
 function renderInputImage(url, id) {
   return `
   <div class="image position--relative" id="image${id}">

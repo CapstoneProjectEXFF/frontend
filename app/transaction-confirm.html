@@ -53,7 +53,7 @@
       </div>
       <div class="search_bar">
         <form action="#" id="searchForm">
-          <input class="mystyle" type="text" name="searchItem" id="inputSearch" placeholder="Search..." />
+          <input class="mystyle" type="text" name="searchItem" id="inputSearch" placeholder="Tìm kiếm..." />
           <button id="btnSearch" class="primary"><i class="fas fa-search"></i></button>
         </form>
       </div>
@@ -82,26 +82,30 @@
     </div>
     <div class="transaction_confirm__info__container clearfix position--relative">
       <div class="transaction_confirm__info">
-        <div class="transaction_confirm__info__user">
-          <div class="user__avatar float-left position--relative">
-            <div id="myAvatar" class="background" style="background-image: url('./images/user.png')"></div>
+        <a class="reset" href="#" id="myLink">
+          <div class="transaction_confirm__info__user clearfix">
+            <div class="user__avatar float-left position--relative">
+              <div id="myAvatar" class="background" style="background-image: url('./images/user.png')"></div>
+            </div>
+            <p class="info__name ellipsis" id="myName"></p>
+            <p class="info__time ellipsis" id="myPhone"></p>
           </div>
-          <p class="info__name ellipsis" id="myName"></p>
-          <p class="info__time ellipsis" id="myPhone"></p>
-        </div>
+        </a>
         <h4>Đồ dùng</h4>
         <div class="transaction_confirm__info__detail">
           <div class="trade_offer__content__list" id="myTradeOffer"></div>
         </div>
       </div>
       <div class="transaction_confirm__info">
-        <div class="transaction_confirm__info__user">
-          <div class="user__avatar float-left position--relative">
-            <div id="friendAvatar" class="background" style="background-image: url('./images/user.png')"></div>
+        <a class="reset" href="#" id="friendLink">
+          <div class="transaction_confirm__info__user clearfix">
+            <div class="user__avatar float-left position--relative">
+              <div id="friendAvatar" class="background" style="background-image: url('./images/user.png')"></div>
+            </div>
+            <p class="info__name ellipsis" id="friendName"></p>
+            <p class="info__time ellipsis" id="friendPhone"></p>
           </div>
-          <p class="info__name ellipsis" id="friendName"></p>
-          <p class="info__time ellipsis" id="friendPhone"></p>
-        </div>
+        </a>
         <h4>Đồ dùng</h4>
         <div class="transaction_confirm__info__detail">
           <div class="trade_offer__content__list" id="friendTradeOffer"></div>

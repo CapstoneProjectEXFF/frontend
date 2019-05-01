@@ -111,7 +111,7 @@ $(document).ready(() => {
   }
   socket.on('trade-change', function (data) {
     const notificationContainer = $(`#${notificationContainerTagId}`);
-    // console.log(data);
+    console.log(data);
     // notification.push(data);
     // renderNotificationList(notification);
 

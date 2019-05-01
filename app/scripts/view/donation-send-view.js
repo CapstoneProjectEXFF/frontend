@@ -33,21 +33,55 @@ function initCreateView(urlParams) {
     //   sendRequestSuccess,
     //   sendRequestFails
     // );
-    addDonationTransactionWithQR(
-      receiverId,
-      details,
-      donationPostId,
-      sendRequestSuccess,
-      sendRequestFails
-    );
+    if ($('#myTradeOffer').children().length <= 0) {
+      $('#modalContent').append(renderModal({
+        title: 'Thông báo',
+        content: '<p>Vui lòng chọn một món đồ để quyên góp</p>'
+      }));
+    } else {
+      addDonationTransactionWithQR(
+        receiverId,
+        details,
+        donationPostId,
+        sendRequestSuccess,
+        sendRequestFails
+      );
+    }
   });
 }
 function sendRequestSuccess(data) {
-  alert("Đã gửi yêu cầu");
-  window.location.replace("/");
+  $('#modalContent').append(renderModal({
+    title: 'Xác nhận',
+    content: '<p>Yêu cầu quyên góp của bạn đã được gửi.</p>',
+    action: [
+      {
+        className: 'primary',
+        value: 'Xem thông tin',
+        handle: `goToTransaction(${data})`
+      },
+      {
+        className: 'primary--o',
+        value: 'Về từ thiện',
+        handle: "backToDonation()"
+      }
+    ]
+  }));
+  // alert("Đã gửi yêu cầu");
+  // window.location.replace("/");
 }
+
+function goToTransaction(data) {
+  window.location.replace(`./transaction-confirm.html?id=${data}`);
+}
+function backToDonation() {
+  window.location.replace(`./donation-post.html?id=${donationPostId}`);
+}
+
 function sendRequestFails(err) {
-  alert("Không thể gửi yêu cầu quyên góp");
+  $('#modalContent').append(renderModal({
+    title: 'Có lỗi',
+    content: '<p>Vui lòng thử lại sau</p>'
+  }));
   console.log(err);
 }
 function getInventory(myId) {
