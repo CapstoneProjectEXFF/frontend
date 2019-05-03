@@ -115,7 +115,7 @@ function renderSlideShowItem(data) {
   const avatar = (user.avatar !== null && user.avatar !== undefined)
     ? (user.avatar)
     : ('./images/user.png');
-    const target = renderTarget(data.targets);
+  const target = renderTarget(data.targets);
   return `
   <div class="index__slide_show__item position--relative float-left">
     <div class="background background--paralax" style="background-image: url('${image}')">
@@ -132,7 +132,7 @@ function renderSlideShowItem(data) {
         <p>&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;</p>
         <div class="clearfix" style="line-height: 36px">
           <div class="square-36px round float-right position--relative">
-          <div class="background" style="background-image: url('${avatar}')"></div>
+            <div class="background" style="background-image: url('${avatar}')"></div>
           </div>
           <span class="float-right">${user.fullName}&nbsp;</span>
         </div>

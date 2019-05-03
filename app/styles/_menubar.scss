@@ -35,6 +35,16 @@
     position: relative;
     font-size: 1em;
     min-width: 48px;
+    .menu_bar__badge{
+      position: absolute;
+      top: 0;
+      right: 15px;
+      width: 8px;
+      height: 8px;
+      border-radius: 8px;
+      background-color: red;
+      overflow: hidden;
+    }
   }
   .search_bar {
     position: relative;

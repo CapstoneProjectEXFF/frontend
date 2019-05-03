@@ -100,7 +100,7 @@ function initReceiptConfirmButton(data) {
 }
 function initRating(data) {
   let transaction = data;
-  if (transaction.status == TRANSACTION_DONE) {
+  if (transaction.status == TRANSACTION_DONE || transaction.status == TRANSACTION_DONATE) {
     $('#btnRating').show();
   }
   $('#btnRating').click(() => {
@@ -117,7 +117,7 @@ function initTransactionConfirmImage(data) {
 }
 function initNonActionConfirmImage(transaction) {
   $('#uploadRecieptForm').hide();
-  
+
   if (USER_ID == transaction.senderId) {
     if (transaction.senderReceipt != undefined && transaction.senderReceipt != null) {
       $('#myReceipt').show();
@@ -271,8 +271,9 @@ function confirmReceiptSuccess(data) {
   console.log('success');
   console.log(data);
   let transaction = data;
-  if (transaction.status == TRANSACTION_DONE) {
+  if (transaction.status == TRANSACTION_DONE || transaction.status == TRANSACTION_DONATE) {
     $('#receiptConfirmNotif').text('Trao đổi đã được xác nhận thành công');
+    $('#btnRating').show();
     $('#btnConfirmReceipt').hide();
   } else if (transaction.status == TRANSACTION_SENDER_RECEIPT_CONFRIMED) {
     if (USER_ID == transaction.senderId) {

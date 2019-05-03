@@ -63,10 +63,16 @@ function getNotifMessage(notif, name = '') {
   return `${msg}`;
 }
 function renderNotification(notif, user) {
+  const avatar = (user.avatar !== null && user.avatar !== undefined)
+    ? (user.avatar)
+    : ('./images/user.png');
   let message = getNotifMessage(notif, user.fullName);
   return `
-      <div class="notification" onclick="markAsRead('${notif._id}','${user.userId}')">
-        <p class="notification__content">${message}</p>
+      <div class="notification clearfix" onclick="markAsRead('${notif._id}','${user.userId}')">
+        <div class="square-36px round float-left position--relative">
+          <div class="background" style="background-image: url('${avatar}')"></div>
+        </div>
+        <p class="notification__content">&nbsp;${message}</p>
       </div>
     `;
   // <p class="notification__time">${formatTime(notif.modifyTime)}</p>
@@ -100,6 +106,9 @@ function renderNotificationList(notifs) {
 $(document).ready(() => {
   const btnBell = $('#btnBell');
   // btnBell.hide();
+  if (isNotLogin()) {
+    btnBell.hide();
+  }
   btnBell.append(
     renderNotificationContainer(
       notificationPopupTagId,
@@ -110,16 +119,36 @@ $(document).ready(() => {
     socket.emit('assign-user', getUserId());
   }
   socket.on('trade-change', function (data) {
-    const notificationContainer = $(`#${notificationContainerTagId}`);
+    // const notificationContainer = $(`#${notificationContainerTagId}`);
+    const tag = $('#btnBell');
+
     console.log(data);
+    if (!$('#btnBellBadge').length) {
+      tag.append(`<div class="menu_bar__badge" id='btnBellBadge'></div>`);
+    } else {
+      $('#btnBellBadge').show();
+    }
     // notification.push(data);
     // renderNotificationList(notification);
 
   });
+  getTransactionNotif(
+    (data) => {
+      if (data.length <= 0) { return; }
+      if (!$('#btnBellBadge').length) {
+        $('#btnBell').append(`<div class="menu_bar__badge" id='btnBellBadge'></div>`);
+      } else {
+        $('#btnBellBadge').show();
+      }
+    },
+    (err) => {
+      console.log(err);
+    }
+  );
   btnBell.click(() => {
     const notificationPopup = $(`#${notificationPopupTagId}`);
     hideAllMenuPopupExcept(notificationPopupTagId);
-    if (notificationPopup.is(':hidden')){
+    if (notificationPopup.is(':hidden')) {
       notificationPopup.show();
       getTransactionNotif(
         (data) => {
@@ -326,7 +355,7 @@ $(document).ready(() => {
   const userInforIcon = $('#userInfoIcon');
   const userInfo = getUserInfo();
   if (userInfo != null) {
-    userInforIcon.html(renderUserAvatar(userInfo.avatar));
+    userInforIcon.html(renderUserAvatar(userInfo));
     userInforIcon.click(() => {
       const userPopup = $('#userPopup');
       hideAllMenuPopupExcept('userPopup');
@@ -344,7 +373,8 @@ function renderLogin() {
     </a>
   `;
 }
-function renderUserAvatar(avatar) {
+function renderUserAvatar(user) {
+  const {avatar, fullName} = user;
   const image = (avatar !== null && avatar !== undefined)
     ? (avatar)
     : ('./images/user.png');
@@ -353,6 +383,11 @@ function renderUserAvatar(avatar) {
       <div class="background" id="menubarAvatar" style="background-image: url(${image});"></div>
     </div>
     <div class="popup user__popup" id="userPopup" style="display:none">
+      <a class="reset" href="./inventory.html">
+        <p>
+          <i class="fas fa-user"></i> Chào, <b>${fullName}</b>!
+        </p>
+      </a>
       <a class="reset" href="./form-item.html">
         <p>
           <i class="fas fa-plus"></i> Thêm đồ
@@ -361,11 +396,6 @@ function renderUserAvatar(avatar) {
       <a class="reset" href="./form-donation-post.html">
         <p>
           <i class="fas fa-pen"></i> Viết bài
-        </p>
-      </a>
-      <a class="reset" href="./inventory.html">
-        <p>
-          <i class="fas fa-user"></i> Tài khoản
         </p>
       </a>
       <a class="reset" href="./profile.html">
