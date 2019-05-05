@@ -58,7 +58,25 @@ function initDataTable() {
         "visible": false,
         "searchable": false
       }
-    ]
+    ],
+    language: {
+      processing: "Đang xử lý...",
+      search: "Tìm kiếm&nbsp;:",
+      lengthMenu: "Xem _MENU_ mục",
+      info: "Đang xem _START_ đến _END_ trong tổng số _TOTAL_ mục",
+      infoEmpty: "Đang xem 0 đến 0 trong tổng số 0 mục",
+      infoFiltered: "(được lọc từ _MAX_ mục)",
+      infoPostFix: "",
+      loadingRecords: "Đang tải...",
+      zeroRecords: "Không tìm thấy dòng nào phù hợp",
+      emptyTable: "Chưa có người quyên góp",
+      paginate: {
+        first: "Đầu",
+        previous: "Trước",
+        next: "Tiếp",
+        last: "Cuối"
+      }
+    }
   });
   $('#donatorTable tbody').on('click', 'tr', function () {
     let data = datatable.row(this).data();
@@ -99,10 +117,10 @@ function loadDonatorToTable(data) {
     const { transaction, details } = elem;
     const { id, sender, modifyTime, status } = transaction;
     let statusStr = (status == TRANSACTION_DONATE)
-    ? 'Chưa nhận'
-    : (transaction.status == TRANSACTION_DONE)
-      ? 'Hoàn thành'
-      : 'Chưa chuyển đồ';
+      ? 'Chưa nhận'
+      : (transaction.status == TRANSACTION_DONE)
+        ? 'Hoàn thành'
+        : 'Chưa chuyển đồ';
     return [index + 1, id, sender.fullName, sender.phoneNumber, formatTime(modifyTime), statusStr];
   });
   datatable.clear().draw();

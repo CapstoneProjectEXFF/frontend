@@ -261,6 +261,7 @@ function initRooms() {
          if (chatRooms.length > 0) {
             selectChatRoom(chatRooms[0].room);
          }
+         $('#loadingMax').hide();
       }
    );
 }

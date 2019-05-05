@@ -45,10 +45,10 @@ function getNotifMessage(notif, name = '') {
       msg = `<b>${name}</b> vừa hủy chốt`;
       break;
     case USER_RESET_TRADE_MESSAGE:
-      msg = `Cuộc trao đổi vừa bị hủy`;
+      msg = `<b>${name}</b> cuộc trao đổi vừa được làm mới`;
       break;
     case TRADE_DONE_MESSAGE:
-      msg = `Trao đổi hoàn tất`;
+      msg = `<b>${name}</b> trao đổi hoàn tất`;
       break;
     case USER_ADDED_ITEM_MESSAGE:
       msg = `<b>${name}</b> thêm một đồ dùng vào cuộc trao đổi`;
@@ -120,6 +120,7 @@ $(document).ready(() => {
   }
   socket.on('trade-change', function (data) {
     // const notificationContainer = $(`#${notificationContainerTagId}`);
+    const notificationPopup = $(`#${notificationPopupTagId}`);
     const tag = $('#btnBell');
 
     console.log(data);
@@ -127,6 +128,18 @@ $(document).ready(() => {
       tag.append(`<div class="menu_bar__badge" id='btnBellBadge'></div>`);
     } else {
       $('#btnBellBadge').show();
+    }
+    if (notificationPopup.is(':visible')) {
+      getTransactionNotif(
+        (da) => {
+          notification = da;
+          console.log(da);
+          renderNotificationList(notification);
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
     }
     // notification.push(data);
     // renderNotificationList(notification);
@@ -147,9 +160,12 @@ $(document).ready(() => {
   );
   btnBell.click(() => {
     const notificationPopup = $(`#${notificationPopupTagId}`);
+    const notificationContainer = $(`#${notificationContainerTagId}`);
     hideAllMenuPopupExcept(notificationPopupTagId);
     if (notificationPopup.is(':hidden')) {
       notificationPopup.show();
+      $('#btnBellBadge').hide();
+      notificationContainer.html('<div class="loading"><i class="fas fa-spinner"></i></div>');
       getTransactionNotif(
         (data) => {
           notification = data;
@@ -209,6 +225,12 @@ function renderRelationshipNotifList(notifs) {
   if (notifs.length <= 0) {
     notificationContainer.html('<p style="text-align:center;">Không có yêu cầu kết bạn nào.</p>');
   } else {
+    const tag = $('#btnFriend');
+    if (!$('#btnFriendBadge').length) {
+      tag.append(`<div class="menu_bar__badge" id='btnFriendBadge'></div>`);
+    } else {
+      $('#btnFriendBadge').show();
+    }
     notificationContainer.html('');
     notifs.forEach(notif => {
       notificationContainer.append(renderRelationshipNotif(notif));
@@ -253,18 +275,30 @@ $(document).ready(() => {
         relationshipNotifContainerTagId
       )
     );
+    getAddFriendRequest(
+      0,
+      100,
+      renderRelationshipNotifList
+    );
     btnFriend.click(() => {
       const relationshipNotifContainer = $(`#${relationshipNotifPopupTagId}`);
+      const notificationContainer = $(`#${relationshipNotifContainerTagId}`);
       hideAllMenuPopupExcept(relationshipNotifPopupTagId);
-      relationshipNotifContainer.toggle();
-      if (relationshipNotif.length <= 0) {
-        getAddFriendRequest(
-          0,
-          10,
-          renderRelationshipNotifList
-        );
+      if (relationshipNotifContainer.is(':hidden')) {
+        relationshipNotifContainer.show();
+        $('#btnFriendBadge').hide();
+        notificationContainer.html('<div class="loading"><i class="fas fa-spinner"></i></div>');
+        if (relationshipNotif.length <= 0) {
+          getAddFriendRequest(
+            0,
+            100,
+            renderRelationshipNotifList
+          );
+        } else {
+          renderRelationshipNotifList(relationshipNotif);
+        }
       } else {
-        renderRelationshipNotifList(relationshipNotif);
+        relationshipNotifContainer.hide();
       }
     });
   }
@@ -335,15 +369,17 @@ $(document).ready(() => {
     );
     btnChatNotif.click(() => {
       const chatNotifContainer = $(`#${chatNotifPopupTagId}`);
+      const notificationContainer = $(`#${chatNotifContainerTagId}`);
       hideAllMenuPopupExcept(chatNotifPopupTagId);
-      chatNotifContainer.toggle();
-      if (chatNotif.length <= 0) {
+      if (chatNotifContainer.is(':hidden')) {
+        chatNotifContainer.show();
+        notificationContainer.html('<div class="loading"><i class="fas fa-spinner"></i></div>');
         getChatRooms(
           getUserId(),
           renderChatNotifList
         );
       } else {
-        renderChatNotifList(chatNotif);
+        chatNotifContainer.hide();
       }
     });
   }
@@ -374,7 +410,7 @@ function renderLogin() {
   `;
 }
 function renderUserAvatar(user) {
-  const {avatar, fullName} = user;
+  const { avatar, fullName } = user;
   const image = (avatar !== null && avatar !== undefined)
     ? (avatar)
     : ('./images/user.png');

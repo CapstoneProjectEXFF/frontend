@@ -53,7 +53,11 @@ function initForm(user) {
   $("#avatar").val(user.avatar);
   $("#fullname").val(user.fullName);
   $("#address").val(user.address);
-  $("#imageUploaded").attr('src', user.avatar);
+  const avatar = user.avatar;
+  const image = (avatar !== null && avatar !== undefined)
+    ? (avatar)
+    : ('./images/user.png');
+  $("#imageUploaded").attr('src', image);
 }
 function validatePasswordForm() {
   return checkRegex('#oldPassword', /^.{8,50}$/) &&

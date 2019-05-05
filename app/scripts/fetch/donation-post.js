@@ -206,10 +206,10 @@ function renderDonationPostCard(donationPost, isEdit = false) {
   const action = isEdit ? (
     `
     <div class="post__action flex flex_justify__space_between">
-      <a class="primary" href="./manage-donation.html?id=${donationPost.id}">
+      <a class="reset edit" href="./manage-donation.html?id=${donationPost.id}">
         <i class="fas fa-tasks"></i> Quản lý
       </a>
-      <a class="primary" href="./form-donation-post.html?id=${donationPost.id}">
+      <a class="reset edit" href="./form-donation-post.html?id=${donationPost.id}">
         <i class="fas fa-edit"></i> Chỉnh sửa nội dung
       </a>
     </div>`

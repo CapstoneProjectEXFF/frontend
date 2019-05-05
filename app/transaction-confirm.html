@@ -77,9 +77,14 @@
   <br>
   <div class="div--center transaction_confirm__container">
     <div>
-      <h3>Thông tin trao đổi</h3>
-      <p><b>Ngày trao đổi: </b><span id="transactionCofirmDate"></span></p>
+      <div class="clearfix">
+        <h3 class="float-left">Thông tin trao đổi&nbsp;</h3>
+        <p class="float-left" id="receiptConfirmNotif"
+          style="color: #fff; padding: 5px; background-color: #28b148; border-radius: 5px; display: none;">
+        </p>
+      </div>
       <div><button class="primary--o" id="btnRating" style="display: none;">Đánh giá</button></div>
+      <p><b>Ngày trao đổi: </b><span id="transactionCofirmDate"></span></p>
     </div>
     <div class="transaction_confirm__info__container clearfix position--relative">
       <div class="transaction_confirm__info">
@@ -116,7 +121,6 @@
     </div>
     <div class="trasaction_confirm__confirm">
       <h3>Thông tin xác nhận trao đổi</h3>
-      <p id="receiptConfirmNotif" style="color: darkgreen"></p>
       <div class="div--center index__action width--half">
         <div onclick="show('qrContainer')" class="tab selected" id="qrContainerTab">QR code</div>
         <div onclick="show('receiptContainer')" class="tab" id="receiptContainerTab">Xác nhận bằng biên nhận</div>
@@ -126,7 +130,7 @@
       </div>
       <div class="clearfix allContainer receiptContainer" style="display: none;">
         <div class="float-left" id="uploadReceiptContainer" style="width: 50%;">
-          Đăng hóa đơn xác nhận chuyển hàng
+          <p>Đăng hóa đơn xác nhận chuyển hàng</p>
           <div class="item__form__image" id="uploadRecieptForm">
             <div>
               <p class="error hidden">Phải đăng ít nhất 1 hình.</p>
@@ -139,7 +143,7 @@
             </div>
             <div class="upload-btn-wrapper" id="btnChooseFile">
               <div class="btn__upload primary--o">
-                <i class="fas fa-images"></i> Thêm hình ảnh
+                <i class="fas fa-images"></i> Thêm hình ảnh xác nhận
               </div>
               <input type="file" name="image" id="image" accept="image/*">
             </div>
@@ -153,7 +157,7 @@
           </div>
         </div>
         <div class="float-left" id="confirmReceiptContainer" style="width: 50%;">
-          Xác nhận hóa đơn chuyển hàng
+          <p>Xác nhận hóa đơn chuyển hàng</p>
           <div class="item__form__image">
             <div class="image__form__uploaded" id="friendReceipt">
               <div class="image position--relative">

@@ -21,15 +21,22 @@ function initInventoryView() {
         getUserSuccess,
         redirectTo404
       );
+      $('#tradeOfferContainerTab').hide();
     } else {
       userId = getUserId();
       isOwn = true;
       renderUserInfo(getUserInfo());
+      getTransactionHistory(
+        initTransactionHistory
+      );
     }
   } else {
     userId = getUserId();
     isOwn = true;
     renderUserInfo(getUserInfo());
+    getTransactionHistory(
+      initTransactionHistory
+    );
   }
   initBanButton(userId);
   getItemsByUserId(
@@ -42,9 +49,6 @@ function initInventoryView() {
     userId,
     getDonationPostsSuccess,
     getDonationPostsFalse
-  );
-  getTransactionHistory(
-    initTransactionHistory
   );
 }
 

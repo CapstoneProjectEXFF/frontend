@@ -273,23 +273,28 @@ function confirmReceiptSuccess(data) {
   let transaction = data;
   if (transaction.status == TRANSACTION_DONE) {
     $('#receiptConfirmNotif').text('Trao đổi đã được xác nhận thành công');
+    $('#receiptConfirmNotif').show();
     $('#btnRating').show();
     $('#btnConfirmReceipt').hide();
   } else if (transaction.status == TRANSACTION_SENDER_RECEIPT_CONFRIMED) {
     if (USER_ID == transaction.senderId) {
       $('#receiptConfirmNotif').text('Người dùng đã xác nhận đơn của bạn');
+      $('#receiptConfirmNotif').show();
     }
     if (USER_ID == transaction.receiverId) {
       $('#receiptConfirmNotif').text('Bạn xác nhận đơn chuyển hàng');
+      $('#receiptConfirmNotif').show();
       $('#btnConfirmReceipt').hide();
     }
   } else if (transaction.status == TRANSACTION_RECEIVER_RECEIPT_CONFRIMED) {
     if (USER_ID == transaction.senderId) {
       $('#receiptConfirmNotif').text('Bạn đã xác nhận chuyển hàng');
+      $('#receiptConfirmNotif').show();
       $('#btnConfirmReceipt').hide();
     }
     if (USER_ID == transaction.receiverId) {
       $('#receiptConfirmNotif').text('Người dùng đã xác nhận đơn của bạn');
+      $('#receiptConfirmNotif').show();
     }
   }
   if (transaction.senderReceipt == null && transaction.receiverReceipt == null) {

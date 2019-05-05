@@ -85,10 +85,14 @@
   font-size: 0.9em;
 }
 .post__action{
-  color: #888;
+  color: #fff;
+  background-color: #333;
   padding: 2px 4px;
   box-sizing: border-box;
   .edit{
+    color: #fff;
+  }
+  .edit:hover {
     color: $primary-color;
   }
   .delete{
