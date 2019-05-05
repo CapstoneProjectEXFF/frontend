@@ -165,6 +165,27 @@ function getItemsByUserId(
     failCallback
   );
 }
+function getRecommendItems(
+  successCallback = DEFAULT_FUNCTION,
+  failCallback = DEFAULT_FUNCTION
+) {
+  if (!isNotLogin()) {
+    let url = NODE_URL + ITEM_URL + `/${getUserId()}`;
+    let options = {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    };
+    fetchApi(
+      url,
+      options,
+      successCallback,
+      failCallback
+    );
+  }
+}
 function getItemsByUserIdInChatRoom(
   userId,
   status = ITEM_ENABLE,

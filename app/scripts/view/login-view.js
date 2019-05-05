@@ -25,7 +25,7 @@ function validate() {
 }
 
 function loginSuccess(data) {
-  window.location.replace("/");
+  window.location.replace("./index.html");
 }
 
 function loginFails(err) {

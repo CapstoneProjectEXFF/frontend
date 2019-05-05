@@ -135,6 +135,7 @@ function initTradeOfferButton() {
       socket.emit('reset-trade', data);
       isConfirm = false;
       $('#btnConfirm').show();
+      $('#tradeOfferContentNotif').html('<h4 style="margin: 0px;">Trao đổi vừa được làm mới</h4>');
       // $('#tradeOfferContentNotif').hide();
    });
    $('#btnCancle').click(() => {
@@ -147,7 +148,8 @@ function initTradeOfferButton() {
       $('#btnConfirm').show();
       $('#btnReset').show();
       $('#btnCancle').hide();
-      // $('#tradeOfferContentNotif').hide();
+      $('#tradeOfferContentNotif').html('');
+      $('#tradeOfferContentNotif').hide();
    });
    socket.on('user-accepted-trade', (data) => {
       console.log(data);
@@ -157,7 +159,8 @@ function initTradeOfferButton() {
       }
       isConfirm = true;
       // $('#btnConfirm').hide();
-      // $('#tradeOfferContentNotif').show();
+      $('#tradeOfferContentNotif').html('<h4 style="margin: 0px;">Đã có một người chốt, đang đợi xác nhận</h4>');
+      $('#tradeOfferContentNotif').show();
    });
    socket.on('trade-unconfirmed', (data) => {
       console.log('unconfirm');
@@ -169,7 +172,7 @@ function initTradeOfferButton() {
       $('#btnConfirm').show();
       $('#btnReset').show();
       $('#btnCancle').hide();
-      // $('#tradeOfferContentNotif').hide();
+      $('#tradeOfferContentNotif').hide();
       // selectChatRoom(currentChatRoom.room);
    });
    socket.on('trade-reseted', (data) => {
@@ -178,6 +181,7 @@ function initTradeOfferButton() {
       if (data === undefined || data.room !== currentChatRoom.room) {
          return;
       }
+      $('#tradeOfferContentNotif').hide();
       selectChatRoom(currentChatRoom.room);
    });
    socket.on('trade-done', (data) => {
@@ -402,12 +406,13 @@ function selectChatRoom(selectedRoomName) {
                $('#btnConfirm').hide();
                $('#btnReset').hide();
                $('#btnCancle').show();
-               // $('#tradeOfferContentNotif').show();
+               $('#tradeOfferContentNotif').html('<h4 style="margin: 0px;">Đã có một người chốt, đang đợi xác nhận</h4>');
+               $('#tradeOfferContentNotif').show();
             } else {
                $('#btnConfirm').show();
                $('#btnReset').show();
                $('#btnCancle').hide();
-               // $('#tradeOfferContentNotif').hide();
+               $('#tradeOfferContentNotif').hide();
             }
             $('#chatRoom').children().removeClass('selected');
             $(`#chatRoom${selectedRoomName}`).addClass('selected');

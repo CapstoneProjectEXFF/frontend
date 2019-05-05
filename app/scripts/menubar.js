@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 /* eslint-disable no-underscore-dangle */
 const notificationPopupTagId = 'notificationPopup';
 const notificationContainerTagId = 'notificationContainer';
@@ -9,6 +10,7 @@ const chatNotifContainerTagId = 'chatNotifContainer';
 const socket = io(NODE_URL);
 
 let notification = [];
+let notificationTransaction = [];
 let relationshipNotif = [];
 let chatNotif = [];
 
@@ -77,6 +79,28 @@ function renderNotification(notif, user) {
     `;
   // <p class="notification__time">${formatTime(notif.modifyTime)}</p>
 }
+function renderNotificationTransaction(notif) {
+  let user = notif.sender;
+  if (notif.senderId == getUserId()) {
+    user = notif.receiver;
+  }
+  const avatar = (user.avatar !== null && user.avatar !== undefined)
+    ? (user.avatar)
+    : ('./images/user.png');
+  // let message = getNotifMessage(notif, user.fullName);
+  let message = `<b>${user.fullName}</b> trao đổi đã chốt, xác nhận chuyển đồ`;
+  return `
+    <a class="reset" href='./transaction-confirm.html?id=${notif.id}'>
+      <div class="notification clearfix">
+        <div class="square-36px round float-left position--relative">
+          <div class="background" style="background-image: url('${avatar}')"></div>
+        </div>
+        <p class="notification__content">&nbsp;${message}</p>
+      </div>
+    </a>
+    `;
+  // <p class="notification__time">${formatTime(notif.modifyTime)}</p>
+}
 
 function renderNotificationContainer(popupId, containerId) {
   return `
@@ -90,12 +114,28 @@ function renderNotificationList(notifs) {
   const notificationContainer = $(`#${notificationContainerTagId}`);
   // console.log(notifs);
   if (notifs.length <= 0) {
-    notificationContainer.html('<p style="text-align:center">Không có thông báo mới nào.</p>');
+    return;
   } else {
     console.log(notifs);
-    notificationContainer.html('');
+    // notificationContainer.html('');
     notifs.forEach(notif => {
       notificationContainer.append(renderNotification(notif.notification, notif.user[0]));
+      // room.notifications.forEach(notif => {
+      //   notificationContainer.append(renderNotification(notif, room.user[0]));
+      // });
+    });
+  }
+}
+function renderNotificationListTransaction(notifs) {
+  const notificationContainer = $(`#${notificationContainerTagId}`);
+  // console.log(notifs);
+  if (notifs.length <= 0) {
+    return;
+  } else {
+    console.log(notifs);
+    // notificationContainer.html('');
+    notifs.forEach(notif => {
+      notificationContainer.append(renderNotificationTransaction(notif));
       // room.notifications.forEach(notif => {
       //   notificationContainer.append(renderNotification(notif, room.user[0]));
       // });
@@ -119,31 +159,16 @@ $(document).ready(() => {
     socket.emit('assign-user', getUserId());
   }
   socket.on('trade-change', function (data) {
-    // const notificationContainer = $(`#${notificationContainerTagId}`);
     const notificationPopup = $(`#${notificationPopupTagId}`);
     const tag = $('#btnBell');
-
-    console.log(data);
     if (!$('#btnBellBadge').length) {
       tag.append(`<div class="menu_bar__badge" id='btnBellBadge'></div>`);
     } else {
       $('#btnBellBadge').show();
     }
     if (notificationPopup.is(':visible')) {
-      getTransactionNotif(
-        (da) => {
-          notification = da;
-          console.log(da);
-          renderNotificationList(notification);
-        },
-        (err) => {
-          console.log(err);
-        }
-      );
+      getAllNotifTransaction();
     }
-    // notification.push(data);
-    // renderNotificationList(notification);
-
   });
   getTransactionNotif(
     (data) => {
@@ -166,16 +191,7 @@ $(document).ready(() => {
       notificationPopup.show();
       $('#btnBellBadge').hide();
       notificationContainer.html('<div class="loading"><i class="fas fa-spinner"></i></div>');
-      getTransactionNotif(
-        (data) => {
-          notification = data;
-          console.log(data);
-          renderNotificationList(notification);
-        },
-        (err) => {
-          console.log(err);
-        }
-      );
+      getAllNotifTransaction();
     } else {
       notificationPopup.hide();
     }
@@ -192,6 +208,49 @@ $(document).ready(() => {
   });
 });
 
+function getAllNotifTransaction() {
+  let p1 = new Promise((resolve, reject) => {
+    getTransactionNotif(
+      (data) => {
+        notification = data;
+        console.log(data);
+        resolve(notification);
+      },
+      (err) => {
+        console.log(err);
+        // resolve(true);
+      }
+    );
+  });
+  let p2 = new Promise((resolve, reject) => {
+    getReceivedTransaction(
+      (data) => {
+        notificationTransaction = data;
+        console.log(data);
+        resolve(notificationTransaction);
+      },
+      (err) => {
+        console.log(err);
+        // resolve(true);
+      }
+    );
+  });
+  Promise.all([p1, p2]).then((value) => {
+    if (notification.length == 0 && notificationTransaction.length == 0) {
+      const notificationContainer = $(`#${notificationContainerTagId}`);
+      notificationContainer.html('<p style="text-align:center">Không có thông báo mới nào.</p>');
+    } else {
+      const notificationContainer = $(`#${notificationContainerTagId}`);
+      notificationContainer.html('');
+      if (notification.length > 0) {
+        renderNotificationList(value[0]);
+      }
+      if (notificationTransaction.length > 0) {
+        renderNotificationListTransaction(value[1]);
+      }
+    }
+  });
+}
 // friend relationship -----------------------------
 function renderRelationshipNotifContainer(popupId, containerId) {
   return `

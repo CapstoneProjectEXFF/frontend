@@ -24,9 +24,10 @@ $(document).ready(() => {
     getDonationPostsSuccess,
     getDonationPostsFalse
   );
+  initRecommend();
+  initSlideShow();
   $("#itemsContainer").show();
   $("#postsContainer").hide();
-  initSlideShow();
   $(window).scroll(function () {
     // console.log([
     //   $(window).scrollTop(),
@@ -61,6 +62,17 @@ $(document).ready(() => {
     }
   });
 });
+
+function initRecommend() {
+  if (isNotLogin()) {
+    return;
+  } else {
+    getRecommendItems(
+      getRecommenItemSuccess,
+      getRecommenItemFalse
+    );
+  }
+}
 function initSlideShow() {
   getDonationPosts(
     0,
@@ -197,6 +209,34 @@ function getDonationPostsFalse(err) {
   // donationPostsTag.html("<h1>Không có bài viết nào.</h1>");
   donationPostPage--;
   isDonationLoading = false;
+}
+
+function getRecommenItemSuccess(data) {
+  console.log(data);
+  if (data.length > 0) {
+    const tag = $('#recommendContainer');
+    for (let index = 0; index < data.length; index++) {
+      const item = data[index];
+      if (index >= 4) {
+        break;
+      }
+      getItem(
+        item.id,
+        renderRecommendItem
+      );
+    }
+    tag.show();
+  }
+}
+
+function renderRecommendItem(data) {
+  const tag = $('#itemsRecommend');
+  const card = createItemCard(data);
+  tag.append(card);
+}
+
+function getRecommenItemFalse(err) {
+  $('#recommendContainer').hide();
 }
 
 function show(tagId) {

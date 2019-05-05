@@ -36,11 +36,11 @@ function initCreateView(urlParams) {
   });
 }
 function sendRequestSuccess(data) {
-  alert("Đã gửi yêu cầu");
-  window.location.replace("/");
+  // alert("Đã gửi yêu cầu");
+  window.location.replace("./index.html");
 }
 function sendRequestFails(err) {
-  alert("Có lỗi");
+  // alert("Có lỗi");
   console.log(err);
 }
 function getInventory(myId, fridenId) {

@@ -100,7 +100,7 @@ function initReceiptConfirmButton(data) {
 }
 function initRating(data) {
   let transaction = data;
-  if (transaction.status == TRANSACTION_DONE || transaction.status == TRANSACTION_DONATE) {
+  if (transaction.status == TRANSACTION_DONE) {
     $('#btnRating').show();
   }
   $('#btnRating').click(() => {
