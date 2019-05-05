@@ -7,6 +7,9 @@
 .flex_no_wrap {
   flex-wrap: nowrap;
 }
+.flex_wrap {
+  flex-wrap: wrap;
+}
 .flex_grow__0{
   flex-grow: 0;
 }
@@ -27,4 +30,9 @@
 }
 .flex_align_items__start{
   align-items: flex-start;
+}
+
+.flex_after::after{
+  content: "";
+  flex: auto;
 }

@@ -358,7 +358,8 @@ $card-padding: 10px;
   .image__form__uploaded {
     display: flex;
     flex-wrap: wrap;
-    width: 100%;
+    max-width: 100%;
+    float: left;
   }
   .image {
     width: 200px;
@@ -465,7 +466,7 @@ $profile-container-padding: 8px;
   background-color: #fff;
   padding: $profile-container-padding;
   padding-bottom: 0px;
-  border: 1px solid $boder-color;
+  // border: 1px solid $boder-color;
   overflow: hidden;
   box-sizing: border-box;
   .avatar {
@@ -505,9 +506,10 @@ $profile-container-padding: 8px;
   box-sizing: border-box;
   .avatar {
     position: relative;
-    max-width: 100%;
-    max-height: 200px;
+    width: $profile-height - 2 * $profile-container-padding;
+    height: $profile-height - 2 * $profile-container-padding;
     background-color: #ccc;
+    border-radius: $profile-height;
     overflow: hidden;
   }
 }
@@ -542,7 +544,8 @@ $profile-container-padding: 8px;
   background-color: #fff;
   margin: 10px 3px;
   padding: 0px 0px;
-  border: 1px solid #ccc;
+  // border: 1px solid #ccc;
+  box-shadow: 0px 0px 1px #333;
   border-radius: 4px;
   overflow: hidden;
   &:hover {

@@ -84,15 +84,18 @@
         <span class="success">Cập nhập thành công.</span>
       </div>
       <div class="field__container">
-        <label for="image">Avatar</label>
+        <label for="image">Avatar</label><br>
         <div class="upload-btn-wrapper" id="btnUpload">
           <button class="primary--o">
-            <i class="fas fa-images"></i> Thêm hình ảnh
+            <i class="fas fa-images"></i> Thay ảnh đại diện
           </button>
           <input type="file" name="image" id="image" accept="image/*">
         </div>
+        <br>
+        <div class="avatar" >
+          <img src="./images/user.png" alt="avatar" id="imageUploaded" style="width: 100%;height: 100%;;object-fit: cover">
+        </div>
       </div>
-      <img class="avatar" id="imageUploaded" />
     </div>
     <div>
       <form action="#" id="formInfor">

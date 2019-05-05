@@ -72,9 +72,10 @@ function initDonationPostView(data) {
 }
 function initImageList(images) {
   let imageList = $('#imageList');
-  for (let i = 1; i < images.length; i++) {
+  for (let i = 0; i < images.length; i++) {
     const image = images[i];
-    imageList.append(renderImage(image.url));
+    const index = i % 3;
+    imageList.append(renderImageInGallery(image.url, index));
   }
 }
 function initTarget(data) {

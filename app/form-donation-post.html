@@ -93,11 +93,10 @@
         <div class="donation_post__content">
           <input class="mystyle" type="text" name="id" id="id" value="" disabled hidden />
           <div class="field__container">
-              <label for="title">Tiêu đề</label>
-              <input class="mystyle" type="text" name="title" id="title"
-                placeholder="Tiêu đề của bài viết." />
-              <p class="error hidden">Tiêu đề không được để trống.</p>
-            </div>
+            <label for="title">Tiêu đề</label>
+            <input class="mystyle" type="text" name="title" id="title" placeholder="Tiêu đề của bài viết." />
+            <p class="error hidden">Tiêu đề không được để trống.</p>
+          </div>
           <div class="field__container">
             <label for="address">Địa chỉ</label>
             <input class="mystyle" type="text" name="address" id="address" placeholder="Địa chỉ nhận quyên góp" />
@@ -110,7 +109,7 @@
           </div>
 
         </div>
-        <div class="donation_post__donator__list">
+        <div class="donation_post__donator__list" style="width: 50%; min-width: 300px;">
           <div class="donation_post__donator__action clearfix">
             <h3 class="float-left">Mục tiêu quyên góp:</h3>
             <button class="primary--o float-right" id="btnAddTarget">Đặt mục tiêu</button>
@@ -127,9 +126,9 @@
         </div>
         <div class="image__form__uploaded" id="imageUploaded"></div>
         <div class="upload-btn-wrapper" id="btnUpload">
-          <button class="primary--o">
+          <div class="btn__upload primary--o">
             <i class="fas fa-images"></i> Thêm hình ảnh
-          </button>
+          </div>
           <input type="file" name="image" id="image" accept="image/*" multiple>
         </div>
       </div>
@@ -158,15 +157,15 @@
                 </tr>
               </thead>
               <tbody id="setTarget">
-                
+
               </tbody>
             </table>
           </div>
         </div>
         <hr class="gray no--margin">
         <div class="modal__action clearfix">
-            <button class="danger float-right" onclick="cancelSetTarget()">Hủy</button>
-            <button class="primary float-right" onclick="confirmSetTarget()">Xác nhận</button>
+          <button class="danger float-right" onclick="cancelSetTarget()">Hủy</button>
+          <button class="primary float-right" onclick="confirmSetTarget()">Xác nhận</button>
         </div>
       </div>
     </div>

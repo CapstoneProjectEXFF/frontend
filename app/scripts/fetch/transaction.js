@@ -412,10 +412,10 @@ function renderTransactionHistory(transaction) {
       ? 'Hoàn thành'
       : 'Chưa chuyển đồ';
   let color = (transaction.status == TRANSACTION_DONATE)
-    ? '#2962ff'
+    ? '#007bff'
     : (transaction.status == TRANSACTION_DONE)
-      ? '#64dd17'
-      : '#7b1fa2';
+      ? '#28a745'
+      : '#6c757d';
 
   return `
     <a class="reset" href='./transaction-confirm.html?id=${transaction.id}'>

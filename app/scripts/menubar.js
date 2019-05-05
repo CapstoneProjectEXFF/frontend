@@ -295,7 +295,7 @@ function renderChatNotif(chatRoom) {
     : '';
   return (
     `<a class="reset" href='./chat.html?userId=${user.userId}'>
-      <div class="list__card__avatar margin--none" id="chatRoom${chatRoom.room}">
+      <div class="list__card__avatar margin--none hover_gray" id="chatRoom${chatRoom.room}">
         <div class="list__card__avatar__image position--relative">
           <div class="background" style="background-image: url(${image})"></div>
         </div>
@@ -384,7 +384,7 @@ function renderUserAvatar(user) {
     </div>
     <div class="popup user__popup" id="userPopup" style="display:none">
       <a class="reset" href="./inventory.html">
-        <p>
+        <p class="ellipsis">
           <i class="fas fa-user"></i> Chào, <b>${fullName}</b>!
         </p>
       </a>
@@ -395,7 +395,7 @@ function renderUserAvatar(user) {
       </a>
       <a class="reset" href="./form-donation-post.html">
         <p>
-          <i class="fas fa-pen"></i> Viết bài
+          <i class="fas fa-pen"></i> Tạo từ thiện
         </p>
       </a>
       <a class="reset" href="./profile.html">

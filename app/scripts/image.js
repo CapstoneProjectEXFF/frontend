@@ -5,10 +5,12 @@ function renderImage(url) {
   </div>
   `;
 }
-function renderImageInGallery(url) {
+function renderImageInGallery(url, index = 0) {
   return `
-  <div class="image position--relative">
-    <div class="background" style="background-image: url(${url})"></div>
+  <div class="gallery gallery-${index}">
+    <div class="image position--relative">
+      <div class="background" style="background-image: url(${url})"></div>
+    </div>
   </div>
   `;
 }

@@ -75,9 +75,41 @@ button {
 }
 
 .upload-btn-wrapper input[type=file] {
+  cursor: pointer;
   font-size: 100px;
+  height: 100%;
   position: absolute;
   left: 0;
   top: 0;
   opacity: 0;
+}
+
+.facebook_color{
+  color: #fff;
+  background-color: #4267b2;
+  border-color: #4267b2;
+}
+
+.btn__upload{
+  cursor: pointer;
+  min-width: 200px;
+  height: 200px;
+  border: 5px dashed #ccc;
+  border-radius: 5px;
+  font-size: 1.5em;
+  text-align: center;
+  line-height: 195px;
+  &.primary--o {
+    color: $primary-color;
+    background-color: #ffffff00;
+    border-color: $primary-color;
+    &:hover {
+      color: lighten($color: $primary-color, $amount: 5%);
+      border-color: lighten($color: $primary-color, $amount: 5%);
+    }
+    &:active{
+      color: darken($color: $primary-color, $amount: 5%);
+      border-color: darken($color: $primary-color, $amount: 5%);
+    }
+  }
 }

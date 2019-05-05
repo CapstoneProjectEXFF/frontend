@@ -21,6 +21,9 @@
 .background--color-gradient-light {
   background-image: linear-gradient(to right top, #845EC2, #2C73D2);
 }
+.background--color-gradient-white {
+  background-image: linear-gradient(to right top, rgba(132, 94, 194, 0), rgba(44, 116, 210, 0.3));
+}
 
 .background--paralax {
   background-attachment: fixed;
